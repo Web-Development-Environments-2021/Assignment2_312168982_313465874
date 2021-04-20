@@ -7,9 +7,27 @@ var start_time;
 var time_elapsed;
 var interval;
 
+
 $(document).ready(function() {
+	canvas = document.getElementById('canvas');
 	context = canvas.getContext("2d");
-	Start();
+	//context.fillStyle="black";
+	//context.fillRect(0,0,1280,90);
+	context.font = "bold 60px Verdana";
+	context.fillStyle="rgb(221, 221, 42)"
+	context.textAlign = "center";
+	context.fillText("PACMAN", canvas.width/2, 80);
+	context = document.getElementById('menu').style.fontStyle.fontSize="50px";
+
+	//add logo 
+	//window.onload = function(){
+	//	img = document.getElementById("pacImg");
+	//	context.drawImage(img,0,0);
+	//};
+	
+	
+	//Start(); 
+	
 });
 
 function Start() {
