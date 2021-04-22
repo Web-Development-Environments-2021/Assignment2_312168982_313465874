@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<link rel="stylesheet" type="text/css" href="style.css" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<script src="./jquery-3.4.1.slim.min.js"></script>
 		<script type="text/javascript" src="./app.js"></script>
-
 	</head>
 
 	<body>
 		<div id = "header" style="background-color: black;">
 			<div id="pacImg" >
-				<img src="images/pac.jpg" align ="left" class = "logoP" alt="logoP" height = "70px" style="margin-left: 20px;">
+				<img src="images/pac.jpg" align ="left" alt="logoP" height = "70px" >
 			</div>
 
 			<div id="header" style="margin-left: 30px;font-family: Verdana; font-size: 60px; color: rgb(243, 228, 16)">
@@ -17,30 +18,54 @@
 			</div>
 		</div>
 
-		<div id="links" style="font-size: 30px; font-family: Arial, Helvetica, sans-serif; background-color: cornflowerblue; color: white; right: 30px; ">
+		<div id="menu" >
 			<a onclick="welcomePage()"> Welcome |</a>
 			<a onclick="registerPage()"> Register |</a>
 			<a onclick="loginPage()"> Login |</a>
 			<a onclick="aboutPage()"> About </a>
 		</div>
-		<!--the button should be bigger-->
-		<div id="menu">
-			<input type="button" value="welcome">
-			<input type="button" value="Register">
-			<input type="button" value="Login">
-			<input type="button" value="About">
+		
+		<div id="welcomePage" >
+			Welcome to the PACMAN game!
+		</br>
+		<button class = "button welcome_Register" style="margin-right: 70px;">Register</button> 
+		<button class = "button welcome_Login">Login</button> 
+		</div>
+
+
+		<div id="RegisterPageDiv">
+			<img src="images/Sing-in.jpg" align ="center" alt="logoP" height="250px" width="350px">
+			<form method="POST" action="mailto:noyak@post.bgu.ac.il"></form>
+			<label>
+				Username:
+				<input type="text" name="username" placeholder="username"><br>
+				Password:
+				<input type="password" name="password" placeholder="password"><br>
+				First Name:
+				<input type="text" name="first name" placeholder="first name"><br>
+				Last Name:
+				<input type="text" name="last name" placeholder="last name"><br>
+				E-mail:
+				<input type="text" name="mail" placeholder="name@domain.com"><br>
+				Birth Date:
+				<input type="date" name="mail" placeholder="birth-date"><br><br>
+				<button id="regButton">Register</button>
+			</label>
 		</div>
 
 
 
+		<div id="loginPageDiv">
+
+		</div>
+
+		<div id="aboutWindow">
+			fnjgjnjf
+		</div>
 
 
-
-
-
-
-		<div id="game" align = "left">
-			<canvas id="canvas" height="600" width="600" style="border:5px solid rgb(221, 221, 42); margin-top: 50px;"></canvas>
+		<div id="GamePageDiv" align = "left">
+			<canvas id="canvas" height="600" width="600" ></canvas>
 		</div>
 		<div id = "stats">
 			Score:

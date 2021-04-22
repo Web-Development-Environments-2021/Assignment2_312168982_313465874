@@ -1,12 +1,31 @@
-var context;
-var shape = new Object();
-var board;
-var score;
-var pac_color;
-var start_time;
-var time_elapsed;
-var interval;
+let context;
+let shape = new Object();
 
+
+//game:
+let board;
+let score=0;
+let lives=5;
+let start_time=0;
+let time_elapsed;
+let interval;
+
+//pacman vars:
+let pac_color;
+let pacman_x;
+let pacman_y;
+
+//fruits:
+let smallFruit_x;
+let smallFruit_y;
+
+let middleFruit_x;
+let middleFruit_y;
+
+let bigFruit_x;
+let bigFruit_y;
+
+let candies = 0;
 
 $(document).ready(function() {
 	canvas = document.getElementById('canvas');
@@ -24,15 +43,15 @@ $(document).ready(function() {
 	context.fillText("PACMAN", canvas.width/2, 80);
 	context = document.getElementById('menu').style.fontStyle.fontSize="50px";
 
-	//add logo 
-	//window.onload = function(){
-	//	img = document.getElementById("pacImg");
-	//	context.drawImage(img,0,0);
-	//};
-	
+	//aboutPage function
+  	$( function() {
+    $("#aboutWindow").dialog();
+	} );
+
 	
 	//Start(); 
 	
+
 });
 
 function Start() {
@@ -104,6 +123,10 @@ function findRandomEmptyCell(board) {
 	}
 	return [i, j];
 }
+
+
+function changeDivDisplay(newDiv,)
+
 
 function GetKeyPressed() {
 	if (keysDown[38]) {
@@ -193,3 +216,5 @@ function UpdatePosition() {
 		Draw();
 	}
 }
+
+
