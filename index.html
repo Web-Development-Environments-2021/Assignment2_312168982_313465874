@@ -7,16 +7,22 @@
 	</head>
 
 	<body>
-		<div id = "header">
+		<div id = "header" style="background-color: black;">
 			<div id="pacImg" >
-				<img src="images/pac.jpg" align = "left" class = "logoP" alt="logoP" height = "70">
+				<img src="images/pac.jpg" align ="left" class = "logoP" alt="logoP" height = "70px" style="margin-left: 20px;">
 			</div>
 
-			<div id="header" style="margin-left: 30px;font-family: Verdana; font-size: 60px; color: rgb(221, 221, 42);">
+			<div id="header" style="margin-left: 30px;font-family: Verdana; font-size: 60px; color: rgb(243, 228, 16)">
 			<b>PACMAN </b>
 			</div>
 		</div>
 
+		<div id="links" style="font-size: 30px; font-family: Arial, Helvetica, sans-serif; background-color: cornflowerblue; min-width: 10px; color: white; ">
+			<a onclick="welcomePage()"> Welcome |</a>
+			<a onclick="registerPage()"> Register |</a>
+			<a onclick="loginPage()"> Login |</a>
+			<a onclick="aboutPage()"> About </a>
+		</div>
 		<!--the button should be bigger-->
 		<div id="menu">
 			<input type="button" value="welcome">
@@ -25,6 +31,14 @@
 			<input type="button" value="About">
 		</div>
 
+
+
+
+
+
+
+
+		
 		<div id="game" align = "left">
 			<canvas id="canvas" height="600" width="600" style="border:5px solid rgb(221, 221, 42); margin-top: 50px;"></canvas>
 		</div>
