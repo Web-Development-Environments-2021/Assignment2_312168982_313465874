@@ -11,8 +11,13 @@ var interval;
 $(document).ready(function() {
 	canvas = document.getElementById('canvas');
 	context = canvas.getContext("2d");
+	canvas.width = "1240";
+	canvas.height = "580";
+
+	//Trying:
 	//context.fillStyle="black";
 	//context.fillRect(0,0,1280,90);
+
 	context.font = "bold 60px Verdana";
 	context.fillStyle="rgb(221, 221, 42)"
 	context.textAlign = "center";

@@ -3,16 +3,18 @@
 	<head>
 		<script src="./jquery-3.4.1.slim.min.js"></script>
 		<script type="text/javascript" src="./app.js"></script>
+
 	</head>
 
 	<body>
-		<!--pic doesn't work-->
-		<div id="pacImg" >
-			<img scr="./images/pac.jpg" align="left" style="height: 70px;">
-		</div>
+		<div id = "header">
+			<div id="pacImg" >
+				<img src="images/pac.jpg" align = "left" class = "logoP" alt="logoP" height = "70">
+			</div>
 
-		<div id="header" style="margin-left: 30px;font-family: Verdana; font-size: 100px; color: rgb(221, 221, 42);">
-		<b>PACMAN </b>
+			<div id="header" style="margin-left: 30px;font-family: Verdana; font-size: 60px; color: rgb(221, 221, 42);">
+			<b>PACMAN </b>
+			</div>
 		</div>
 
 		<!--the button should be bigger-->
@@ -23,8 +25,11 @@
 			<input type="button" value="About">
 		</div>
 
-		<div id="game">
+		<div id="game" align = "left">
 			<canvas id="canvas" height="600" width="600" style="border:5px solid rgb(221, 221, 42); margin-top: 50px;"></canvas>
+		</div>
+		<div id = "stats">
+			Score:
 		</div>
 
 
