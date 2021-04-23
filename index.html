@@ -5,6 +5,30 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<script src="./jquery-3.4.1.slim.min.js"></script>
 		<script type="text/javascript" src="./app.js"></script>
+		
+		<script>
+		$(document).ready(function(){
+			$("#RegisterPageDiv").hide();
+			$('#loginPageDiv').hide();
+			$('#GamePageDiv').hide();
+			$('#stats').hide();
+			
+			$('#welcomePageRegisterButton').on('click',function(){
+				$("#welcomePage").toggle(1000);
+				$("#RegisterPageDiv").toggle(1000);
+			});
+
+			$('#welcomePageLoginButton').on('click',function(){
+				$("#welcomePage").toggle(1000);
+				$("#loginPageDiv").toggle(1000);
+			});
+
+			$('#regButton').on('click',function(){
+				$("#RegisterPageDiv").toggle(1000);
+				$("#loginPageDiv").toggle(1000);
+			});
+		});
+		</script>
 	</head>
 
 	<body>
@@ -28,8 +52,8 @@
 		<div id="welcomePage" >
 			Welcome to the PACMAN game!
 		</br>
-		<button class = "button welcome_Register" style="margin-right: 70px;">Register</button> 
-		<button class = "button welcome_Login">Login</button> 
+		<button id = 'welcomePageRegisterButton' class = "button welcome_Register" style="margin-right: 70px;">Register</button> 
+		<button id = 'welcomePageLoginButton' class = "button welcome_Login">Login</button> 
 		</div>
 
 
@@ -56,7 +80,7 @@
 
 
 		<div id="loginPageDiv">
-
+			Welcome Member!
 		</div>
 
 		<div id="aboutWindow">

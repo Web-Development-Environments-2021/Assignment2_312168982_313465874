@@ -54,6 +54,8 @@ $(document).ready(function() {
 
 });
 
+
+
 function Start() {
 	board = new Array();
 	score = 0;
