@@ -1,7 +1,7 @@
 let context;
 let shape = new Object();
 
-
+let val;
 //game:
 let board;
 let score=0;
@@ -48,13 +48,47 @@ $(document).ready(function() {
     $("#aboutWindow").dialog();
 	} );
 
+	//CHECK FORM VALIDATION
+	function validForm(){
+		val = document.forms["form"]["username"].value;
+
+		val = getElementById("username").value;
+		if(val=""){ //check if the input is empty
+			alert("Please enter username");
+			return false;
+		}
+
+		val = getElementById("password").value;
+		if(x=""){ //check if the input is empty
+		alert("Please enter password");
+		return false;
+		}
+	
+
+		val = getElementById("firstName").value;
+		if(x=""){ //check if the input is empty
+			alert("Please enter first name");
+			return false;
+		}
+
+		val = getElementById("lastName").value;
+		if(x=""){ //check if the input is empty
+			alert("Please enter last name");
+			return false;
+		}
+
+		val = getElementById("mail").value;
+		if(x=""){ //check if the input is empty
+			alert("Please enter an email address");
+			return false;
+		}
+	}
+	
 	
 	//Start(); 
 	
 
 });
-
-
 
 function Start() {
 	board = new Array();

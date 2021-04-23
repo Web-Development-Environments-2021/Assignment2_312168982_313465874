@@ -6,6 +6,7 @@
 		<script src="./jquery-3.4.1.slim.min.js"></script>
 		<script type="text/javascript" src="./app.js"></script>
 		
+		<!--should be in js file-->
 		<script>
 		$(document).ready(function(){
 			$("#RegisterPageDiv").hide();
@@ -34,7 +35,7 @@
 	<body>
 		<div id = "header" style="background-color: black;">
 			<div id="pacImg" >
-				<img src="images/pac.jpg" align ="left" alt="logoP" height = "70px" >
+				<img src="images/pac.jpg" align ="left" alt="logoP" height = "70px">
 			</div>
 
 			<div id="header" style="margin-left: 30px;font-family: Verdana; font-size: 60px; color: rgb(243, 228, 16)">
@@ -49,6 +50,7 @@
 			<a onclick="aboutPage()"> About </a>
 		</div>
 		
+		<!--WELCOME PAGE-->
 		<div id="welcomePage" >
 			Welcome to the PACMAN game!
 		</br>
@@ -56,26 +58,29 @@
 		<button id = 'welcomePageLoginButton' class = "button welcome_Login">Login</button> 
 		</div>
 
-
+		<!--REGISTER PAGE-->
 		<div id="RegisterPageDiv">
-			<img src="images/Sing-in.jpg" align ="center" alt="logoP" height="250px" width="350px">
-			<form method="POST" action="mailto:noyak@post.bgu.ac.il"></form>
+			<img src="images/Sing-in.jpg" alt="logoP" height="250px" width="350px">
+			<form name="form" method="POST" action="mailto:noyak@post.bgu.ac.il" onsubmit="return validForm()"></form>
 			<label>
 				Username:
-				<input type="text" name="username" placeholder="username"><br>
+				<input id="username" type="text" name="username" placeholder="username"><br>
 				Password:
-				<input type="password" name="password" placeholder="password"><br>
+				<input id="password" type="password" name="password" placeholder="password"><br>
 				First Name:
-				<input type="text" name="first name" placeholder="first name"><br>
+				<input id="firstName" type="text" name="first name" placeholder="first name"><br>
 				Last Name:
-				<input type="text" name="last name" placeholder="last name"><br>
+				<input id="lastName" type="text" name="last name" placeholder="last name"><br>
 				E-mail:
-				<input type="text" name="mail" placeholder="name@domain.com"><br>
+				<input id="email" type="text" name="mail" placeholder="name@domain.com"><br>
 				Birth Date:
 				<input type="date" name="mail" placeholder="birth-date"><br><br>
 				<button id="regButton">Register</button>
 			</label>
 		</div>
+
+		
+
 
 
 
@@ -84,7 +89,7 @@
 		</div>
 
 		<div id="aboutWindow">
-			fnjgjnjf
+			
 		</div>
 
 
