@@ -43,48 +43,125 @@
 			</div>
 		</div>
 
-		<div id="menu" >
-			<a onclick="welcomePage()"> Welcome |</a>
-			<a onclick="registerPage()"> Register |</a>
-			<a onclick="loginPage()"> Login |</a>
-			<a onclick="aboutPage()"> About </a>
+		<div class="menu" >
+			<a onclick="welcomePage()"> Welcome </a>|
+			<a onclick="registerPage()"> Register </a>|
+			<a onclick="loginPage()"> Login </a>|
+			<a id="aboutWindow"> About </a>|
 		</div>
 		
 		<!--WELCOME PAGE-->
 		<div id="welcomePage" >
 			Welcome to the PACMAN game!
 		</br>
-		<button id = 'welcomePageRegisterButton' class = "button welcome_Register" style="margin-right: 70px;">Register</button> 
-		<button id = 'welcomePageLoginButton' class = "button welcome_Login">Login</button> 
+		<button id='welcomePageRegisterButton' onclick="registerPage()" class="button welcome_Register" style="margin-right: 70px;">Register</button> 
+		<button id='welcomePageLoginButton' onclick="loginPage()" class="button welcome_Login">Login</button> 
 		</div>
+
+		<!--ABOUT PAGE-->
+		<div id="myModal" class="modal">
+			<div class="modal-content">
+			  <span class="close">&times;</span>
+			  <p>Some text in the Modal..</p>
+			</div>
+		</div>
+
+		<script>
+			//Get the modal
+			var modal = document.getElementById("myModal");
+			//Get the button that opens the modal
+			var btn = document.getElementById("aboutWindow");
+			//Get the <span> element that closes the modal
+			var span = document.getElementsByClassName("close")[0];
+			//When the user clicks the button, open the modal 
+			btn.onclick = function() {
+			  modal.style.display = "block";
+			}
+			//When the user clicks on <span> (x), close the modal
+			span.onclick = function() {
+			  modal.style.display = "none";
+			}
+			//When the user clicks anywhere outside of the modal, close it
+			window.onclick = function(event) {
+			  if (event.target == modal) {
+				modal.style.display = "none";
+			  }
+			}
+			</script>
+			
 
 		<!--REGISTER PAGE-->
 		<div id="RegisterPageDiv">
-			<img src="images/Sing-in.jpg" alt="logoP" height="250px" width="350px">
-			<form name="form" method="POST" action="mailto:noyak@post.bgu.ac.il" onsubmit="return validForm()"></form>
-			<label>
-				Username:
-				<input id="username" type="text" name="username" placeholder="username"><br>
-				Password:
-				<input id="password" type="password" name="password" placeholder="password"><br>
-				First Name:
-				<input id="firstName" type="text" name="first name" placeholder="first name"><br>
-				Last Name:
-				<input id="lastName" type="text" name="last name" placeholder="last name"><br>
-				E-mail:
-				<input id="email" type="text" name="mail" placeholder="name@domain.com"><br>
-				Birth Date:
-				<input type="date" name="mail" placeholder="birth-date"><br><br>
-				<button id="regButton">Register</button>
-			</label>
+			<img src="images/Sign-in.jpg" alt="logoP" height="250px" width="350px">
+			<form id="contact" name="regForm" method="post" onsubmit="return checkValidForm()">
+				<div>
+					Username:
+					<input id="username" type="text" name="username" placeholder="username">
+					<span id="ere" class="error">This field is required</span><br>
+				</div>
+				<div>
+					Password:
+					<input id="password" type="password" name="password" placeholder="password">
+					<span class="error">This field is required</span><br>
+				</div>
+				<div>
+					First Name:
+					<input id="firstName" type="text" name="first-name" placeholder="first name">
+					<span class="error">This field is required</span><br>
+				</div>
+				<div>
+					Last Name:
+					<input id="lastName" type="text" name="last-name" placeholder="last name">
+					<span class="error">This field is required</span><br>
+				</div>
+				<div>
+					E-mail:
+					<input id="mail" type="text" name="mail" placeholder="name@domain.com">
+					<span class="error">A valid email address is required</span><br>				
+				</div>	
+				<div>
+					Birth Date:
+					<input type="date" name="mail" placeholder="birth-date">
+					<span class="error">A valid email address is required</span><br>
+				</div>
+				<div>
+					<input id="regButton" type="submit" onclick="checkValidForm()" value="Register">				
+				</div>
+			</form>	
 		</div>
 
+
+		<script>
+			function checkValidForm() {
+				var username = document.forms["regForm"]["username"].value;
+				// var email = document.forms["myForm"]["your-email"].value;
+				// var phone = document.forms["myForm"]["your-phone"].value;
+				// var message = document.forms["myForm"]["your-message"].value;
+
+				if (username.length<1) {
+        			document.getElementById('ere').innerHTML = " Please Enter Your Name *"
+					//return false;
+    			}
+				// if (email.length<1) {
+        		// 	document.getElementById('error-email').innerHTML = " Please Enter Your Email *";
+    			// }
+    // if (phone.length<1) {
+    //     document.getElementById('error-phone').innerHTML = " Please Enter Your Phone *";      
+    // }
+    // if (message.length<1) {
+    //     document.getElementById('error-message').innerHTML = " Please Enter Your Message *";
+    // }          
+    // if(name.length<1 || email.length<1 || phone.length<1 || message.length<1){
+    //    	return false;
+    // }       	
+    
+			}
+
+	</script>
 		
 
 
-
-
-		<div id="loginPageDiv">
+	<div id="loginPageDiv">
 			Welcome Member!
 		</div>
 

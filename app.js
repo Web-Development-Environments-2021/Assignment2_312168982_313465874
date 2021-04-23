@@ -1,7 +1,6 @@
 let context;
 let shape = new Object();
 
-let val;
 //game:
 let board;
 let score=0;
@@ -33,58 +32,16 @@ $(document).ready(function() {
 	canvas.width = "1240";
 	canvas.height = "580";
 
-	//Trying:
-	//context.fillStyle="black";
-	//context.fillRect(0,0,1280,90);
-
 	context.font = "bold 60px Verdana";
 	context.fillStyle="rgb(221, 221, 42)"
 	context.textAlign = "center";
 	context.fillText("PACMAN", canvas.width/2, 80);
 	context = document.getElementById('menu').style.fontStyle.fontSize="50px";
-
-	//aboutPage function
-  	$( function() {
-    $("#aboutWindow").dialog();
-	} );
-
-	//CHECK FORM VALIDATION
-	function validForm(){
-		val = document.forms["form"]["username"].value;
-
-		val = getElementById("username").value;
-		if(val=""){ //check if the input is empty
-			alert("Please enter username");
-			return false;
-		}
-
-		val = getElementById("password").value;
-		if(x=""){ //check if the input is empty
-		alert("Please enter password");
-		return false;
-		}
 	
-
-		val = getElementById("firstName").value;
-		if(x=""){ //check if the input is empty
-			alert("Please enter first name");
-			return false;
-		}
-
-		val = getElementById("lastName").value;
-		if(x=""){ //check if the input is empty
-			alert("Please enter last name");
-			return false;
-		}
-
-		val = getElementById("mail").value;
-		if(x=""){ //check if the input is empty
-			alert("Please enter an email address");
-			return false;
-		}
+	//ABOUT PAGE
+	function aboutWindow(){
+		$("#myModal").css("display", "block");
 	}
-	
-	
 	//Start(); 
 	
 
