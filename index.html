@@ -24,10 +24,10 @@
 				$("#loginPageDiv").toggle(1000);
 			});
 
-			$('#regButton').on('click',function(){
-				$("#RegisterPageDiv").toggle(1000);
-				$("#loginPageDiv").toggle(1000);
-			});
+			// $('#regButton').on('click',function(){
+			// 	$("#RegisterPageDiv").toggle(1000);
+			// 	$("#loginPageDiv").toggle(1000);
+			// });
 		});
 		</script>
 	</head>
@@ -44,9 +44,9 @@
 		</div>
 
 		<div class="menu" >
-			<a onclick="welcomePage()"> Welcome </a>|
-			<a onclick="registerPage()"> Register </a>|
-			<a onclick="loginPage()"> Login </a>|
+			<a id="welcomeWindow"> Welcome </a>|
+			<a id="registerWindow"> Register </a>|
+			<a id="loginWindow" onclick="showLogin()"> Login </a>|
 			<a id="aboutWindow"> About </a>|
 		</div>
 		
@@ -62,7 +62,8 @@
 		<div id="myModal" class="modal">
 			<div class="modal-content">
 			  <span class="close">&times;</span>
-			  <p>Some text in the Modal..</p>
+			  <p>Submits: Noya Karavani and Lev Ari Ulner<br>
+				</p>
 			</div>
 		</div>
 
@@ -87,87 +88,111 @@
 				modal.style.display = "none";
 			  }
 			}
-			</script>
+			////When the user clicks esc, close it
+			window.onkeydown = function(event) {
+    		if ( event.keyCode == 27 ) {
+        		modal.style.display = "none";
+    		}
+			};
+		</script>
 			
 
 		<!--REGISTER PAGE-->
 		<div id="RegisterPageDiv">
-			<img src="images/Sign-in.jpg" alt="logoP" height="250px" width="350px">
-			<form id="contact" name="regForm" method="post" onsubmit="return checkValidForm()">
+			<form id="contact" name="regForm" method="post" onsubmit="return checkValidRegForm()">
 				<div>
-					Username:
+					<b>Username:</b>
 					<input id="username" type="text" name="username" placeholder="username">
-					<span id="ere" class="error">This field is required</span><br>
+					<span id="errName" class="error">This field is required</span><br>
 				</div>
 				<div>
-					Password:
+					<b>Password:</b>
 					<input id="password" type="password" name="password" placeholder="password">
-					<span class="error">This field is required</span><br>
+					<span id="errPassword" class="error">This field is required</span><br>
 				</div>
 				<div>
-					First Name:
+					<b>First Name:</b>
 					<input id="firstName" type="text" name="first-name" placeholder="first name">
-					<span class="error">This field is required</span><br>
+					<span id="errFirstName" class="error">This field is required</span><br>
 				</div>
 				<div>
-					Last Name:
+					<b>Last Name:</b>
 					<input id="lastName" type="text" name="last-name" placeholder="last name">
-					<span class="error">This field is required</span><br>
+					<span id="errLastName" class="error">This field is required</span><br>
 				</div>
 				<div>
-					E-mail:
+					<b>E-mail:</b>
 					<input id="mail" type="text" name="mail" placeholder="name@domain.com">
-					<span class="error">A valid email address is required</span><br>				
+					<span id="errEmail" class="error">A valid email address is required</span><br>				
 				</div>	
 				<div>
-					Birth Date:
+					<b>Birth Date:</b>
 					<input type="date" name="mail" placeholder="birth-date">
-					<span class="error">A valid email address is required</span><br>
+					<span id="errBirthDate" class="error">A birth-date is required</span><br>
 				</div>
 				<div>
-					<input id="regButton" type="submit" onclick="checkValidForm()" value="Register">				
+					<input id="regButton" type="submit" value="Register">		
 				</div>
 			</form>	
 		</div>
 
 
 		<script>
-			function checkValidForm() {
+			function checkValidRegForm(){
 				var username = document.forms["regForm"]["username"].value;
-				// var email = document.forms["myForm"]["your-email"].value;
-				// var phone = document.forms["myForm"]["your-phone"].value;
-				// var message = document.forms["myForm"]["your-message"].value;
+				//var email = document.forms["myForm"]["your-email"].value;
+				//var phone = document.forms["myForm"]["your-phone"].value;
+				//var message = document.forms["myForm"]["your-message"].value;
 
-				if (username.length<1) {
-        			document.getElementById('ere').innerHTML = " Please Enter Your Name *"
-					//return false;
-    			}
-				// if (email.length<1) {
-        		// 	document.getElementById('error-email').innerHTML = " Please Enter Your Email *";
-    			// }
-    // if (phone.length<1) {
-    //     document.getElementById('error-phone').innerHTML = " Please Enter Your Phone *";      
-    // }
-    // if (message.length<1) {
-    //     document.getElementById('error-message').innerHTML = " Please Enter Your Message *";
-    // }          
-    // if(name.length<1 || email.length<1 || phone.length<1 || message.length<1){
-    //    	return false;
-    // }       	
-    
+				if(username.value==""){
+					document.getElementById('errName').innerHTML="Please enter";
+					return false;
+				}
 			}
-
-	</script>
+		</script>
 		
 
-
-	<div id="loginPageDiv">
-			Welcome Member!
+		<!--LOGIN PAGE-->
+		<!-- <div id="loginPageDiv">
+			successful login!
+		</div> -->
+	
+		<div id="loginPageDiv">
+			<form id="contact" name="logForm" method="post" onsubmit="return checkValidLogForm()">
+				<div>
+					<b>Username:</b>
+					<input id="username" type="text" name="username" placeholder="username">
+					<span id="errName" class="error">This field is required</span><br>
+				</div>
+				<div>
+					<b>Password:</b>
+					<input id="password" type="password" name="password" placeholder="password">
+					<span id="errPassword" class="error">This field is required</span><br><br>
+				</div>
+				<div>
+					<input id="logButton" type="submit" value="Login" style="font-size: 40px; width: 200px; margin-left: 180px;">				
+				</div>
+			</form>	
 		</div>
 
-		<div id="aboutWindow">
-			
-		</div>
+
+		<script>
+			function checkValidRegForm(){
+				var username = document.forms["logForm"]["username"].value;
+				//var email = document.forms["myForm"]["your-email"].value;
+				//var phone = document.forms["myForm"]["your-phone"].value;
+				//var message = document.forms["myForm"]["your-message"].value;
+
+				if(username.value==""){
+					document.getElementById('errName').innerHTML="Please enter";
+					return false;
+				}
+			}
+		</script>
+
+
+
+	
 
 
 		<div id="GamePageDiv" align = "left">
@@ -177,11 +202,10 @@
 			Score:
 		</div>
 
-
-	
-		
-	
-	
-		
+		<footer>
+			Created by Noya Karavani, Lev Ari Ulner. <br>
+			The website consist of HTML, CSS and JAVASCRIPT files(JQUERY?).<br>
+			E-mails: noyakaravani4@gmail.com, levAriUlner@gmail.com.
+		</footer>
 	</body>
 </html>

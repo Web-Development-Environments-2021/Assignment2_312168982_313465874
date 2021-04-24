@@ -1,8 +1,11 @@
+body{
+    height: 100%;
+     margin: 0;
+}
 
 .menu{
     background-color: rgb(101, 208, 216);
 }
-
 .menu 
 {
     font-size: 30px; 
@@ -13,17 +16,16 @@
     border-color: rgb(101, 208, 216);
     cursor: pointer;
 }
-
-
 .menu a:hover{
     color:rgb(8, 77, 167);
 }
 
 #welcomePage{
     text-align: center;
-    font-size: 150px;
+    font-size: 130px;
     font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif ;
     background-image: url('./images/gif.gif');
+    height: 462px;
     background-repeat: no-repeat;
     background-size: cover;
     padding: 10px;
@@ -31,7 +33,7 @@
     color: white;
 }
 
-.button {
+#welcomePage button {
     background-color: white;
     border-style: double;
     border-color: #ff0505;
@@ -43,9 +45,9 @@
     font-size: 30px;
     margin: 4px 2px;
     cursor: pointer;
-  }
+}
 
-.button:hover{
+#welcomePage button:hover{
     color: white;
     background-color: #ff0505;
     border-style: double;
@@ -54,17 +56,25 @@
 }
 
 #RegisterPageDiv{
-    margin-left: 400px;
-    font-size: 20px;
-    color: rgb(98, 184, 17);
-    font-family: Arial, Helvetica, sans-serif; 
+    background-image: url('./images/register1.jpeg');
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-position: center center;
+    width: 980px;
+    height: 462px;
+    padding-left: 300px;
+    padding-top: 20px;
+
+    font-size: 30px;
+    color: rgb(29, 66, 170);
+    font-family:'Courier New', Courier, monospace; 
 }
 
-input{
+#RegisterPageDiv input{
     width: 200px;
     padding: 7px;
     margin: 8px 0;
-    border: 2px solid rgb(98, 184, 17);
+    border: 2px solid rgb(29, 66, 170);
     border-radius: 10px;
     box-sizing: border-box;
     font-size: 20px;
@@ -73,19 +83,19 @@ input{
 #regButton{
     background-color: white;
     border-style:solid;
-    border-color: rgb(98, 184, 17);
-    border-width: 5px;
-    color: rgb(98, 184, 17);
+    border-color: rgb(29, 66, 170);
+    border-width: 3px;
+    color: rgb(29, 66, 170);
     text-align: center;
     display: inline-block;
     font-size: 30px;
     margin: 4px 2px;
 }
 #regButton:hover{
-    background-color: rgb(98, 184, 17);
+    background-color: rgb(29, 66, 170);
     border-style:solid;
     border-color: white;
-    border-width: 5px;
+    border-width: 3px;
     color: white;
     text-align: center;
     display: inline-block;
@@ -135,3 +145,72 @@ input{
     text-decoration: none;
     cursor: pointer;
   }
+
+#loginPageDiv{
+    background: linear-gradient( rgba(43, 41, 41, 0.5), rgba(0, 0, 0, 0.5) ),url('./images/login.jpg');
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-position: center center;
+    width: 980px;
+    height: 415px;
+    padding-left: 350px;
+    padding-top: 50px;
+
+    font-size: 50px;
+    color: white;
+    text-shadow: 3px 3px 5px grey;
+    font-family:'Courier New', Courier, monospace; 
+}
+
+#loginPageDiv input{
+    width: 200px;
+    padding: 7px;
+    margin: 8px 0;
+    border: 2px solid rgb(55, 118, 190);
+    border-radius: 10px;
+    box-sizing: border-box;
+    width: 300px;
+    text-align: center;
+    font-size: 40px;
+}
+
+#logButton{
+    background-color: white;
+    border-style:solid;
+    border-color: rgb(55, 118, 190);
+    border-width: 3px;
+    color: rgb(55, 118, 190);
+    text-align: center;
+    display: inline-block;
+    font-size: 40px;
+    margin: 4px 2px;
+}
+#logButton:hover{
+    background-color: rgb(55, 118, 190);
+    border-style:solid;
+    border-color: white;
+    border-width: 3px;
+    color: white;
+    text-align: center;
+    display: inline-block;
+    font-size: 50px;
+    margin: 4px 2px;
+}
+
+
+
+
+
+
+
+
+
+
+
+footer{
+    background-color: rgb(150, 110, 130);
+    color: black;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 20px;
+    padding: 7px;
+}
