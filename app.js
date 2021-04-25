@@ -6,12 +6,19 @@ let shape = new Object();
 var regOK = 'false';
 
 //game:
-let board;
+let gameKeys = {"keyUp":"", "keyDown":"", "keyLeft":"", "keyRight":""}
+
 let score=0;
 let lives=5;
 let start_time=0;
 let time_elapsed;
 let interval;
+let gameMusic = new Audio('Popcorn Original Song.wav');
+
+//board:
+let board = new Array (15);
+let sizeX = 1000/board.length;
+let sizeY = 500/12;
 
 //pacman vars:
 let pac_color;
@@ -27,7 +34,6 @@ let middleFruit_y;
 
 let bigFruit_x;
 let bigFruit_y;
-
 let candies = 0;
 
 $(document).ready(function() {
@@ -40,9 +46,8 @@ $(document).ready(function() {
 	context.fillStyle="rgb(221, 221, 42)";
 	//context.strokeRect(10,10,50,50);
 	context.textAlign = "center";
-	context.fillText("PACMAN", canvas.width/2, 80);
-	context = document.getElementById('menu').style.fontStyle.fontSize="50px";
 	
+	//context = document.getElementById('menu').style.fontStyle.fontSize="50px";
 
 
 
@@ -51,6 +56,102 @@ $(document).ready(function() {
 	
 
 });
+
+
+
+
+// Generate new Game:
+
+function genBoard(){
+	for(let i=0;i<board.length;i++){
+		board[i] = new Array(10)
+		for(let j = 0; j< 10 ; j++){
+			board[i][j] = 0;
+		}
+	}
+}
+
+function setWalls(){
+	board[0][1]=1;
+	board[0][2]=1;
+	board[0][3]=1;
+	board[0][11]=1;
+	board[0][12]=1;
+	board[0][13]=1;
+	board[1][2]=1;
+	board[1][7]=1;
+	board[1][12]=1;
+	board[2][2]=1;
+	board[2][7]=1;
+	board[2][10]=1;
+	board[2][12]=1;
+	board[2][14]=1;
+	board[3][6]=1;
+	board[3][7]=1;
+	board[3][8]=1;
+	board[3][10]=1;
+	board[3][14]=1;
+	board[4][6]=1;
+	board[4][7]=1;
+	board[4][8]=1;
+	board[4][10]=1;
+	board[5][2]=1;
+	board[5][3]=1;
+	board[5][4]=1;
+	board[5][5]=1;
+	board[5][10]=1;
+	board[5][13]=1;
+	board[6][2]=1;
+	board[6][5]=1;
+	board[6][13]=1;
+	board[6][14]=1;
+	board[7][0]=1;
+	board[7][1]=1;
+	board[7][2]=1;
+	board[7][4]=1;
+	board[7][6]=1;
+	board[7][7]=1;
+	board[7][8]=1;
+	board[7][13]=1;
+	board[8][1]=1;
+	board[8][4]=1;
+	board[8][6]=1;
+	board[8][7]=1;
+	board[8][8]=1;
+	board[8][13]=1;
+	board[9][7]=1;
+	board[10][2]=1;
+	board[10][7]=1;
+	board[10][10]=1;
+	board[10][12]=1;
+	board[10][14]=1;
+	board[11][2]=1;
+	board[11][3]=1;
+	board[11][9]=1;
+	board[11][10]=1;
+	board[11][11]=1;
+	board[11][12]=1;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function Start() {
 	board = new Array();
