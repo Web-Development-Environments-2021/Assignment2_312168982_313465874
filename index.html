@@ -9,11 +9,12 @@
 		<!--should be in js file-->
 		<script>
 		$(document).ready(function(){
+			$('#welcomePage').show();
 			$("#RegisterPageDiv").hide();
 			$('#loginPageDiv').hide();
 			$('#GamePageDiv').hide();
 			$('#stats').hide();
-			
+
 			$('#welcomePageRegisterButton').on('click',function(){
 				$("#welcomePage").toggle(1000);
 				$("#RegisterPageDiv").toggle(1000);
@@ -25,9 +26,12 @@
 			});
 
 			// $('#regButton').on('click',function(){
-			// 	$("#RegisterPageDiv").toggle(1000);
-			// 	$("#loginPageDiv").toggle(1000);
+			// 	if(regOK == 'true'){
+			// 		$("#RegisterPageDiv").toggle(1000);
+			// 		$("#loginPageDiv").toggle(1000);
+			// 	}
 			// });
+			
 		});
 		</script>
 	</head>
@@ -44,9 +48,9 @@
 		</div>
 
 		<div class="menu" >
-			<a id="welcomeWindow"> Welcome </a>|
-			<a id="registerWindow"> Register </a>|
-			<a id="loginWindow" onclick="showLogin()"> Login </a>|
+			<a id="welcomeWindow" onclick="welcomePage()"> Welcome </a>|
+			<a id="registerWindow" onclick="registerPage()"> Register </a>|
+			<a id="loginWindow" onclick="loginPage()"> Login </a>|
 			<a id="aboutWindow"> About </a>|
 		</div>
 		
@@ -102,7 +106,7 @@
 			<form id="contact" name="regForm" method="post" onsubmit="return checkValidRegForm()">
 				<div>
 					<b>Username:</b>
-					<input id="username" type="text" name="username" placeholder="username">
+					<input id="usernameID" type="text" name="username" placeholder="username">
 					<span id="errName" class="error">This field is required</span><br>
 				</div>
 				<div>
@@ -139,23 +143,17 @@
 
 		<script>
 			function checkValidRegForm(){
-				var username = document.forms["regForm"]["username"].value;
+				var usernameVar = document.forms["regForm"]["username"].value;
 				//var email = document.forms["myForm"]["your-email"].value;
 				//var phone = document.forms["myForm"]["your-phone"].value;
 				//var message = document.forms["myForm"]["your-message"].value;
 
-				if(username.value==""){
+				if(usernameVar.length < 1){
 					document.getElementById('errName').innerHTML="Please enter";
 					return false;
 				}
 			}
 		</script>
-		
-
-		<!--LOGIN PAGE-->
-		<!-- <div id="loginPageDiv">
-			successful login!
-		</div> -->
 	
 		<div id="loginPageDiv">
 			<form id="contact" name="logForm" method="post" onsubmit="return checkValidLogForm()">
@@ -185,7 +183,9 @@
 
 				if(username.value==""){
 					document.getElementById('errName').innerHTML="Please enter";
-					return false;
+				}
+				else{
+					regOK = 'true';
 				}
 			}
 		</script>

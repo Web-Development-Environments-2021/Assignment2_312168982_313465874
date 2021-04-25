@@ -1,6 +1,10 @@
 let context;
 let shape = new Object();
 
+
+
+var regOK = 'false';
+
 //game:
 let board;
 let score=0;
@@ -39,9 +43,9 @@ $(document).ready(function() {
 	// context = document.getElementById('menu').style.fontStyle.fontSize="50px";
 	
 	//Login Page
-	function showLogin(){
-		$("#loginPageDiv").css("display","none");
-	}
+	// function showLogin(){
+	// 	$("#loginPageDiv").css("display","none");
+	// }
 
 
 
@@ -212,6 +216,8 @@ function UpdatePosition() {
 	} else {
 		Draw();
 	}
+
+	
 }
 
 
