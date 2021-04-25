@@ -1,9 +1,7 @@
 let context;
 let shape = new Object();
 
-
-
-var regOK = 'false';
+let connected = 'false';
 
 //game:
 let gameKeys = {"keyUp":"", "keyDown":"", "keyLeft":"", "keyRight":""}
@@ -22,11 +20,15 @@ let sizeY = 500/12;
 let rowsOfBoard = 15;
 let colsOfBoard = 12;
 
-
 //pacman vars:
 let pac_color;
 let pacman_x;
 let pacman_y;
+
+
+//Monsters Vars:
+let monsCount = 1;
+let mons = [];
 
 //fruits:
 let smallFruit_x;
@@ -37,15 +39,29 @@ let middleFruit_y;
 
 let bigFruit_x;
 let bigFruit_y;
-let candies = 25;
+let fruitCount = 25;
 
 let cherry = new Object();
 let cherry_cycle=0;
 let image_cherry;
 
-//
-let medicine;
-let clock;
+//Advance
+let medicineCount;
+let medicineIMG;
+let clockCount;
+let clockIMG;
+
+
+// Values of the numbers in the maze:
+// empty = 0
+// wall = 1
+// fruit = 2
+// medicine = 3
+// clock = 4
+//mons = 5
+
+
+
 
 $(document).ready(function() {
 	canvas = document.getElementById('canvas');
@@ -145,8 +161,56 @@ function setWalls(){
 	board[11][12]=1;
 }
 
+function isEmpty(cellRow, cellCol){
+	if(board[cellRow][cellCol] == 0){
+		return true;
+	}
+	return false;
+}
 
+function randomFreeCell(){
+	let cellRow = Math.floor(Math.random()*15+1);
+	let cellCol = Math.floor(Math.random()*12+1);
+	while(!isEmpty(cellRow,cellCol)){
+	cellRow = Math.floor(Math.random()*15+1);
+	cellCol = Math.floor(Math.random()*12+1);
+	}
+	return [cellRow,cellCol];
+}
 
+function setFruits(){
+	for (let i = 0; i< fruitCount; i++){
+		let cell = randomFreeCell();
+		board[cell[0]][cell[1]] = 2;
+	}
+}
+
+function setMedicine(){
+	for (let i = 0; i< medicineCount; i++){
+		let cell = randomFreeCell();
+		board[cell[0]][cell[1]] = 3;
+	}
+}
+
+function setClock(){
+	for (let i = 0; i< clockCount; i++){
+		let cell = randomFreeCell();
+		board[cell[0]][cell[1]] = 4;
+	}
+}
+
+function createMons(){
+	for(let i=0; i<monsCount;i++){
+		mons[i] = [0,0];
+	}
+}
+
+function setMons(){
+	for (let i = 0; i< monsCount; i++){
+		let cell = randomFreeCell();
+		board[cell[0]][cell[1]] = 5;
+	}
+}
 
 function Start() {
 	board = new Array();
