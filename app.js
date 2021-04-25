@@ -17,8 +17,11 @@ let gameMusic = new Audio('Popcorn Original Song.wav');
 
 //board:
 let board = new Array (15);
-let sizeX = 1000/board.length;
+let sizeX = 1000/15;
 let sizeY = 500/12;
+let rowsOfBoard = 15;
+let colsOfBoard = 12;
+
 
 //pacman vars:
 let pac_color;
@@ -34,7 +37,15 @@ let middleFruit_y;
 
 let bigFruit_x;
 let bigFruit_y;
-let candies = 0;
+let candies = 25;
+
+let cherry = new Object();
+let cherry_cycle=0;
+let image_cherry;
+
+//
+let medicine;
+let clock;
 
 $(document).ready(function() {
 	canvas = document.getElementById('canvas');
@@ -46,8 +57,8 @@ $(document).ready(function() {
 	context.fillStyle="rgb(221, 221, 42)";
 	//context.strokeRect(10,10,50,50);
 	context.textAlign = "center";
-	gameMusic.play();
-	gameMusic.loop();
+	// gameMusic.play();
+	// gameMusic.loop();
 	
 	//context = document.getElementById('menu').style.fontStyle.fontSize="50px";
 
@@ -133,23 +144,6 @@ function setWalls(){
 	board[11][11]=1;
 	board[11][12]=1;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
