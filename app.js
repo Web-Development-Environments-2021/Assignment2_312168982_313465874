@@ -1,9 +1,7 @@
 let context;
 let shape = new Object();
 
-
-
-var regOK = 'false';
+let connected = 'false';
 
 //game:
 let gameKeys = {"keyUp":"", "keyDown":"", "keyLeft":"", "keyRight":""}
@@ -16,36 +14,50 @@ let interval;
 let gameMusic = new Audio('Popcorn Original Song.wav');
 
 //board:
-let board = new Array (15);
-let sizeX = 1000/15;
-let sizeY = 500/12;
+let board = new Array (14);
+let sizeX = 1000/14;
+let sizeY = 500/17;
 let rowsOfBoard = 15;
 let colsOfBoard = 12;
-
 
 //pacman vars:
 let pac_color;
 let pacman_x;
 let pacman_y;
 
-//fruits:
-let smallFruit_x;
-let smallFruit_y;
 
-let middleFruit_x;
-let middleFruit_y;
+//Monsters Vars:
+let monsCount = 1;
+let mons;
 
-let bigFruit_x;
-let bigFruit_y;
-let candies = 25;
+//balls:
+let smallBall = [];
+let mediumBall = [];
+let bigBall = [];
+let ballCount = 50;
 
 let cherry = new Object();
 let cherry_cycle=0;
 let image_cherry;
 
-//
-let medicine;
-let clock;
+//Advance
+let medicineCount;
+let medicineIMG;
+let clockCount;
+let clockIMG;
+
+
+// Values of the numbers in the maze:
+// empty = 0
+// wall = 1
+// ball = 2
+// medicine = 3
+// clock = 4
+// mons = 5
+// pacman = 6
+
+
+
 
 $(document).ready(function() {
 	canvas = document.getElementById('canvas');
@@ -76,120 +88,165 @@ $(document).ready(function() {
 
 function genBoard(){
 	for(let i=0;i<board.length;i++){
-		board[i] = new Array(10)
-		for(let j = 0; j< 10 ; j++){
+		board[i] = new Array(17)
+		for(let j = 0; j< 17 ; j++){
 			board[i][j] = 0;
 		}
 	}
 }
 
 function setWalls(){
-	board[0][1]=1;
-	board[0][2]=1;
-	board[0][3]=1;
-	board[0][11]=1;
-	board[0][12]=1;
-	board[0][13]=1;
-	board[1][2]=1;
-	board[1][7]=1;
-	board[1][12]=1;
-	board[2][2]=1;
-	board[2][7]=1;
-	board[2][10]=1;
-	board[2][12]=1;
-	board[2][14]=1;
-	board[3][6]=1;
-	board[3][7]=1;
-	board[3][8]=1;
-	board[3][10]=1;
-	board[3][14]=1;
-	board[4][6]=1;
-	board[4][7]=1;
-	board[4][8]=1;
-	board[4][10]=1;
-	board[5][2]=1;
-	board[5][3]=1;
-	board[5][4]=1;
-	board[5][5]=1;
-	board[5][10]=1;
-	board[5][13]=1;
-	board[6][2]=1;
-	board[6][5]=1;
-	board[6][13]=1;
-	board[6][14]=1;
-	board[7][0]=1;
-	board[7][1]=1;
-	board[7][2]=1;
-	board[7][4]=1;
-	board[7][6]=1;
-	board[7][7]=1;
-	board[7][8]=1;
-	board[7][13]=1;
-	board[8][1]=1;
-	board[8][4]=1;
-	board[8][6]=1;
-	board[8][7]=1;
-	board[8][8]=1;
-	board[8][13]=1;
-	board[9][7]=1;
-	board[10][2]=1;
-	board[10][7]=1;
-	board[10][10]=1;
-	board[10][12]=1;
-	board[10][14]=1;
-	board[11][2]=1;
-	board[11][3]=1;
-	board[11][9]=1;
-	board[11][10]=1;
-	board[11][11]=1;
-	board[11][12]=1;
-}
 
-
-
-
-function Start() {
-	board = new Array();
-	score = 0;
-	pac_color = "yellow";
-	var cnt = 100;
-	var food_remain = 50;
-	var pacman_remain = 1;
-	start_time = new Date();
-	for (var i = 0; i < 10; i++) {
-		board[i] = new Array();
-		//put obstacles in (i=3,j=3) and (i=3,j=4) and (i=3,j=5), (i=6,j=1) and (i=6,j=2)
-		for (var j = 0; j < 10; j++) {
-			if (
-				(i == 3 && j == 3) ||
-				(i == 3 && j == 4) ||
-				(i == 3 && j == 5) ||
-				(i == 6 && j == 1) ||
-				(i == 6 && j == 2)
-			) {
-				board[i][j] = 4;
-			} else {
-				var randomNum = Math.random();
-				if (randomNum <= (1.0 * food_remain) / cnt) {
-					food_remain--;
-					board[i][j] = 1;
-				} else if (randomNum < (1.0 * (pacman_remain + food_remain)) / cnt) {
-					shape.i = i;
-					shape.j = j;
-					pacman_remain--;
-					board[i][j] = 2;
-				} else {
-					board[i][j] = 0;
-				}
-				cnt--;
+	for (let borderRow = 0; borderRow<14; borderRow++){
+		for(let borderCol = 0; borderCol<17; borderCol++){
+			if(borderRow == 0 || borderRow == 13|| borderCol == 0 || borderCol == 16){
+				board[borderRow][borderCol] = 1;
 			}
 		}
 	}
-	while (food_remain > 0) {
-		var emptyCell = findRandomEmptyCell(board);
-		board[emptyCell[0]][emptyCell[1]] = 1;
-		food_remain--;
+	board[1][2]=1;
+	board[1][3]=1;
+	board[1][4]=1;
+	board[1][12]=1;
+	board[1][13]=1;
+	board[1][14]=1;
+	board[2][3]=1;
+	board[2][4]=1;
+	board[2][13]=1;
+	board[3][3]=1;
+	board[3][8]=1;
+	board[3][11]=1;
+	board[3][13]=1;
+	board[3][15]=1;
+	board[4][7]=1;
+	board[4][8]=1;
+	board[4][9]=1;
+	board[4][11]=1;
+	board[4][15]=1;
+	board[5][7]=1;
+	board[5][8]=1;
+	board[5][9]=1;
+	board[5][11]=1;
+	board[6][3]=1;
+	board[6][4]=1;
+	board[6][5]=1;
+	board[6][6]=1;
+	board[6][11]=1;
+	board[6][14]=1;
+	board[7][3]=1;
+	board[7][6]=1;
+	board[7][14]=1;
+	board[7][15]=1;
+	board[8][1]=1;
+	board[8][2]=1;
+	board[8][3]=1;
+	board[8][5]=1;
+	board[8][7]=1;
+	board[8][8]=1;
+	board[8][9]=1;
+	board[8][14]=1;
+	board[9][2]=1;
+	board[9][5]=1;
+	board[9][7]=1;
+	board[9][8]=1;
+	board[9][9]=1;
+	board[9][14]=1;
+	board[10][8]=1;
+	board[11][3]=1;
+	board[11][8]=1;
+	board[11][11]=1;
+	board[11][13]=1;
+	board[11][15]=1;
+	board[12][3]=1;
+	board[12][4]=1;
+	board[12][10]=1;
+	board[12][11]=1;
+	board[12][12]=1;
+	board[12][13]=1;
+}
+
+function isEmpty(cellRow, cellCol){
+	if(board[cellRow][cellCol] == 0){
+		return true;
 	}
+	return false;
+}
+
+function randomFreeCell(){
+	let cellRow = Math.floor(Math.random()*15+1);
+	let cellCol = Math.floor(Math.random()*12+1);
+	while(!isEmpty(cellRow,cellCol)){
+	cellRow = Math.floor(Math.random()*15+1);
+	cellCol = Math.floor(Math.random()*12+1);
+	}
+	return [cellRow,cellCol];
+}
+
+function setBalls(){
+	let smallBallCount = ballCount * 0.6;
+	let mediumBallCount = ballCount * 0.3;
+	let bigBallCount = ballCount - smallBallCount - mediumBallCount;
+	for (let i = 0; i< smallBallCount; i++){
+		let cell = randomFreeCell();
+		board[cell[0]][cell[1]] = 2;
+	}
+	for (let i = 0; i< mediumBallCount; i++){
+		let cell = randomFreeCell();
+		board[cell[0]][cell[1]] = 2;
+	}
+	for (let i = 0; i< bigBallCount; i++){
+		let cell = randomFreeCell();
+		board[cell[0]][cell[1]] = 2;
+	}
+}
+
+function setMedicine(){
+	for (let i = 0; i< medicineCount; i++){
+		let cell = randomFreeCell();
+		board[cell[0]][cell[1]] = 3;
+	}
+}
+
+function setClock(){
+	for (let i = 0; i< clockCount; i++){
+		let cell = randomFreeCell();
+		board[cell[0]][cell[1]] = 4;
+	}
+}
+
+function setMons(){
+	mons = new Array(monsCount);
+	mons[0] = [1,1];
+	if(monsCount > 1){
+		mons[0] = [1,15];
+	}
+	if(monsCount > 2){
+		mons[0] = [12,1];
+	}
+	if(monsCount > 3){
+		mons[0] = [12,15];
+	}
+}
+
+function setPacman(){
+	let cell = randomFreeCell();
+	board[cell[0]][cell[1]] = 6;
+}
+
+
+function Start() {
+	score = 0;
+	pac_color = "yellow";
+	start_time = new Date();
+	genBoard();
+	setWalls();
+	setBalls();
+	setMedicine();
+	setClock();
+	createMons();
+	setMons();
+	setPacman();
+
 	keysDown = {};
 	addEventListener(
 		"keydown",
@@ -206,16 +263,6 @@ function Start() {
 		false
 	);
 	interval = setInterval(UpdatePosition, 250);
-}
-
-function findRandomEmptyCell(board) {
-	var i = Math.floor(Math.random() * 9 + 1);
-	var j = Math.floor(Math.random() * 9 + 1);
-	while (board[i][j] != 0) {
-		i = Math.floor(Math.random() * 9 + 1);
-		j = Math.floor(Math.random() * 9 + 1);
-	}
-	return [i, j];
 }
 
 function GetKeyPressed() {
