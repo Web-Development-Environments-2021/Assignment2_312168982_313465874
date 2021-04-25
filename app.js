@@ -46,9 +46,10 @@ $(document).ready(function() {
 	context.fillStyle="rgb(221, 221, 42)";
 	//context.strokeRect(10,10,50,50);
 	context.textAlign = "center";
+	gameMusic.play();
+	gameMusic.loop();
 	
 	//context = document.getElementById('menu').style.fontStyle.fontSize="50px";
-
 
 
 
