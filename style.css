@@ -69,6 +69,11 @@ body{
     color: rgb(29, 66, 170);
     font-family:'Courier New', Courier, monospace; 
 }
+#RegisterPageDiv span{
+    font-size: 30px;
+    color: rgb(29, 66, 170);
+    font-family:'Courier New', Courier, monospace; 
+}
 
 #RegisterPageDiv input{
     width: 200px;

@@ -33,24 +33,21 @@ let candies = 0;
 $(document).ready(function() {
 	canvas = document.getElementById('canvas');
 	context = canvas.getContext("2d");
-	// canvas.width = "1240";
-	// canvas.height = "580";
+	canvas.width = "1240";
+	canvas.height = "580";
 
-	// context.font = "bold 60px Verdana";
-	// context.fillStyle="rgb(221, 221, 42)"
-	// context.textAlign = "center";
-	// context.fillText("PACMAN", canvas.width/2, 80);
-	// context = document.getElementById('menu').style.fontStyle.fontSize="50px";
+	context.font = "bold 60px Verdana";
+	context.fillStyle="rgb(221, 221, 42)";
+	//context.strokeRect(10,10,50,50);
+	context.textAlign = "center";
+	context.fillText("PACMAN", canvas.width/2, 80);
+	context = document.getElementById('menu').style.fontStyle.fontSize="50px";
 	
-	//Login Page
-	// function showLogin(){
-	// 	$("#loginPageDiv").css("display","none");
-	// }
 
 
 
 
-	//Start(); 
+	Start(); 
 	
 
 });
