@@ -125,10 +125,6 @@ function findRandomEmptyCell(board) {
 	return [i, j];
 }
 
-
-function changeDivDisplay(newDiv,)
-
-
 function GetKeyPressed() {
 	if (keysDown[38]) {
 		return 1;
