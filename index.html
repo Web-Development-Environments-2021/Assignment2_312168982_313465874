@@ -210,7 +210,48 @@
 			}
 		</script>
 
+		<div class="gameSetting">
+			Choose your setting <br>
+			Key Up:
+			<input onclick="setKey(event)"> <br>
+			Key Down:
+			<input onclick="setKey(event)"> <br>
+			Key Left:
+			<input onclick="setKey(event)"> <br>
+			Key Right:
+			<input onclick="setKey(event)"> <br>
+			Number of Balls:
+			<input type="number" min="50" max="90"> <br>
 
+			Color for 5 points balls:
+			<input type="color"> <br>
+
+			Color for 15 points balls:
+			<input type="color"> <br>
+
+			Color for 25 points balls:
+			<input type="color"> <br>
+			
+			Time for game (in seconds):
+			<input placeholder="minimum 60 seconds"> <br>
+
+			Number of Monsters:
+			<form><input type="number" min="1" max="4"></form>
+			<select>
+				<option>1</option>
+				<option>2</option>
+				<option>3</option>
+				<option>4</option>
+			</select><br>
+			<input type="submit" value="Submit">
+		</div>
+
+		<script>
+			function setKey(event){
+				var key = event.keyCode;
+				return key;
+			}
+		</script>
 
 	
 
