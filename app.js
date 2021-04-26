@@ -2,7 +2,7 @@ let context;
 let shape = new Object();
 
 //site data
-let connected = true;
+let connected = false;
 let currentUser = null;
 let currentScreen = 'RegisterPageDiv';
 
@@ -125,7 +125,7 @@ function showScreen(page){
 
 function showScreenMenu(){
 	$('#' + currentScreen).css('display','none');
-	if(connected){
+	if(this.connected){
 		$('#welcomePageForConnected').css('display','block');
 		currentScreen='welcomePageForConnected';
 	}
@@ -154,7 +154,7 @@ function regButtonFunc(){
 }
 
 function checkValidRegForm(){
-	let validReg = false;
+	let validReg = true;
 	let usernameVar = document.forms["regForm"]["username"].value;
 	let passwordUser = document.forms["regForm"]["password"].value;
 	let firstNameUser = document.forms["regForm"]["first-name"].value;
@@ -174,10 +174,10 @@ function checkValidRegForm(){
 		document.getElementById('errName').innerHTML="Username is required";
 		validReg=false;
 	}
-	else if(checkUserNameExist(usernameVar)){
-			document.getElementById('errName').innerHTML="This username is taken";
-			validReg=false;
-	}
+	// else if(checkUserNameExist(usernameVar)){
+	// 		document.getElementById('errName').innerHTML="This username is taken";
+	// 		validReg=false;
+	// }
 	else{
 		document.getElementById('errName').innerHTML="";
 	}
@@ -187,9 +187,12 @@ function checkValidRegForm(){
 		document.getElementById('errFirstName').innerHTML="First name is required";
 		validReg=false;
 	}
-	else if(numCheckFName.length>0){
-				document.getElementById('errFirstName').innerHTML="First name cannot contains numbers";
-				validReg=false;
+	else if(numCheckFName!=null){
+		document.getElementById('errFirstName').innerHTML="First name cannot contain numbers";
+		validReg=false;
+	}
+	else{
+		document.getElementById('errFirstName').innerHTML="";
 	}
 	
 	
@@ -213,7 +216,7 @@ function checkValidRegForm(){
 		validReg=false;
 	}
 
-	else if (passwordUser.length <= 6 && passwordUser.length >= 1){
+	else if (passwordUser.length < 6 && passwordUser.length >= 1){
 		document.getElementById('errPassword').innerHTML="Password must contain at least 6 characters";
 		validReg=false;
 	}
