@@ -138,6 +138,15 @@ function showScreenMenu(){
 
 // validation for register:
 
+function checkUserNameExist(username){
+	for(let i=0;i<this.usernamesID.length;i++){
+		if(this.usernamesID[i] == username){
+			return true;
+		}
+	}
+	return false;
+}
+
 function regButtonFunc(){
 	if(checkValidRegForm){
 		showScreenMenu(); 
@@ -145,48 +154,101 @@ function regButtonFunc(){
 }
 
 function checkValidRegForm(){
+	let validReg = true;
 	let usernameVar = document.forms["regForm"]["username"].value;
 	let passwordUser = document.forms["regForm"]["password"].value;
 	let firstNameUser = document.forms["regForm"]["first-name"].value;
 	let lastNameUser = document.forms["regForm"]["last-name"].value;
 	let emailUser = document.forms["regForm"]["mail"].value;
-	let birthDateUser = document.forms["regForm"]["birthDate"].value;
-
+	//let birthDateUser = document.forms["regForm"]["birthDate"].value;
 
 	let letter = "/[a-z]/g";
   	let num = "/[0-9]/g";
-	let letterCheck = passwordUser.match(letter);
-	let numCheck = passwordUser.match(num);
+	let letterCheckPass = passwordUser.match(letter);
+	let numCheckPass = passwordUser.match(num);
+	let numCheckFName = firstNameUser.match(num);
+	let numCheckLName = lastNameUser.match(num);
 
-	if(passwordUser.length < 6){
+	//check username
+	if(usernameVar.length < 1){
+		document.getElementById('errName').innerHTML="Username is required";
+		validReg=false;
+	}
+
+	else{
+		if(checkUserNameExist(usernameVar)){
+			document.getElementById('errName').innerHTML="This username is taken";
+			validReg=false;
+		}
+		document.getElementById('errName').innerHTML="";
+	}
+
+	//check first name
+	if(firstNameUser.length<1){
+		document.getElementById('errFirstName').innerHTML="First name is required";
+		validReg=false;
+	}
+	else{
+		if(numCheckFName!=null){
+				document.getElementById('errFirstName').innerHTML="First name cannot contains numbers";
+				validReg=false;
+		}
+		else{
+			document.getElementById('errFirstName').innerHTML="";
+		}
+	}
+	
+	
+	//check last name
+	if(lastNameUser.length<1){
+		document.getElementById('errLastName').innerHTML="Last name is required";
+		validReg=false;	
+	}
+	else{
+		if(numCheckLName!=null){
+			document.getElementById('errLastName').innerHTML="Last name cannot contains numbers";
+			validReg=false;
+		}	
+		else {
+			document.getElementById('errLastName').innerHTML="";
+		}
+	}
+
+
+	//check password
+	if (passwordUser.length <1){
+		document.getElementById('errPassword').innerHTML="Password is required";
+		validReg=false;
+	}
+
+	else if (passwordUser.length <= 6 && passwordUser.length >= 1){
 		document.getElementById('errPassword').innerHTML="Password must contain at least 6 characters";
+		validReg=false;
+	}
+
+	else{
+		if(letterCheckPass == null || numCheckPass == null){
+			document.getElementById('errPassword').innerHTML="Password must contain at least 1 character and 1 number";
+			validReg=false;
+		}
+		else{
+			document.getElementById('errPassword').innerHTML="";
+		}
 	}
 	
-	else if(letterCheck==null || numCheck == null){
-		document.getElementById('errPassword').innerHTML="Password must contain at least 1 character and 1 number";
-	}
-	
-	if(firstNameUser.length < 1){
-		document.getElementById('errFirstName').innerHTML="This field is required";
-	}
-	if(lastNameUser.length < 1){
-		document.getElementById('errLastName').innerHTML="This field is required";
-		
-	}
+	//check email - type email so its check it
 	if(emailUser.length < 1){
 		document.getElementById('errEmail').innerHTML="A valid email address is required";
+		validReg=false;
 	}
 
-	if(usernameVar.length < 1 || this.users[usernameVar]!=null){
-		document.getElementById('errName').innerHTML="This field is required";
+	else{
+		document.getElementById('errEmail').innerHTML="";
 	}
 
-	else if(this.users[usernameVar]!=null){
-		document.getElementById('errName').innerHTML="This name is taken";
-		return false;
-	}
-	
-	if(usernameVar.length < 1 || PasswordUser.length < 6 || firstNameUser.length < 1 || lastNameUser.length || emailUser.length < 1){
+
+
+	if(validReg == false){
 		return false;
 	}
 	else{
@@ -207,30 +269,34 @@ function logButtonFunc(){
 }
 
 function checkValidLogForm(){
+	let validLog = true;
 	let usernameLogin = document.forms["logForm"]["usernameLog"].value;
 	let passwordLogin = document.forms["logForm"]["password"].value;
 
 	if(usernameLogin.length<1){
 		document.getElementById('errName').innerHTML="Please enter a username";
-		return false;
+		validLog = false;
 	}
 	else if(this.users[usernameVar]!=null){
 		document.getElementById('errName').innerHTML="Username doesn't exist";
-		return false;
+		validLog = false;
 	}
 	else if(passwordLogin.length < 1){
 		document.getElementById('errPassword').innerHTML="Please enter a password";
-		return false;
+		validLog = false;
 	}
 	else if(this.users[usernameVar]['password'] != passwordLogin){
 		document.getElementById('errPassword').innerHTML="Wrong password";
-		return false;
+		validLog = false;
 	}
 	else{
 		this.currentUser = usernameLogin;
 		this.connected = true;
 	}
-	return true;
+	if(validLog){
+		return true;
+	}
+	
 }
 
 

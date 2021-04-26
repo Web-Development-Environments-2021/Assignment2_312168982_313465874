@@ -3,11 +3,9 @@ body{
      margin: 0;
 }
 
-.menu{
-    background-color: rgb(101, 208, 216);
-}
 .menu 
 {
+    top: 40px;
     font-size: 30px; 
     font-family: Arial, Helvetica, sans-serif; 
     background-color: rgb(101, 208, 216); 
@@ -54,8 +52,6 @@ body{
     border-color: white;
     border-width: 5px;
 }
-
-
 
 #RegisterPageDiv{
     background-image: url('./images/register1.jpeg');
@@ -204,6 +200,53 @@ body{
     font-size: 50px;
     margin: 4px 2px;
 }
+
+#gameSetting{
+    background: linear-gradient( rgba(43, 41, 41, 0.5), rgba(0, 0, 0, 0.5) ),url('./images/setting.jpg');
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-position: center center;
+    width: 1250px;
+    height: 600px;
+    font-size: 30px;
+    padding: 35px;
+    font-family: Verdana;
+    color:rgb(243, 228, 16);
+}
+
+#gameSetting input{
+    width: 200px;
+    padding: 7px;
+    margin: 8px 0;
+    border: 2px solid rgb(243, 228, 16);
+    border-radius: 10px;
+    box-sizing: border-box;
+    font-size: 20px;
+}
+
+#settingButton{
+    background-color: white;   
+    border-style:solid;
+    border-color: rgb(243, 228, 16);
+    border-width: 3px;
+    color: rgb(243, 228, 16);
+    text-align: center;
+    display: inline-block;
+    font-size: 40px;
+    margin: 4px 2px;
+}
+#settingButton:hover{
+    background-color: rgb(243, 228, 16);
+    border-style:solid;
+    border-color: white;
+    border-width: 3px;
+    color: white;
+    text-align: center;
+    display: inline-block;
+    font-size: 50px;
+    margin: 4px 2px;
+}
+
 
 
 
