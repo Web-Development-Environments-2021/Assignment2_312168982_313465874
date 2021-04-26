@@ -2,10 +2,15 @@ let context;
 let shape = new Object();
 
 //site data
-let connected = false;
+let connected = true;
 let currentUser = null;
 let currentScreen = 'RegisterPageDiv';
-let users = new Map();
+
+//Users Data:
+let usernamesID = ['k'];
+let usernamesPass = ['k'];
+let usernameNumber = 0;
+
 
 //game data:
 // let gameKeys = {"keyUp":"", "keyDown":"", "keyLeft":"", "keyRight":""}
@@ -140,20 +145,29 @@ function regButtonFunc(){
 }
 
 function checkValidRegForm(){
-	var usernameVar = document.forms["regForm"]["username"].value;
-	var passwordUser = document.forms["regForm"]["password"].value;
-	var firstNameUser = document.forms["regForm"]["first-name"].value;
-	var lastNameUser = document.forms["regForm"]["last-name"].value;
-	var emailUser = document.forms["regForm"]["mail"].value;
-	var birthDateUser = document.forms["regForm"]["birthDate"].value;
+	let usernameVar = document.forms["regForm"]["username"].value;
+	let passwordUser = document.forms["regForm"]["password"].value;
+	let firstNameUser = document.forms["regForm"]["first-name"].value;
+	let lastNameUser = document.forms["regForm"]["last-name"].value;
+	let emailUser = document.forms["regForm"]["mail"].value;
+	let birthDateUser = document.forms["regForm"]["birthDate"].value;
 
-	if(passwordUser.length < 1){
-		document.getElementById('errPassword').innerHTML="This field is required";
 
+	let letter = "/[a-z]/g";
+  	let num = "/[0-9]/g";
+	let letterCheck = passwordUser.match(letter);
+	let numCheck = passwordUser.match(num);
+
+	if(passwordUser.length < 6){
+		document.getElementById('errPassword').innerHTML="Password must contain at least 6 characters";
 	}
+	
+	else if(letterCheck==null || numCheck == null){
+		document.getElementById('errPassword').innerHTML="Password must contain at least 1 character and 1 number";
+	}
+	
 	if(firstNameUser.length < 1){
 		document.getElementById('errFirstName').innerHTML="This field is required";
-		
 	}
 	if(lastNameUser.length < 1){
 		document.getElementById('errLastName').innerHTML="This field is required";
@@ -172,11 +186,12 @@ function checkValidRegForm(){
 		return false;
 	}
 	
-	if(usernameVar.length < 1 || PasswordUser.length < 1 || firstNameUser.length < 1 || lastNameUser.length || emailUser.length < 1){
+	if(usernameVar.length < 1 || PasswordUser.length < 6 || firstNameUser.length < 1 || lastNameUser.length || emailUser.length < 1){
 		return false;
 	}
 	else{
-		this.users[usernameVar] = {'password':passwordUser,'first-name':firstNameUser,'last-name':lastNameUser,'email':emailUser,'birthday':birthDateUser};
+		this.usernamesID.push(usernameVar);
+		this.usernamesPass.push(passwordUser)
 		this.currentUser = usernameVar;
 		this.connected = true;
 	}
