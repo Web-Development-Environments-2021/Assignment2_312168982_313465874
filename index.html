@@ -157,7 +157,7 @@
 				<tr>
 					<td>
 						Key Up:
-						<input id="keyUpInputLine" type="text" onkeydown="uniKeyCode(event)"> <br>
+						<input id="keyup" type="text" onkeydown="uniKeyCode1(event)" maxlength="1"> <br>
 					</td>
 					<td>
 						Number of Balls:
@@ -167,7 +167,7 @@
 				<tr>
 					<td>
 						Key Down:
-						<input type="text" onkeydown="uniKeyCode(event)"> <br>
+						<input id="keydown" type="text" onkeydown="uniKeyCode2(event)" maxlength="1"> <br>
 					</td>
 					<td>
 						Color for 5 points balls:
@@ -177,7 +177,7 @@
 				<tr>
 					<td>
 						Key Left:
-						<input type="text" onkeydown="uniKeyCode(event)"> <br>
+						<input id="keyLeft" type="text" onkeydown="uniKeyCode3(event)" maxlength="1"> <br>
 					</td>
 					<td>
 						Color for 15 points balls:
@@ -187,7 +187,7 @@
 				<tr>
 					<td>
 						Key Right:
-						<input type="text" onkeydown="uniKeyCode(event)"> <br>
+						<input id="keyRight" type="text" onkeydown="uniKeyCode4(event)" maxlength="1"> <br>
 					</td>
 					<td>
 						Color for 25 points balls:
@@ -216,27 +216,52 @@
 			</table>
 
 			<div align="center">
-				<input id="settingButton" type="submit" onclick="showScreen('GamePageDiv')" value="Submit" style="font-size: 40px; margin-right: 100px ; width: 300px;">
+				<!-- onclick change -->
+				<input id="settingButton" type="submit" onclick="showScreen('GamePageDiv')" value="Let's Play" style="font-size: 40px; margin-right: 100px ; width: 300px;">
 			</div>
 		</div>
 
 		<script>
-			function uniKeyCode(event) {
+			function uniKeyCode1(event) {
   				var key = event.key;
-  				document.getElementById("keyUpInputLine").innerHTML = key;
-				return key;
+    			$("#keyup").val(key);
+			}
+			function uniKeyCode2(event) {
+  				var key = event.key;
+    			$("#keydown").val(key);
+			}
+			function uniKeyCode3(event) {
+  				var key = event.key;
+    			$("#keyLeft").val(key);
+			}
+			function uniKeyCode4(event) {
+  				var key = event.key;
+    			$("#keyRight").val(key);
 			}
 		</script>
 
 	
 
 
-		<div id="GamePageDiv" align = "left">
-			<canvas id="canvas" height="600" width="600" style="border: 5px solid black;" ></canvas>
+		<div id="GamePageDiv">
+			<canvas id="canvas" style="border: 5px solid rgb(189, 85, 85);" >
+			<div id="settingInGame">
+				
+
+
+
+			</div>
+			
+			
+			
+			
+			</canvas>
 		</div>
-		<div id = "stats">
-			Score:
-		</div>
+		
+
+
+
+
 
 		<footer>
 			Created by Noya Karavani, Lev Ari Ulner. <br>

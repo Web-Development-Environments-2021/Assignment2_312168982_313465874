@@ -2,7 +2,7 @@ let context;
 let shape = new Object();
 
 //site data
-let connected = false;
+let connected = true;
 let currentUser = null;
 let currentScreen = 'RegisterPageDiv';
 
@@ -14,6 +14,10 @@ let usernameNumber = 0;
 
 //game data:
 // let gameKeys = {"keyUp":"", "keyDown":"", "keyLeft":"", "keyRight":""}
+let keyUp;
+let keyDown;
+let keyLeft;
+let keyRight;
 
 let score=0;
 let lives=5;
@@ -86,8 +90,13 @@ $(document).ready(function() {
 
 	context.font = "bold 60px Verdana";
 	context.fillStyle="rgb(221, 221, 42)";
-	//context.strokeRect(10,10,50,50);
-	context.textAlign = "center";
+	
+	var grd = context.createRadialGradient(75, 50, 5, 90, 60, 100);
+	grd.addColorStop(0, "yellow");
+	grd.addColorStop(1, "white");
+
+	context.fillText("Menu Setting", canvas.width/4, canvas.height); 
+
 	// gameMusic.play();
 	// gameMusic.loop();
 	

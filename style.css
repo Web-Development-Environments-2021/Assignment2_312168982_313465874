@@ -247,6 +247,11 @@ body{
     margin: 4px 2px;
 }
 
+canvas{
+    width: 99.1%;
+    height: 500px;
+}
+
 
 
 
