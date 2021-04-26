@@ -2,9 +2,11 @@ let context;
 let shape = new Object();
 
 let connected = 'false';
+let currentScreen = 'RegisterPageDiv';
 
-//game:
+//game data:
 let gameKeys = {"keyUp":"", "keyDown":"", "keyLeft":"", "keyRight":""}
+let users = {};
 
 let score=0;
 let lives=5;
@@ -81,7 +83,27 @@ $(document).ready(function() {
 
 });
 
+// //Data Controller:
+// function getData(data){
+// 	localStorage.getItem();
+// }
 
+//change screens:
+
+function hideAll(){
+	$('#welcomePage').css('display','none');
+	$('#RegisterPageDiv').css('display','none');
+	$('#loginPageDiv').css('display','none');
+	$('#GamePageDiv').css('display','none');
+	$('#stats').css('display','none');
+	$('#gameSetting').css('display','none');
+}
+
+function showScreen(page){
+	$('#' + currentScreen).css('display','none');
+	$('#' + page).css('display','block');
+	currentScreen=page;
+}
 
 
 // Generate new Game:

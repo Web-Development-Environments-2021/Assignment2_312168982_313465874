@@ -9,28 +9,29 @@
 		<!--should be in js file-->
 		<script>
 		$(document).ready(function(){
-			$('#welcomePage').show();
-			$("#RegisterPageDiv").hide();
-			$('#loginPageDiv').hide();
-			// $('#GamePageDiv').hide();
-			$('#stats').hide();
-
+			hideAll();
+			currentScreen = 'welcomePage'
+			showScreen('welcomePage');
+			
 			$('#welcomePageRegisterButton').on('click',function(){
-				$("#welcomePage").toggle(1000);
-				$("#RegisterPageDiv").toggle(1000);
+				showScreen('RegisterPageDiv');
 			});
 
 			$('#welcomePageLoginButton').on('click',function(){
-				$("#welcomePage").toggle(1000);
-				$("#loginPageDiv").toggle(1000);
+				showScreen('loginPageDiv');
 			});
 
-			// $('#regButton').on('click',function(){
-			// 	if(regOK == 'true'){
-			// 		$("#RegisterPageDiv").toggle(1000);
-			// 		$("#loginPageDiv").toggle(1000);
-			// 	}
-			// });
+			$('#welcomeWindow').on('click',function(){
+				showScreen('welcomePage');
+			});
+
+			$('#registerWindow').on('click',function(){
+				showScreen('RegisterPageDiv');
+			});
+			
+			$('#loginWindow').on('click',function(){
+				showScreen('loginPageDiv');
+			});
 			
 		});
 		</script>
@@ -210,7 +211,7 @@
 			}
 		</script>
 
-		<div class="gameSetting">
+		<div id="gameSetting">
 			Choose your setting <br>
 			Key Up:
 			<input onclick="setKey(event)"> <br>
