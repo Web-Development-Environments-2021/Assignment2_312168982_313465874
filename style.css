@@ -20,7 +20,7 @@ body{
     color:rgb(8, 77, 167);
 }
 
-#welcomePage{
+.welcomePageClass{
     text-align: center;
     font-size: 130px;
     font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif ;
@@ -33,7 +33,7 @@ body{
     color: white;
 }
 
-#welcomePage button {
+.welcomePageClass button {
     background-color: white;
     border-style: double;
     border-color: #ff0505;
@@ -47,13 +47,15 @@ body{
     cursor: pointer;
 }
 
-#welcomePage button:hover{
+.welcomePageClass button:hover{
     color: white;
     background-color: #ff0505;
     border-style: double;
     border-color: white;
     border-width: 5px;
 }
+
+
 
 #RegisterPageDiv{
     background-image: url('./images/register1.jpeg');

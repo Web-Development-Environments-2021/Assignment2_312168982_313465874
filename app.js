@@ -1,12 +1,14 @@
 let context;
 let shape = new Object();
 
-let connected = 'false';
+//site data
+let connected = false;
+let currentUser = null;
 let currentScreen = 'RegisterPageDiv';
+let users = new Map();
 
 //game data:
-let gameKeys = {"keyUp":"", "keyDown":"", "keyLeft":"", "keyRight":""}
-let users = {};
+// let gameKeys = {"keyUp":"", "keyDown":"", "keyLeft":"", "keyRight":""}
 
 let score=0;
 let lives=5;
@@ -60,8 +62,18 @@ let clockIMG;
 
 
 
-
+// When the site open:
 $(document).ready(function() {
+
+	localStorage.clear();
+	sessionStorage.clear();
+
+	// showing:
+	hideAll();
+	currentScreen = 'welcomePage'
+	showScreenMenu();
+
+	// canvas:
 	canvas = document.getElementById('canvas');
 	context = canvas.getContext("2d");
 	canvas.width = "1240";
@@ -78,7 +90,7 @@ $(document).ready(function() {
 
 
 
-	Start(); 
+	// Start(); 
 	
 
 });
@@ -97,12 +109,113 @@ function hideAll(){
 	$('#GamePageDiv').css('display','none');
 	$('#stats').css('display','none');
 	$('#gameSetting').css('display','none');
+	$('#welcomePageForConnected').css('display','none');
 }
 
 function showScreen(page){
 	$('#' + currentScreen).css('display','none');
 	$('#' + page).css('display','block');
 	currentScreen=page;
+}
+
+function showScreenMenu(){
+	$('#' + currentScreen).css('display','none');
+	if(connected){
+		$('#welcomePageForConnected').css('display','block');
+		currentScreen='welcomePageForConnected';
+	}
+	else{
+		$('#welcomePage').css('display','block');
+		currentScreen='welcomePage';
+	}
+}
+
+
+// validation for register:
+
+function regButtonFunc(){
+	if(checkValidRegForm){
+		showScreenMenu(); 
+	}
+}
+
+function checkValidRegForm(){
+	var usernameVar = document.forms["regForm"]["username"].value;
+	var passwordUser = document.forms["regForm"]["password"].value;
+	var firstNameUser = document.forms["regForm"]["first-name"].value;
+	var lastNameUser = document.forms["regForm"]["last-name"].value;
+	var emailUser = document.forms["regForm"]["mail"].value;
+	var birthDateUser = document.forms["regForm"]["birthDate"].value;
+
+	if(passwordUser.length < 1){
+		document.getElementById('errPassword').innerHTML="This field is required";
+
+	}
+	if(firstNameUser.length < 1){
+		document.getElementById('errFirstName').innerHTML="This field is required";
+		
+	}
+	if(lastNameUser.length < 1){
+		document.getElementById('errLastName').innerHTML="This field is required";
+		
+	}
+	if(emailUser.length < 1){
+		document.getElementById('errEmail').innerHTML="A valid email address is required";
+	}
+
+	if(usernameVar.length < 1 || this.users[usernameVar]!=null){
+		document.getElementById('errName').innerHTML="This field is required";
+	}
+
+	else if(this.users[usernameVar]!=null){
+		document.getElementById('errName').innerHTML="This name is taken";
+		return false;
+	}
+	
+	if(usernameVar.length < 1 || PasswordUser.length < 1 || firstNameUser.length < 1 || lastNameUser.length || emailUser.length < 1){
+		return false;
+	}
+	else{
+		this.users[usernameVar] = {'password':passwordUser,'first-name':firstNameUser,'last-name':lastNameUser,'email':emailUser,'birthday':birthDateUser};
+		this.currentUser = usernameVar;
+		this.connected = true;
+	}
+	return true;
+}
+
+// validation for login:
+
+function logButtonFunc(){
+	if(checkValidLogForm){
+		showScreenMenu(); 
+	}
+}
+
+function checkValidLogForm(){
+	let usernameLogin = document.forms["logForm"]["usernameLog"].value;
+	let passwordLogin = document.forms["logForm"]["password"].value;
+
+	if(usernameLogin.length<1){
+		document.getElementById('errName').innerHTML="Please enter a username";
+		return false;
+	}
+	else if(this.users[usernameVar]!=null){
+		document.getElementById('errName').innerHTML="Username doesn't exist";
+		return false;
+	}
+	else if(passwordLogin.length < 1){
+		document.getElementById('errPassword').innerHTML="Please enter a password";
+		return false;
+	}
+	else if(this.users[usernameVar]['password'] != passwordLogin){
+		document.getElementById('errPassword').innerHTML="Wrong password";
+		return false;
+	}
+	else{
+		this.currentUser = usernameLogin;
+		this.connected = true;
+	}
+	return true;
 }
 
 

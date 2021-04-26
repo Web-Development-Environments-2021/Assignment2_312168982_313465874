@@ -6,38 +6,11 @@
 		<script src="./jquery-3.4.1.slim.min.js"></script>
 		<script type="text/javascript" src="./app.js"></script>
 		
-		<!--should be in js file-->
-		<script>
-		$(document).ready(function(){
-			hideAll();
-			currentScreen = 'welcomePage'
-			showScreen('welcomePage');
-			
-			$('#welcomePageRegisterButton').on('click',function(){
-				showScreen('RegisterPageDiv');
-			});
-
-			$('#welcomePageLoginButton').on('click',function(){
-				showScreen('loginPageDiv');
-			});
-
-			$('#welcomeWindow').on('click',function(){
-				showScreen('welcomePage');
-			});
-
-			$('#registerWindow').on('click',function(){
-				showScreen('RegisterPageDiv');
-			});
-			
-			$('#loginWindow').on('click',function(){
-				showScreen('loginPageDiv');
-			});
-			
-		});
-		</script>
 	</head>
 
 	<body>
+
+		<!-- Header: -->
 		<div id = "header" style="background-color: black;">
 			<div id="pacImg" >
 				<img src="images/pac.jpg" align ="left" alt="logoP" height = "70px">
@@ -48,20 +21,33 @@
 			</div>
 		</div>
 
+
+
+		<!-- Menu: -->
 		<div class="menu" >
-			<a id="welcomeWindow" > Welcome </a>|
-			<a id="registerWindow" > Register </a>|
-			<a id="loginWindow" > Login </a>|
+			<a id="welcomeWindow" onclick="showScreenMenu()" > Welcome </a>|
+			<a id="registerWindow" onclick="showScreen('RegisterPageDiv')" > Register </a>|
+			<a id="loginWindow" onclick="showScreen('loginPageDiv')" > Login </a>|
 			<a id="aboutWindow"> About </a>|
 		</div>
 		
+
+
 		<!--WELCOME PAGE-->
-		<div id="welcomePage" >
+		<div id="welcomePage"  class = "welcomePageClass">
 			Welcome to the PACMAN game!
 		</br>
-		<button id='welcomePageRegisterButton' class="button welcome_Register" style="margin-right: 70px;">Register</button> 
-		<button id='welcomePageLoginButton' class="button welcome_Login">Login</button> 
+		<button id='welcomePageRegisterButton' class="button welcome_Register" style="margin-right: 70px;" onclick="showScreen('RegisterPageDiv')">Register</button> 
+		<button id='welcomePageLoginButton' class="button welcome_Login" onclick="showScreen('loginPageDiv')">Login</button> 
 		</div>
+
+		<!--WELCOME PAGE After Login-->
+		<div id="welcomePageForConnected" class = "welcomePageClass" >
+			Welcome to the PACMAN game!
+		</br>
+		<button id='startGameButton' class="button welcome_Register" style="margin-right: 50px;">Start Game</button>
+		</div>
+
 
 		<!--ABOUT PAGE-->
 		<div id="myModal" class="modal">
@@ -112,7 +98,7 @@
 				</div>
 				<div class="form-group">
 					<b>Password:</b>
-					<input id="passwordReg" type="password" name="password" placeholder="password" minlength="6" required>
+					<input id="passwordReg" type="password" name="password" placeholder="password">
 					<span id="errPassword" ></span><br>
 				</div>
 				<div class="form-group">
@@ -136,52 +122,15 @@
 					<span id="errBirthDate" class="error"></span><br>
 				</div>
 				<div class="form-group">
-					<input id="regButton" type="submit" value="Register">		
+					<input id="regButton" type="submit" value="Register" onclick="regButtonFunc">		
 				</div>
 			</form>	
 		</div>
 
 
-		<script>
-			function checkValidRegForm(){
-				var usernameVar = document.forms["regForm"]["username"].value;
-				var PasswordUser = document.forms["regForm"]["password"].value;
-				var firstNameUser = document.forms["regForm"]["first-name"].value;
-				var lastNameUser = document.forms["regForm"]["last-name"].value;
-				var emailUser = document.forms["regForm"]["mail"].value;
-				var birthDateUser = document.forms["regForm"]["birthDate"].value;
-
-				if(usernameVar.length < 1){
-					document.getElementById('errName').innerHTML="This field is required";
-				}
-				if(PasswordUser.length < 1){
-					document.getElementById('errPassword').innerHTML="This field is required";
-			
-				}
-				if(firstNameUser.length < 1){
-					document.getElementById('errFirstName').innerHTML="This field is required";
-					
-				}
-				if(lastNameUser.length < 1){
-					document.getElementById('errLastName').innerHTML="This field is required";
-					
-				}
-				if(emailUser.length < 1){
-					document.getElementById('errEmail').innerHTML="A valid email address is required";
-				}
-				if(birthDateUser == "1900-05-05"){
-					document.getElementById('errBirthDate').innerHTML="A birth date is required";
-				}
-				
-				if(usernameVar.length < 1 || PasswordUser.length < 1 || firstNameUser.length < 1 || lastNameUser.length || emailUser.length < 1 || birthDateUser.length < 1){
-					return false;
-				}
-				return true;
-			}
-		</script>
-	
+		<!-- Login Page: -->
 		<div id="loginPageDiv">
-			<form id="contact" name="logForm" method="post" onsubmit="return checkValidLogForm()">
+			<form id="contact" name="logForm" method="post">
 				<div>
 					<b>Username:</b>
 					<input id = "usernameL" type="text" name="usernameLog" placeholder="username">
@@ -189,7 +138,7 @@
 				</div>
 				<div>
 					<b>Password:</b>
-					<input type="password" name="password" placeholder="password" minlength="6" required>
+					<input type="password" name="password" placeholder="password" onclick="logButtonFunc()">
 					<span id="errPassword" ></span><br><br>
 				</div>
 				<div>
@@ -199,18 +148,7 @@
 		</div>
 
 
-		<script>
-			function checkValidLogForm(){
-				var username = document.forms["logForm"]["usernameLog"].value;
-
-				if(username.length<1){
-					document.getElementById('errName').innerHTML="Please enter";
-					return false;
-				}
-				return true;
-			}
-		</script>
-
+		<!-- Game Setting Page: -->
 		<div id="gameSetting">
 			Choose your setting <br>
 			Key Up:
