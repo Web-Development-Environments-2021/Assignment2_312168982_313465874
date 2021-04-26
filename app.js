@@ -154,7 +154,7 @@ function regButtonFunc(){
 }
 
 function checkValidRegForm(){
-	let validReg = true;
+	let validReg = false;
 	let usernameVar = document.forms["regForm"]["username"].value;
 	let passwordUser = document.forms["regForm"]["password"].value;
 	let firstNameUser = document.forms["regForm"]["first-name"].value;
@@ -162,8 +162,8 @@ function checkValidRegForm(){
 	let emailUser = document.forms["regForm"]["mail"].value;
 	//let birthDateUser = document.forms["regForm"]["birthDate"].value;
 
-	let letter = "/[a-z]/g";
-  	let num = "/[0-9]/g";
+	let letter = /[a-z,A-Z]/g;
+  	let num = /[0-9]/g;
 	let letterCheckPass = passwordUser.match(letter);
 	let numCheckPass = passwordUser.match(num);
 	let numCheckFName = firstNameUser.match(num);
@@ -174,12 +174,11 @@ function checkValidRegForm(){
 		document.getElementById('errName').innerHTML="Username is required";
 		validReg=false;
 	}
-
-	else{
-		if(checkUserNameExist(usernameVar)){
+	else if(checkUserNameExist(usernameVar)){
 			document.getElementById('errName').innerHTML="This username is taken";
 			validReg=false;
-		}
+	}
+	else{
 		document.getElementById('errName').innerHTML="";
 	}
 
@@ -188,14 +187,9 @@ function checkValidRegForm(){
 		document.getElementById('errFirstName').innerHTML="First name is required";
 		validReg=false;
 	}
-	else{
-		if(numCheckFName!=null){
+	else if(numCheckFName.length>0){
 				document.getElementById('errFirstName').innerHTML="First name cannot contains numbers";
 				validReg=false;
-		}
-		else{
-			document.getElementById('errFirstName').innerHTML="";
-		}
 	}
 	
 	
@@ -204,14 +198,12 @@ function checkValidRegForm(){
 		document.getElementById('errLastName').innerHTML="Last name is required";
 		validReg=false;	
 	}
-	else{
-		if(numCheckLName!=null){
+	else if(numCheckLName!=null){
 			document.getElementById('errLastName').innerHTML="Last name cannot contains numbers";
 			validReg=false;
-		}	
-		else {
-			document.getElementById('errLastName').innerHTML="";
-		}
+	}	
+	else {
+		document.getElementById('errLastName').innerHTML="";
 	}
 
 
