@@ -60,11 +60,11 @@ let treasure = new Object();
 // image_treasure.src('/images/money.jfif');
 
 //Advance
-let medicineCount;
+let medicineCount = 2;
 // let medicineIMG = document.createElement("img");
 // medicineIMG.src('/images/medicine.png');
 
-let clockCount;
+let clockCount = 2;
 let clockIMG;
 
 
@@ -558,11 +558,11 @@ function isEmpty(cellRow, cellCol){
 }
 
 function randomFreeCell(){
-	let cellRow = Math.floor(Math.random()*15+1);
-	let cellCol = Math.floor(Math.random()*12+1);
+	let cellRow = Math.floor(Math.random()*12+1);
+	let cellCol = Math.floor(Math.random()*15+1);
 	while(!isEmpty(cellRow,cellCol)){
-	cellRow = Math.floor(Math.random()*15+1);
-	cellCol = Math.floor(Math.random()*12+1);
+	cellRow = Math.floor(Math.random()*12+1);
+	cellCol = Math.floor(Math.random()*15+1);
 	}
 	return [cellRow,cellCol];
 }
@@ -571,15 +571,10 @@ function setBalls(){
 	let smallBallCount = ballCount * 0.6;
 	let mediumBallCount = ballCount * 0.3;
 	let bigBallCount = ballCount - smallBallCount - mediumBallCount;
-	document.getElementById('keyUpGameTable').innerHTML = Math.floor(Math.random()*15+1)
 	for (let i = 0; i< smallBallCount; i++){
 		let cell = randomFreeCell();
 		board[cell[0]][cell[1]] = 2;
-		;
 	}
-
-	
-
 	for (let j = 0; j< mediumBallCount; j++){
 		let cell = randomFreeCell();
 		board[cell[0]][cell[1]] = 7;
@@ -633,6 +628,7 @@ function start() {
 	setBalls();
 	setMedicine();
 	setClock();
+	// document.getElementById('keyUpGameTable').innerHTML = board; - checked till here
 	createMons();
 	setMons();
 	setPacman();
