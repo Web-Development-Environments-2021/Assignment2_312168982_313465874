@@ -2,7 +2,7 @@ let context;
 let shape = new Object();
 
 //site data
-let connected = true;
+let connected = false;
 let currentUser = null;
 let currentScreen = 'RegisterPageDiv';
 
@@ -134,7 +134,7 @@ function showScreen(page){
 
 function showScreenMenu(){
 	$('#' + currentScreen).css('display','none');
-	if(this.connected){
+	if(connected){
 		$('#welcomePageForConnected').css('display','block');
 		currentScreen='welcomePageForConnected';
 	}
@@ -256,10 +256,10 @@ function checkValidRegForm(){
 		return false;
 	}
 	else{
-		this.usernamesID.push(usernameVar);
-		this.usernamesPass.push(passwordUser)
-		this.currentUser = usernameVar;
-		this.connected = true;
+		usernamesID.push(usernameVar);
+		usernamesPass.push(passwordUser)
+		currentUser = usernameVar;
+		connected = true;
 	}
 	return true;
 }
@@ -295,7 +295,7 @@ function checkValidLogForm(){
 	}
 	else{
 		this.currentUser = usernameLogin;
-		this.connected = true;
+		connected = true;
 	}
 	if(validLog){
 		return true;
