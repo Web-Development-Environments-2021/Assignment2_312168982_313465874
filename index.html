@@ -152,102 +152,142 @@
 
 		<!-- Game Setting Page: -->
 		<div id="gameSetting">
-			<div align="center" style="font-size: 50px;">
-				<b>Choose your setting </b> <br>
-			</div>
-			<table style="width:100%; height: 50%; padding: 30px;" >
-				<tr>
-					<td>
-						Key Up:
-						<input id="keyup" type="text" onkeydown="uniKeyCode1(event)" maxlength="1"> <br>
-					</td>
-					<td>
-						Number of Balls:
-						<input type="number" min="50" max="90"> <br>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						Key Down:
-						<input id="keydown" type="text" onkeydown="uniKeyCode2(event)" maxlength="1"> <br>
-					</td>
-					<td>
-						Color for 5 points balls:
-						<input type="color"> <br>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						Key Left:
-						<input id="keyLeft" type="text" onkeydown="uniKeyCode3(event)" maxlength="1"> <br>
-					</td>
-					<td>
-						Color for 15 points balls:
-						<input type="color"> <br>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						Key Right:
-						<input id="keyRight" type="text" onkeydown="uniKeyCode4(event)" maxlength="1"> <br>
-					</td>
-					<td>
-						Color for 25 points balls:
-						<input type="color"> <br>
-					</td>
-				</tr>
-				<tr>
-					<td></td>
-					<td>
-						Time for game (in seconds):
-						<input placeholder="minimum 60 seconds"> <br>
-					</td>
-				</tr>
-				<tr>
-					<td></td>
-					<td>
-						Number of Monsters:
-						<select>
-						<option>1</option>
-						<option>2</option>
-						<option>3</option>
-						<option>4</option>
-						</select><br><br>
-					</td>
-				</tr>
-			</table>
+			<form id="settingForm" name="settingForm" onsubmit="return checkValidSettingForm()">
+				<div align="center" style="font-size: 50px;">
+					<b>Choose your setting </b> <br>
+				</div>
+				<table style="width:100%; height: 50%; padding: 30px;" >
+					<tr>
+						<td>
+							Key Up:
+							<input id="keyup" name="keyUp" type="text" onkeydown="uniKeyCode1(event)" maxlength="1">
+							<span id='keyUpErr' class="error"></span>
+							<br>
+						</td>
+						<td>
+							Number of Balls:
+							<input name="NumeberBalls" type="number" min="50" max="90"> <br>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Key Down:
+							<input id="keydown" name="keydown" type="text" onkeydown="uniKeyCode2(event)" maxlength="1">
+							<span id='keyDownErr' class="error"></span>
+							<br>
+						</td>
+						<td>
+							Color for 5 points balls:
+							<input class = 'settingsColor' name="smallBallColor" type="color"> <br>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Key Left:
+							<input id="keyLeft" name="keyLeft" type="text" onkeydown="uniKeyCode3(event)" maxlength="1">
+							<span id='keyLeftErr' class="error"></span> <br>
+						</td>
+						<td>
+							Color for 15 points balls:
+							<input class = 'settingsColor' name="mediumBallColor" type="color"> <br>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Key Right:
+							<input id="keyRight" name="keyRight"type="text" onkeydown="uniKeyCode4(event)" maxlength="1">
+							<span id='keyRightErr' class="error"></span>
+							<br>
+						</td>
+						<td>
+							Color for 25 points balls:
+							<input class = 'settingsColor' name="bigBallColor" type="color"> <br>
+						</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>
+							Time for game (in seconds):
+							<input name="timeElapse" placeholder="minimum 60 seconds">
+							<span id='timeElapseErr' class="error"></span>
+							<br>
+						</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>
+							Number of Monsters:
+							<select id="noMonsters">
+							<option>1</option>
+							<option>2</option> 
+							<option>3</option>
+							<option>4</option>
+							</select><br><br>
+						</td>
+					</tr>
+				</table>
 
-			<div align="center">
-				<!-- onclick change -->
-				<input id="settingButton" type="submit" onclick="showScreen('GamePageDiv')" value="Let's Play" style="font-size: 40px; margin-right: 100px ; width: 300px;">
-			</div>
+				<div align="center">
+					<!-- onclick change -->
+					<input id="settingButton" type="submit" value="Let's Play" style="font-size: 40px; margin-right: 100px ; width: 300px;">
+				</div>
+			</form>
 		</div>
-
-		<script>
-			function uniKeyCode1(event) {
-  				var key = event.key;
-    			$("#keyup").val(key);
-			}
-			function uniKeyCode2(event) {
-  				var key = event.key;
-    			$("#keydown").val(key);
-			}
-			function uniKeyCode3(event) {
-  				var key = event.key;
-    			$("#keyLeft").val(key);
-			}
-			function uniKeyCode4(event) {
-  				var key = event.key;
-    			$("#keyRight").val(key);
-			}
-		</script>
-
 	
 
 
 		<div id="GamePageDiv">
-			<canvas id="canvas" style="border: 5px solid rgb(189, 85, 85);" >
+			<!-- ..<canvas id="canvas" style="border: 5px solid rgb(189, 85, 85);" > -->
 			<div id="settingInGame">
+				<table id="tableSetting" align="right">
+					<tr>
+						<td>Key Up:</td>
+						<td>inputFromUser</td>
+					</tr>
+					<tr>
+						<td>Key Down:</td>
+						<td>inputFromUser</td>
+					</tr>
+					<tr>
+						<td>Key Left:</td>
+						<td>inputFromUser</td>
+					</tr>
+					<tr>
+						<td>Key Right:</td>
+						<td>inputFromUser</td>
+					</tr>
+					<tr>
+						<td>Number of Balls:</td>
+						<td>inputFromUser</td>
+					</tr>
+					<tr>
+						<td>Color for 5 points balls:</td>
+						<td>inputFromUser</td>
+					</tr>
+					<tr>
+						<td>Color for 15 points balls:</td>
+						<td>inputFromUser</td>
+					</tr>
+					<tr>
+						<td>Color for 25 points balls:</td>
+						<td>inputFromUser</td>
+					</tr>
+					<tr>
+						<td>Time for game (in seconds):</td>
+						<td>inputFromUser</td>
+					</tr>
+					<tr>
+						<td>Number of Monsters:</td>
+						<td>inputFromUser</td>
+					</tr>
+				
+
+
+
+					
+				</table>
+
+
 				
 
 

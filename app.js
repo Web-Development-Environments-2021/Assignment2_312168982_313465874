@@ -7,13 +7,12 @@ let currentUser = null;
 let currentScreen = 'RegisterPageDiv';
 
 //Users Data:
-let usernamesID = ['k'];
-let usernamesPass = ['k'];
+let usernamesID = ['k','Noya'];
+let usernamesPass = ['k','n'];
 let usernameNumber = 0;
 
 
 //game data:
-// let gameKeys = {"keyUp":"", "keyDown":"", "keyLeft":"", "keyRight":""}
 let keyUp;
 let keyDown;
 let keyLeft;
@@ -22,7 +21,7 @@ let keyRight;
 let score=0;
 let lives=5;
 let start_time=0;
-let time_elapsed;
+let time_elapsed = 0;
 let interval;
 let gameMusic = new Audio('Popcorn Original Song.wav');
 
@@ -45,8 +44,11 @@ let mons;
 
 //balls:
 let smallBall = [];
+let smallBallColor;
 let mediumBall = [];
+let mediumBallColor;
 let bigBall = [];
+let bigBallColor;
 let ballCount = 50;
 
 let cherry = new Object();
@@ -78,25 +80,6 @@ $(document).ready(function() {
 	// showing:
 	hideAll();
 	showScreenMenu();
-
-	// canvas:
-	canvas = document.getElementById('canvas');
-	context = canvas.getContext("2d");
-	canvas.width = "1240";
-	canvas.height = "580";
-
-	context.font = "bold 60px Verdana";
-	context.fillStyle="rgb(221, 221, 42)";
-	
-	var grd = context.createRadialGradient(75, 50, 5, 90, 60, 100);
-	grd.addColorStop(0, "yellow");
-	grd.addColorStop(1, "white");
-
-	context.fillText("Menu Setting", canvas.width/4, canvas.height); 
-
-	// gameMusic.play();
-	// gameMusic.loop();
-
 	$("#RegisterPageDiv").submit(function(e) {
 		e.preventDefault();
 	});
@@ -108,6 +91,26 @@ $(document).ready(function() {
 	$("#gameSetting").submit(function(e) {
 		e.preventDefault();
 	});
+
+	// canvas:
+	canvas = document.getElementById('canvas');
+	context = canvas.getContext("2d");
+	canvas.width = "410";
+	canvas.height = "400";
+
+	context.font = "bold 60px Verdana";
+	context.fillStyle="rgb(221, 221, 42)";
+	
+	var grd = context.createRadialGradient(75, 50, 5, 90, 60, 100);
+	grd.addColorStop(0, "yellow");
+	grd.addColorStop(1, "white");
+
+	// context.fillText("Menu Setting", canvas.width/4, canvas.height); 
+
+	// gameMusic.play();
+	// gameMusic.loop();
+
+	
 	// Start(); 
 	
 
@@ -322,6 +325,103 @@ function checkValidLogForm(){
 	}
 	
 }
+
+// Settings Page:
+
+function uniKeyCode1(event) {
+	var key = event.key;
+  $("#keyup").val(key);
+}
+function uniKeyCode2(event) {
+	var key = event.key;
+  $("#keydown").val(key);
+}
+function uniKeyCode3(event) {
+	var key = event.key;
+  $("#keyLeft").val(key);
+}
+function uniKeyCode4(event) {
+	var key = event.key;
+  $("#keyRight").val(key);
+}
+
+function checkValidSettingForm(){
+	showScreen('GamePageDiv');
+	return true;
+	// let validLog = true;
+	// keyUp = document.forms["settingForm"]["keyUp"].value;
+	// keyDown = document.forms["settingForm"]["keyDown"].value;
+	// keyLeft = document.forms["settingForm"]["keyLeft"].value;
+	// keyRight = document.forms["settingForm"]["keyRight"].value;
+	// ballCount = document.forms["settingForm"]["NumeberBalls"].value;
+	// smallBallColor = document.forms["settingForm"]["smallBallColor"].value;
+	// mediumBallColor = document.forms["settingForm"]["mediumBallColor"].value;
+	// bigBallColor = document.forms["settingForm"]["bigBallColor"].value;
+	// time_elapsed = document.forms["settingForm"]["timeElapse"].value;
+	// monsCount= document.getElementById("noMonsters").value;
+
+	// if(keyUp==null){
+	// 	document.getElementById('keyUpErr').innerHTML="Please choose key up";
+	// 	validLog = false;
+	// }
+	// else{
+	// 	document.getElementById('keyUpErr').innerHTML="";
+	// }
+	// if(keyDown==null){
+	// 	document.getElementById('keyDownErr').innerHTML="Please choose 60 seconds or more";
+	// 	validLog = false;
+	// }
+	// else{
+	// 	document.getElementById('keyDownErr').innerHTML="";
+	// }
+	// if(keyLeft==null){
+	// 	document.getElementById('keyLeftErr').innerHTML="Please choose 60 seconds or more";
+	// 	validLog = false;
+	// }
+	// else{
+	// 	document.getElementById('keyLeftErr').innerHTML="";
+	// }
+	// if(keyRight==null){
+	// 	document.getElementById('keyRightErr').innerHTML="Please choose 60 seconds or more";
+	// 	validLog = false;
+	// }
+	// else{
+	// 	document.getElementById('keyRightErr').innerHTML="";
+	// }
+
+	// if(time_elapsed<60 || time_elapsed==null){
+	// 	document.getElementById('timeElapseErr').innerHTML="Please choose 60 seconds or more";
+	// 	validLog = false;
+	// }
+	// else{
+	// 	document.getElementById('timeElapseErr').innerHTML="";
+	// }
+	// if(!validLog){
+	// 	return false;
+	// }
+	// else{
+	// 	showScreen('GamePageDiv');
+	// 	return true;
+	// }
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // Generate new Game:

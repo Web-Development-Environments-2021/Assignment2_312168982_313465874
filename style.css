@@ -248,8 +248,8 @@ body{
 }
 
 canvas{
-    width: 99.1%;
-    height: 500px;
+    /* width: 99.1%;
+    height: 500px; */
 }
 
 
@@ -270,10 +270,24 @@ canvas{
     display: none;
 }
 
+#tableSetting{
+    font-size: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 
 
 
+#noMonsters {
+    font-size: large;
+    text-align: center;
+    width:50px;
+    height:30px;
+}
 
+.settingsColor{    
+    width:50px;
+    height:40px;
+}
 
 
 
