@@ -253,7 +253,22 @@ canvas{
 }
 
 
+#textHead{
+    margin-left: auto;
+    text-align:right;
+    color: white;
+    padding-right: 5px;
+    font-size: 25px; 
+    font-family: Verdana;
+}
 
+#welcomeBack{
+    text-align: right;
+}
+
+#setSpan{
+    display: none;
+}
 
 
 

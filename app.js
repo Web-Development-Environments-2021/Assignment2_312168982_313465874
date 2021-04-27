@@ -74,8 +74,6 @@ let clockIMG;
 // When the site open:
 $(document).ready(function() {
 
-	localStorage.clear();
-	sessionStorage.clear();
 
 	// showing:
 	hideAll();
@@ -98,20 +96,23 @@ $(document).ready(function() {
 
 	// gameMusic.play();
 	// gameMusic.loop();
+
+	$("#RegisterPageDiv").submit(function(e) {
+		e.preventDefault();
+	});
+
+	$("#loginPageDiv").submit(function(e) {
+		e.preventDefault();
+	});
 	
-	//context = document.getElementById('menu').style.fontStyle.fontSize="50px";
-
-
-
+	$("#gameSetting").submit(function(e) {
+		e.preventDefault();
+	});
 	// Start(); 
 	
 
 });
 
-// //Data Controller:
-// function getData(data){
-// 	localStorage.getItem();
-// }
 
 //change screens:
 
@@ -134,7 +135,11 @@ function showScreen(page){
 function showScreenMenu(){
 	$('#' + currentScreen).css('display','none');
 	if(connected){
+		document.getElementById('welcomeBack').innerHTML = "hello, " + currentUser;
 		$('#welcomePageForConnected').css('display','block');
+		$('#setSpan').css('display','inline-block');
+		$('#regSpan').css('display','none');
+		$('#logSpan').css('display','none');
 		currentScreen='welcomePageForConnected';
 	}
 	else{
@@ -265,8 +270,18 @@ function checkValidRegForm(){
 		usernamesPass.push(passwordUser)
 		currentUser = usernameVar;
 		connected = true;
+		alert("Welcome back "  + currentUser + "!");
 		showScreenMenu();
 		return true;
+	}
+}
+
+
+
+function logButtonClick(){
+	let x = checkValidLogForm();
+	if(x){
+		showScreenMenu();
 	}
 }
 
@@ -299,8 +314,10 @@ function checkValidLogForm(){
 		return false;
 	}
 	else{
-		this.currentUser = usernameLogin;
+		currentUser = usernameLogin;
 		connected = true;
+		alert("Welcome back "  + currentUser + "!");
+		showScreenMenu();
 		return true;
 	}
 	

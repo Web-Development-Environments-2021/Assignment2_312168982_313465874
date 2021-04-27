@@ -19,17 +19,19 @@
 			<div id="header" style="margin-left: 30px; font-family: Verdana; font-size: 60px; color: rgb(243, 228, 16)">
 			<b>PACMAN </b>
 			</div>
-			<div align="right" style="color: white; padding: 5px; font-size: 25px; font-family: Verdana;">
+			<div id="textHead">
 				Created by Noya Karavani and Lev Ari Ulner
 			</div>
 		</div>
 
 		<!-- Menu: -->
 		<div class="menu" >
-			<a id="welcomeWindow" onclick="showScreenMenu()" > Welcome </a>|
-			<a id="registerWindow" onclick="showScreen('RegisterPageDiv')" > Register </a>|
-			<a id="loginWindow" onclick="showScreen('loginPageDiv')" > Login </a>|
-			<a id="aboutWindow"> About </a>|
+			<span id='welcomeSpan'><a id="welcomeWindow" onclick="showScreenMenu()" > Welcome </a>|</span>
+			<span id='regSpan'><a id="registerWindow" onclick="showScreen('RegisterPageDiv')" > Register </a>|</span>
+			<span id='logSpan'><a id="loginWindow" onclick="showScreen('loginPageDiv')" > Login </a>|</span>
+			<span id='setSpan'><a id="settingsWindow" onclick="showScreen('gameSetting')" > Settings </a>|</span>
+			<span id='aboutSpan'><a id="aboutWindow"> About </a>|</span>
+			<span id='welcomeBack'></span>
 		</div>
 		
 
@@ -43,7 +45,7 @@
 
 		<!--WELCOME PAGE After Login-->
 		<div id="welcomePageForConnected" class = "welcomePageClass" >
-			Welcome to the PACMAN game!
+			<span>Welcome to the PACMAN game!</span>
 		</br>
 		<button id='startGameButton' class="button welcome_Register" style="margin-right: 50px;" onclick="showScreen('gameSetting')">Start Game</button>
 		</div>
