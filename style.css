@@ -131,7 +131,7 @@ body{
     background-color: #ec76f0;
     margin: auto;
     padding: 20px;
-    border: 5px solid rgb(214, 45, 138);
+    border: 4px outset solid rgb(214, 45, 138);
     width: 80%;
   }
   
@@ -248,18 +248,18 @@ body{
 }
 
 canvas{
-    /* width: 99.1%;
-    height: 500px; */
+    display: inline;
 }
 
 
 #textHead{
-    margin-left: auto;
     text-align:right;
     color: white;
-    padding-right: 5px;
     font-size: 25px; 
     font-family: Verdana;
+    margin-right: 5px;
+    float: right;
+    padding-top: 35px;
 }
 
 #welcomeBack{
@@ -273,6 +273,8 @@ canvas{
 #tableSetting{
     font-size: 20px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin-top: 10px;
+    
 }
 
 
@@ -289,8 +291,17 @@ canvas{
     height:40px;
 }
 
+#canvasDiv{
+    display: inline-block;
+}
 
-
+#settingInGame{
+    display: inline-block;
+    /* align-items: right; */
+    margin-top: 10px;
+    margin-right: 10px;
+    padding: 10px
+}
 
 footer{
     background-color: rgb(150, 110, 130);

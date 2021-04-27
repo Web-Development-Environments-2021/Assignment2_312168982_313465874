@@ -13,13 +13,13 @@
 		<!-- Header: -->
 		<div id = "header" style="background-color: black;">
 			<div id="pacImg" >
-				<img src="images/pac.jpg" align ="left" alt="logoP" height = "70px">
+				<img src="images/pac.jpg" align ="left" alt="logoP" height = "70px" style="display: inline;">
 			</div>
 
-			<div id="header" style="margin-left: 30px; font-family: Verdana; font-size: 60px; color: rgb(243, 228, 16)">
+			<div id="header" style=" display: inline; margin-left: 30px; font-family: Verdana; font-size: 60px; color: rgb(243, 228, 16)">
 			<b>PACMAN </b>
 			</div>
-			<div id="textHead">
+			<div id="textHead" align="right" >
 				Created by Noya Karavani and Lev Ari Ulner
 			</div>
 		</div>
@@ -237,61 +237,49 @@
 
 
 		<div id="GamePageDiv">
-			<!-- ..<canvas id="canvas" style="border: 5px solid rgb(189, 85, 85);" > -->
+			<div id='gameTitles' style="display: inline;">
+				<img src="images/heart.jpg" align ="left" alt="lives" height = "35px" width="40px">: number
+				
+				
+				<img src="images/clock.jpg" align ="left" alt="timer" height = "35px" width="40px">: timer
+				Score:	
+			</div>
+			<div id='canvasDiv' align ="left">
+				<canvas id="canvas" style="border: 5px solid rgb(217, 231, 14);" ></canvas>
+			</div>
 			<div id="settingInGame">
 				<table id="tableSetting" align="right">
 					<tr>
-						<td>Key Up:</td>
-						<td>inputFromUser</td>
+						<td>Key Up: <span id ='keyUpGameTable'></span></td>
 					</tr>
 					<tr>
-						<td>Key Down:</td>
-						<td>inputFromUser</td>
+						<td>Key Down: <span id ='keyDownGameTable'></span></td>
 					</tr>
 					<tr>
-						<td>Key Left:</td>
-						<td>inputFromUser</td>
+						<td>Key Left: <span id ='keyLeftGameTable'></span></td>
 					</tr>
 					<tr>
-						<td>Key Right:</td>
-						<td>inputFromUser</td>
+						<td>Key Right: <span id ='keyRightGameTable'></span></td>
 					</tr>
 					<tr>
-						<td>Number of Balls:</td>
-						<td>inputFromUser</td>
+						<td>Number of Balls: <span id ='noBallsGameTable'></span></td>
 					</tr>
 					<tr>
-						<td>Color for 5 points balls:</td>
-						<td>inputFromUser</td>
+						<td>Color for 5 points balls: <span id ='smallBallsGameTable'></span></td>
 					</tr>
 					<tr>
-						<td>Color for 15 points balls:</td>
-						<td>inputFromUser</td>
+						<td>Color for 15 points balls: <span id ='mediunBallsGameTable'></span></td>
 					</tr>
 					<tr>
-						<td>Color for 25 points balls:</td>
-						<td>inputFromUser</td>
+						<td>Color for 25 points balls: <span id ='largeBallsGameTable'></span></td>
 					</tr>
 					<tr>
-						<td>Time for game (in seconds):</td>
-						<td>inputFromUser</td>
+						<td>Time for game (in seconds): <span id ='timeGameTable'></span></td>
 					</tr>
 					<tr>
-						<td>Number of Monsters:</td>
-						<td>inputFromUser</td>
-					</tr>
-				
-
-
-
-					
+						<td>Number of Monsters: <span id ='noMonstersGameTable'></span></td>
+					</tr>	
 				</table>
-
-
-				
-
-
-
 			</div>
 			
 			

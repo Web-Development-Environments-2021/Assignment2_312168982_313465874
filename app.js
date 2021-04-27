@@ -2,13 +2,13 @@ let context;
 let shape = new Object();
 
 //site data
-let connected = false;
-let currentUser = null;
-let currentScreen = 'RegisterPageDiv';
+let connected = true;
+let currentUser = 'k';
+let currentScreen = 'gamePageD';
 
 //Users Data:
-let usernamesID = ['k','Noya'];
-let usernamesPass = ['k','n'];
+let usernamesID = ['k'];
+let usernamesPass = ['k'];
 let usernameNumber = 0;
 
 
@@ -24,16 +24,20 @@ let start_time=0;
 let time_elapsed = 0;
 let interval;
 let gameMusic = new Audio('Popcorn Original Song.wav');
+let winMusic = new Audio('winner');
+let LoseMusic = new Audio('Wrong Buzzer Sound Effect');
 
 //board:
+let canvasWidth = 901;
+let canvasHeight = 420;
+let canvasRows = 14;
+let canvasColumns = 17;
 let board = new Array (14);
-let sizeX = 1000/14;
-let sizeY = 500/17;
 let rowsOfBoard = 15;
 let colsOfBoard = 12;
 
 //pacman vars:
-let pac_color;
+let pac_color = "yellow";
 let pacman_x;
 let pacman_y;
 
@@ -51,13 +55,15 @@ let bigBall = [];
 let bigBallColor;
 let ballCount = 50;
 
-let cherry = new Object();
-let cherry_cycle=0;
-let image_cherry;
+let treasure = new Object();
+// let image_treasure = document.createElement("img");
+// image_treasure.src('/images/money.jfif');
 
 //Advance
 let medicineCount;
-let medicineIMG;
+// let medicineIMG = document.createElement("img");
+// medicineIMG.src('/images/medicine.png');
+
 let clockCount;
 let clockIMG;
 
@@ -65,11 +71,13 @@ let clockIMG;
 // Values of the numbers in the maze:
 // empty = 0
 // wall = 1
-// ball = 2
+// smallBall = 2
 // medicine = 3
 // clock = 4
 // mons = 5
 // pacman = 6
+// mediumBall = 7
+// bigBall = 8
 
 
 
@@ -95,13 +103,31 @@ $(document).ready(function() {
 	// canvas:
 	canvas = document.getElementById('canvas');
 	context = canvas.getContext("2d");
-	canvas.width = "410";
-	canvas.height = "400";
+	canvas.width = canvasWidth;
+	canvas.height = canvasHeight;
 
 	context.font = "bold 60px Verdana";
 	context.fillStyle="rgb(221, 221, 42)";
+
 	
-	var grd = context.createRadialGradient(75, 50, 5, 90, 60, 100);
+	// context.beginPath();
+	// context.arc(100, 100, 50, 0, 2 * Math.PI, false);
+	// context.fillStyle = "rgb(0, 0, 255)";
+	// context.fill();
+
+	// context.beginPath();
+	// context.arc(100, 100, 50, 0.25 * Math.PI, 1.25 * Math.PI, false);
+	// context.fillStyle = "rgb(255, 255, 0)";
+	// context.fill();
+	// context.beginPath();
+	// context.arc(100, 100, 50, 0.75 * Math.PI, 1.75 * Math.PI, false);
+	// context.fill();
+	// context.beginPath();
+	// context.arc(100, 75, 10, 0, 2 * Math.PI, false);
+	// context.fillStyle = "rgb(0, 0, 0)";
+	// context.fill();
+	
+	let grd = context.createRadialGradient(75, 50, 5, 90, 60, 100);
 	grd.addColorStop(0, "yellow");
 	grd.addColorStop(1, "white");
 
@@ -131,9 +157,9 @@ function showScreen(page){
 	$('#' + currentScreen).css('display','none');
 	$('#' + page).css('display','block');
 	currentScreen=page;
-	// if(currentScreen == 'GamePageDiv'){
-	// 	start();
-	// }
+	if(currentScreen == 'GamePageDiv'){
+		start();
+	}
 }
 
 function showScreenMenu(){
@@ -228,7 +254,7 @@ function checkValidRegForm(){
 		validReg=false;	
 	}
 	else if(numCheckLName!=null){
-			document.getElementById('errLastName').innerHTML="Last name cannot contains numbers";
+			document.getElementById('errLastName').innerHTML="Last name cannot contain numbers";
 			validReg=false;
 	}	
 	else {
@@ -341,25 +367,23 @@ function checkValidLogForm(){
 // Settings Page:
 
 function uniKeyCode1(event) {
-	var key = event.key;
+	let key = event.key;
   $("#keyup").val(key);
 }
 function uniKeyCode2(event) {
-	var key = event.key;
+	let key = event.key;
   $("#keydown").val(key);
 }
 function uniKeyCode3(event) {
-	var key = event.key;
+	let key = event.key;
   $("#keyLeft").val(key);
 }
 function uniKeyCode4(event) {
-	var key = event.key;
+	let key = event.key;
   $("#keyRight").val(key);
 }
 
 function checkValidSettingForm(){
-	// showScreen('GamePageDiv');
-	// return true;
 	let validLog = true;
 	let keyUpT = document.forms["settingForm"]["keyUp"].value;
 	let keyDownT = document.forms["settingForm"]["keyDown"].value;
@@ -425,6 +449,16 @@ function checkValidSettingForm(){
 		bigBallColor = bigBallColorT
 		time_elapsed = time_elapsedT
 		monsCount = monsCountT
+		document.getElementById('keyUpGameTable').innerHTML = keyUp + board[0];
+		document.getElementById('keyDownGameTable').innerHTML = keyDown;
+		document.getElementById('keyLeftGameTable').innerHTML = keyLeft;
+		document.getElementById('keyRightGameTable').innerHTML = keyRight;
+		document.getElementById('noBallsGameTable').innerHTML = ballCount;
+		document.getElementById('smallBallsGameTable').innerHTML = smallBallColor;
+		document.getElementById('mediunBallsGameTable').innerHTML = mediumBallColor;
+		document.getElementById('largeBallsGameTable').innerHTML = bigBallColor;
+		document.getElementById('timeGameTable').innerHTML = time_elapsed;
+		document.getElementById('noMonstersGameTable').innerHTML = monsCount;
 		showScreen('GamePageDiv');
 		return true;
 	}
@@ -434,27 +468,13 @@ function checkValidSettingForm(){
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // Generate new Game:
 
 function genBoard(){
-	for(let i=0;i<board.length;i++){
-		board[i] = new Array(17)
+	for(let i=0;i<14;i++){
+		board[i] = new Array(17);
 		for(let j = 0; j< 17 ; j++){
+			
 			board[i][j] = 0;
 		}
 	}
@@ -551,17 +571,22 @@ function setBalls(){
 	let smallBallCount = ballCount * 0.6;
 	let mediumBallCount = ballCount * 0.3;
 	let bigBallCount = ballCount - smallBallCount - mediumBallCount;
+	document.getElementById('keyUpGameTable').innerHTML = Math.floor(Math.random()*15+1)
 	for (let i = 0; i< smallBallCount; i++){
 		let cell = randomFreeCell();
 		board[cell[0]][cell[1]] = 2;
+		;
 	}
-	for (let i = 0; i< mediumBallCount; i++){
+
+	
+
+	for (let j = 0; j< mediumBallCount; j++){
 		let cell = randomFreeCell();
-		board[cell[0]][cell[1]] = 2;
+		board[cell[0]][cell[1]] = 7;
 	}
-	for (let i = 0; i< bigBallCount; i++){
+	for (let k = 0; k< bigBallCount; k++){
 		let cell = randomFreeCell();
-		board[cell[0]][cell[1]] = 2;
+		board[cell[0]][cell[1]] = 8;
 	}
 }
 
@@ -611,23 +636,23 @@ function start() {
 	createMons();
 	setMons();
 	setPacman();
-
-	keysDown = {};
-	addEventListener(
-		"keydown",
-		function(e) {
-			keysDown[e.keyCode] = true;
-		},
-		false
-	);
-	addEventListener(
-		"keyup",
-		function(e) {
-			keysDown[e.keyCode] = false;
-		},
-		false
-	);
-	interval = setInterval(UpdatePosition, 250);
+	Draw()
+	// keysDown = {};
+	// addEventListener(
+	// 	"keydown",
+	// 	function(e) {
+	// 		keysDown[e.keyCode] = true;
+	// 	},
+	// 	false
+	// );
+	// addEventListener(
+	// 	"keyup",
+	// 	function(e) {
+	// 		keysDown[e.keyCode] = false;
+	// 	},
+	// 	false
+	// );
+	// interval = setInterval(UpdatePosition, 250);
 }
 
 function GetKeyPressed() {
@@ -647,14 +672,53 @@ function GetKeyPressed() {
 
 function Draw() {
 	canvas.width = canvas.width; //clean board
-	lblScore.value = score;
-	lblTime.value = time_elapsed;
-	for (var i = 0; i < 10; i++) {
-		for (var j = 0; j < 10; j++) {
-			var center = new Object();
-			center.x = i * 60 + 30;
-			center.y = j * 60 + 30;
-			if (board[i][j] == 2) {
+	for (let i = 0; i < canvasRows; i++) {
+		for (let j = 0; j < canvasColumns; j++) {
+			let center = new Object();
+			center.x = i * 53 + 27;
+			center.y = j * 30 + 15;
+			
+			
+			//Wall: 
+			if (board[i][j] == 1) {
+				context.beginPath();
+				context.rect(center.x - 27, center.y - 15, 53, 30);
+				context.fillStyle = "black"; //color
+				context.fill();
+			}
+ 
+			// //smallBall
+			// else if (board[i][j] == 2) {
+			// 	context.beginPath();
+			// 	context.arc(center.x, center.y, 8, 0, 2 * Math.PI); // circle
+			// 	context.fillStyle = smallBallColor; //color
+			// 	context.fill();
+			// }
+
+			// //mediumBall
+			// else if (board[i][j] == 7) {
+			// 	context.beginPath();
+			// 	context.arc(center.x, center.y, 12, 0, 2 * Math.PI); // circle
+			// 	context.fillStyle = mediumBallColor; //color
+			// 	context.fill();
+			// }
+			
+			// //bigBall
+			// else if (board[i][j] == 8) {
+			// 	context.beginPath();
+			// 	context.arc(center.x, center.y, 15, 0, 2 * Math.PI); // circle
+			// 	context.fillStyle = bigBallColor; //color
+			// 	context.fill();
+			// }
+
+			// //medicine
+			// else if (board[i][j] == 3) {
+			// 	context.beginPath();
+			// 	context.drawImage(medicineIMG,center.x-27,center.y-15,53,30)// medicine picture
+			// 	context.fill();
+			// }
+			//Pacman Draw:
+			else if (board[i][j] == 6) {
 				context.beginPath();
 				context.arc(center.x, center.y, 30, 0.15 * Math.PI, 1.85 * Math.PI); // half circle
 				context.lineTo(center.x, center.y);
@@ -663,16 +727,6 @@ function Draw() {
 				context.beginPath();
 				context.arc(center.x + 5, center.y - 15, 5, 0, 2 * Math.PI); // circle
 				context.fillStyle = "black"; //color
-				context.fill();
-			} else if (board[i][j] == 1) {
-				context.beginPath();
-				context.arc(center.x, center.y, 15, 0, 2 * Math.PI); // circle
-				context.fillStyle = "black"; //color
-				context.fill();
-			} else if (board[i][j] == 4) {
-				context.beginPath();
-				context.rect(center.x - 30, center.y - 30, 60, 60);
-				context.fillStyle = "grey"; //color
 				context.fill();
 			}
 		}
@@ -719,6 +773,20 @@ function UpdatePosition() {
 	}
 
 	
+}
+
+function countDown(number){
+	let hours=0;
+	let minutes=0;
+	let seconds=0;
+	if(number > 360){
+		hours=int(number/360);
+		number=number-360;
+	}
+	else if(number > 60){
+		
+	}
+
 }
 
 
