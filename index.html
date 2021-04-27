@@ -121,7 +121,7 @@
 				<div class="form-group">
 					<b>Birth Date:</b>
 					<input type="date" name="birthDate" placeholder="birth-date" required>
-					<span id="errBirthDate" class="error"></span><br>
+					<span id="errBirthDate"></span><br>
 				</div>
 				<div class="form-group">
 					<input id="regButton" type="submit" value="Register">		
@@ -161,19 +161,19 @@
 						<td>
 							Key Up:
 							<input id="keyup" name="keyUp" type="text" onkeydown="uniKeyCode1(event)" maxlength="1">
-							<span id='keyUpErr' class="error"></span>
+							<span id='keyUpErr' style="color:red"></span>
 							<br>
 						</td>
 						<td>
 							Number of Balls:
-							<input name="NumeberBalls" type="number" min="50" max="90"> <br>
+							<input name="NumeberBalls" type="number" value = "50" min="50" max="90"> <br>
 						</td>
 					</tr>
 					<tr>
 						<td>
 							Key Down:
-							<input id="keydown" name="keydown" type="text" onkeydown="uniKeyCode2(event)" maxlength="1">
-							<span id='keyDownErr' class="error"></span>
+							<input id="keydown" name="keyDown" type="text" onkeydown="uniKeyCode2(event)" maxlength="1">
+							<span id='keyDownErr' style="color:red"></span>
 							<br>
 						</td>
 						<td>
@@ -185,7 +185,7 @@
 						<td>
 							Key Left:
 							<input id="keyLeft" name="keyLeft" type="text" onkeydown="uniKeyCode3(event)" maxlength="1">
-							<span id='keyLeftErr' class="error"></span> <br>
+							<span id='keyLeftErr' style="color:red" ></span> <br>
 						</td>
 						<td>
 							Color for 15 points balls:
@@ -196,7 +196,7 @@
 						<td>
 							Key Right:
 							<input id="keyRight" name="keyRight"type="text" onkeydown="uniKeyCode4(event)" maxlength="1">
-							<span id='keyRightErr' class="error"></span>
+							<span id='keyRightErr' style="color:red"></span>
 							<br>
 						</td>
 						<td>
@@ -209,7 +209,7 @@
 						<td>
 							Time for game (in seconds):
 							<input name="timeElapse" placeholder="minimum 60 seconds">
-							<span id='timeElapseErr' class="error"></span>
+							<span id='timeElapseErr' style="color:red"></span>
 							<br>
 						</td>
 					</tr>

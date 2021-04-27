@@ -109,9 +109,7 @@ $(document).ready(function() {
 
 	// gameMusic.play();
 	// gameMusic.loop();
-
-	
-	// Start(); 
+ 
 	
 
 });
@@ -133,6 +131,9 @@ function showScreen(page){
 	$('#' + currentScreen).css('display','none');
 	$('#' + page).css('display','block');
 	currentScreen=page;
+	// if(currentScreen == 'GamePageDiv'){
+	// 	start();
+	// }
 }
 
 function showScreenMenu(){
@@ -185,7 +186,7 @@ function checkValidRegForm(){
 	let firstNameUser = document.forms["regForm"]["first-name"].value;
 	let lastNameUser = document.forms["regForm"]["last-name"].value;
 	let emailUser = document.forms["regForm"]["mail"].value;
-	//let birthDateUser = document.forms["regForm"]["birthDate"].value;
+	let birthDateUser = document.forms["regForm"]["birthDate"].value;
 
 	let letter = /[a-z,A-Z]/g;
   	let num = /[0-9]/g;
@@ -265,6 +266,17 @@ function checkValidRegForm(){
 	else{
 		document.getElementById('errEmail').innerHTML="";
 	}
+
+	//check birthday
+	if((new Date(birthDateUser).getTime() > new Date().getTime())){
+		document.getElementById('errBirthDate').innerHTML="A valid date is required";
+		validReg=false;
+	}
+	else{
+		document.getElementById('errBirthDate').innerHTML="";
+	}
+
+
 	if(validReg == false){
 		return false;
 	}
@@ -273,7 +285,7 @@ function checkValidRegForm(){
 		usernamesPass.push(passwordUser)
 		currentUser = usernameVar;
 		connected = true;
-		alert("Welcome back "  + currentUser + "!");
+		alert("Welcome for the first time, "  + currentUser + "!");
 		showScreenMenu();
 		return true;
 	}
@@ -346,63 +358,76 @@ function uniKeyCode4(event) {
 }
 
 function checkValidSettingForm(){
-	showScreen('GamePageDiv');
-	return true;
-	// let validLog = true;
-	// keyUp = document.forms["settingForm"]["keyUp"].value;
-	// keyDown = document.forms["settingForm"]["keyDown"].value;
-	// keyLeft = document.forms["settingForm"]["keyLeft"].value;
-	// keyRight = document.forms["settingForm"]["keyRight"].value;
-	// ballCount = document.forms["settingForm"]["NumeberBalls"].value;
-	// smallBallColor = document.forms["settingForm"]["smallBallColor"].value;
-	// mediumBallColor = document.forms["settingForm"]["mediumBallColor"].value;
-	// bigBallColor = document.forms["settingForm"]["bigBallColor"].value;
-	// time_elapsed = document.forms["settingForm"]["timeElapse"].value;
-	// monsCount= document.getElementById("noMonsters").value;
+	// showScreen('GamePageDiv');
+	// return true;
+	let validLog = true;
+	let keyUpT = document.forms["settingForm"]["keyUp"].value;
+	let keyDownT = document.forms["settingForm"]["keyDown"].value;
+	let keyLeftT = document.forms["settingForm"]["keyLeft"].value;
+	let keyRightT = document.forms["settingForm"]["keyRight"].value;
+	let ballCountT = document.forms["settingForm"]["NumeberBalls"].value;
+	let smallBallColorT = document.forms["settingForm"]["smallBallColor"].value;
+	let mediumBallColorT = document.forms["settingForm"]["mediumBallColor"].value;
+	let bigBallColorT = document.forms["settingForm"]["bigBallColor"].value;
+	let time_elapsedT = document.forms["settingForm"]["timeElapse"].value;
+	let monsCountT= document.getElementById("noMonsters").value;
+	
+	let letter = /[a-z,A-Z]/g;
+	let letterCheckPass = time_elapsedT.match(letter);
 
-	// if(keyUp==null){
-	// 	document.getElementById('keyUpErr').innerHTML="Please choose key up";
-	// 	validLog = false;
-	// }
-	// else{
-	// 	document.getElementById('keyUpErr').innerHTML="";
-	// }
-	// if(keyDown==null){
-	// 	document.getElementById('keyDownErr').innerHTML="Please choose 60 seconds or more";
-	// 	validLog = false;
-	// }
-	// else{
-	// 	document.getElementById('keyDownErr').innerHTML="";
-	// }
-	// if(keyLeft==null){
-	// 	document.getElementById('keyLeftErr').innerHTML="Please choose 60 seconds or more";
-	// 	validLog = false;
-	// }
-	// else{
-	// 	document.getElementById('keyLeftErr').innerHTML="";
-	// }
-	// if(keyRight==null){
-	// 	document.getElementById('keyRightErr').innerHTML="Please choose 60 seconds or more";
-	// 	validLog = false;
-	// }
-	// else{
-	// 	document.getElementById('keyRightErr').innerHTML="";
-	// }
+	if(keyUpT==''){
+		document.getElementById('keyUpErr').innerHTML="*";
+		validLog = false;
+	}
+	else{
+		document.getElementById('keyUpErr').innerHTML="";
+	}
+	if(keyDownT==''){
+		document.getElementById('keyDownErr').innerHTML="*";
+		validLog = false;
+	}
+	else{
+		document.getElementById('keyDownErr').innerHTML="";
+	}
+	if(keyLeftT==''){
+		document.getElementById('keyLeftErr').innerHTML="*";
+		validLog = false;
+	}
+	else{
+		document.getElementById('keyLeftErr').innerHTML="";
+	}
+	if(keyRightT==''){
+		document.getElementById('keyRightErr').innerHTML="*";
+		validLog = false;
+	}
+	else{
+		document.getElementById('keyRightErr').innerHTML="";
+	}
 
-	// if(time_elapsed<60 || time_elapsed==null){
-	// 	document.getElementById('timeElapseErr').innerHTML="Please choose 60 seconds or more";
-	// 	validLog = false;
-	// }
-	// else{
-	// 	document.getElementById('timeElapseErr').innerHTML="";
-	// }
-	// if(!validLog){
-	// 	return false;
-	// }
-	// else{
-	// 	showScreen('GamePageDiv');
-	// 	return true;
-	// }
+	if(time_elapsedT<60 || time_elapsedT==null || letterCheckPass!=null){
+		document.getElementById('timeElapseErr').innerHTML="*";
+		validLog = false;
+	}
+	else{
+		document.getElementById('timeElapseErr').innerHTML="";
+	}
+	if(!validLog){
+		return false;
+	}
+	else{
+		keyUp = keyUpT
+		keyDown = keyDownT
+		keyLeft = keyLeftT 
+		keyRight = keyRightT
+		ballCount = ballCountT
+		smallBallColor = smallBallColorT 
+		mediumBallColor = mediumBallColorT
+		bigBallColor = bigBallColorT
+		time_elapsed = time_elapsedT
+		monsCount = monsCountT
+		showScreen('GamePageDiv');
+		return true;
+	}
 	
 }
 
@@ -574,7 +599,7 @@ function setPacman(){
 }
 
 
-function Start() {
+function start() {
 	score = 0;
 	pac_color = "yellow";
 	start_time = new Date();
