@@ -79,7 +79,6 @@ $(document).ready(function() {
 
 	// showing:
 	hideAll();
-	currentScreen = 'welcomePage'
 	showScreenMenu();
 
 	// canvas:
@@ -148,18 +147,27 @@ function showScreenMenu(){
 // validation for register:
 
 function checkUserNameExist(username){
-	for(let i=0;i<this.usernamesID.length;i++){
-		if(this.usernamesID[i] == username){
+	for(let i=0;i<usernamesID.length;i++){
+		if(usernamesID[i] == username){
 			return true;
 		}
 	}
 	return false;
 }
 
-function regButtonFunc(){
-	if(checkValidRegForm){
-		showScreenMenu(); 
+function checkPassword(username,password){
+	for(let i=0;i<usernamesID.length;i++){
+		if(usernamesID[i] == username){
+			if(usernamesPass[i] == password)
+			{
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
 	}
+	return false;
 }
 
 function checkValidRegForm(){
@@ -183,10 +191,10 @@ function checkValidRegForm(){
 		document.getElementById('errName').innerHTML="Username is required";
 		validReg=false;
 	}
-	// else if(checkUserNameExist(usernameVar)){
-	// 		document.getElementById('errName').innerHTML="This username is taken";
-	// 		validReg=false;
-	// }
+	else if(usernameVar.length > 0 && checkUserNameExist(usernameVar)){
+		document.getElementById('errName').innerHTML="Username is exist";
+		validReg=false;
+	}
 	else{
 		document.getElementById('errName').innerHTML="";
 	}
@@ -249,9 +257,6 @@ function checkValidRegForm(){
 	else{
 		document.getElementById('errEmail').innerHTML="";
 	}
-
-
-
 	if(validReg == false){
 		return false;
 	}
@@ -260,15 +265,8 @@ function checkValidRegForm(){
 		usernamesPass.push(passwordUser)
 		currentUser = usernameVar;
 		connected = true;
-	}
-	return true;
-}
-
-// validation for login:
-
-function logButtonFunc(){
-	if(checkValidLogForm){
-		showScreenMenu(); 
+		showScreenMenu();
+		return true;
 	}
 }
 
@@ -278,26 +276,31 @@ function checkValidLogForm(){
 	let passwordLogin = document.forms["logForm"]["password"].value;
 
 	if(usernameLogin.length<1){
-		document.getElementById('errName').innerHTML="Please enter a username";
+		document.getElementById('errNameLog').innerHTML="Please enter a username";
 		validLog = false;
 	}
-	else if(this.users[usernameVar]!=null){
-		document.getElementById('errName').innerHTML="Username doesn't exist";
+	else if(!checkUserNameExist(usernameLogin)){
+		document.getElementById('errNameLog').innerHTML="Username doesn't exist";
 		validLog = false;
 	}
-	else if(passwordLogin.length < 1){
-		document.getElementById('errPassword').innerHTML="Please enter a password";
+	else{
+		document.getElementById('errNameLog').innerHTML="";
+	}
+	if(passwordLogin.length < 1){
+		document.getElementById('errPasswordLog').innerHTML="Please enter a password";
 		validLog = false;
 	}
-	else if(this.users[usernameVar]['password'] != passwordLogin){
-		document.getElementById('errPassword').innerHTML="Wrong password";
+	else if(!checkPassword(usernameLogin,passwordLogin)){
+		document.getElementById('errPasswordLog').innerHTML="Wrong password";
 		validLog = false;
+	}
+
+	if(!validLog){
+		return false;
 	}
 	else{
 		this.currentUser = usernameLogin;
 		connected = true;
-	}
-	if(validLog){
 		return true;
 	}
 	

@@ -90,7 +90,7 @@
 
 		<!--REGISTER PAGE-->
 		<div id="RegisterPageDiv">
-			<form id="contact" name="regForm" method="post" onsubmit="return checkValidRegForm()">
+			<form id="regContact" name="regForm" onsubmit="return checkValidRegForm()">
 				<div class="form-group">
 					<b>Username:</b>
 					<input id="usernameReg" type="text" name="username" placeholder="username">
@@ -122,7 +122,7 @@
 					<span id="errBirthDate" class="error"></span><br>
 				</div>
 				<div class="form-group">
-					<input id="regButton" type="submit" value="Register" onclick="regButtonFunc">		
+					<input id="regButton" type="submit" value="Register">		
 				</div>
 			</form>	
 		</div>
@@ -130,19 +130,19 @@
 
 		<!-- Login Page: -->
 		<div id="loginPageDiv">
-			<form id="contact" name="logForm" method="post">
+			<form id="logContact" name="logForm" onsubmit="return checkValidLogForm()">
 				<div>
 					<b>Username:</b>
 					<input id = "usernameL" type="text" name="usernameLog" placeholder="username">
-					<span id="errName"></span><br>
+					<span id="errNameLog"></span><br>
 				</div>
 				<div>
 					<b>Password:</b>
 					<input type="password" name="password" placeholder="password" >
-					<span id="errPassword" ></span><br><br>
+					<span id="errPasswordLog" ></span><br><br>
 				</div>
 				<div>
-					<input id="logButton" type="submit" value="Login" onclick="logButtonFunc()" style="font-size: 40px; width: 200px; margin-left: 180px;">				
+					<input id="logButton" type="submit" value="Login" style="font-size: 40px; width: 200px; margin-left: 180px;">				
 				</div>
 			</form>	
 		</div>
