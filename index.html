@@ -55,7 +55,9 @@
 		<div id="myModal" class="modal">
 			<div class="modal-content">
 			  <span class="close">&times;</span>
-			  <p>Submits: Noya Karavani and Lev Ari Ulner<br>
+			  <p>This game is created by Noya Karavani and Lev Ari Ulner.<br><br>
+				JQuery and Templates: We used jQuery plugins for form validation, date picker and timer.<br><br>
+				Ummm .. dificulties?
 				</p>
 			</div>
 		</div>
@@ -153,7 +155,7 @@
 		<!-- Game Setting Page: -->
 		<div id="gameSetting">
 			<form id="settingForm" name="settingForm" onsubmit="return checkValidSettingForm()">
-				<div align="center" style="font-size: 50px;">
+				<div align="center" style="font-size: 55px;">
 					<b>Choose your setting </b> <br>
 				</div>
 				<table style="width:100%; height: 50%; padding: 30px;" >
@@ -227,9 +229,14 @@
 					</tr>
 				</table>
 
-				<div align="center">
-					<!-- onclick change -->
-					<input id="settingButton" type="submit" value="Let's Play" style="font-size: 40px; margin-right: 100px ; width: 300px;">
+				<div class="settingButton">
+					<div>
+						<input type="submit" value="Let's Play" style="font-size: 40px; margin-right: 70px; width: 300px;">
+					</div>
+					<div>
+						<input type="submit" value="Generate Random Setting" onclick="generateRandomSetting()" style="font-size: 40px; margin-left: 500px ; width: 500px;">
+					</div>
+					
 				</div>
 			</form>
 		</div>
@@ -238,11 +245,20 @@
 
 		<div id="GamePageDiv">
 			<div id='gameTitles' style="display: inline;">
-				<img src="images/heart.jpg" align ="left" alt="lives" height = "35px" width="40px">: number
+				<div>
+				<img src="images/heart.jpg" align ="left" alt="lives" height = "35px" width="50px">:
+				<span id='heartsCount'></span>
+				</div>
 				
+				<div>
+				<img src="images/clock.jpg" align ="center" alt="timer" height = "35px" width="40px">: 
+				<span id='timer'></span>
+				</div>
+
+				<div align="right">Score:	
+					<span id='score'></span>
+				</div>
 				
-				<img src="images/clock.jpg" align ="left" alt="timer" height = "35px" width="40px">: timer
-				Score:	
 			</div>
 			<div id='canvasDiv' align ="left">
 				<canvas id="canvas" style="border: 5px solid rgb(217, 231, 14);" ></canvas>

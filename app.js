@@ -19,7 +19,6 @@ let keyLeft;
 let keyRight;
 
 let score=0;
-let lives=5;
 let start_time=0;
 let time_elapsed = 0;
 let interval;
@@ -66,6 +65,9 @@ let medicineCount = 2;
 
 let clockCount = 2;
 let clockIMG;
+let hearts = 5;
+let minutes;
+let seconds;
 
 
 // Values of the numbers in the maze:
@@ -457,14 +459,58 @@ function checkValidSettingForm(){
 		document.getElementById('smallBallsGameTable').innerHTML = smallBallColor;
 		document.getElementById('mediunBallsGameTable').innerHTML = mediumBallColor;
 		document.getElementById('largeBallsGameTable').innerHTML = bigBallColor;
-		document.getElementById('timeGameTable').innerHTML = time_elapsed;
+		document.getElementById('timeGameTable').innerHTML = countDown(time_elapsed);
 		document.getElementById('noMonstersGameTable').innerHTML = monsCount;
+		document.getElementById('heartsCount').innerHTML = countHearts(hearts);
 		showScreen('GamePageDiv');
 		return true;
 	}
 	
 }
 
+function generateRandomSetting(){
+// 	let keyUpT = function uniKeyCode(event=38) {
+// 		let key = event.key;
+// 	  $("#keyup").val(key);
+// 	}
+// 	let keyDownT = function uniKeyCode(event=40) {
+// 		let key = event.key;
+// 	  $("#keyup").val(key);
+// 	}
+// 	let keyLeftT = function uniKeyCode(event=37) {
+// 		let key = event.key;
+// 	  $("#keyup").val(key);
+// 	}
+// 	let keyRightT = function uniKeyCode(event=39) {
+// 		let key = event.key;
+// 	  $("#keyup").val(key);
+// 	}
+}
+
+//timer
+function countDown(number){
+	let minutes=0;
+	let seconds=0;
+	minutes = Math.floor(number/60);
+	seconds = number % 60;
+	// If the value of seconds is less than 10, then display seconds with a leading zero
+	if (seconds < 10) {
+		seconds = `0${seconds}`;
+	}
+	// The output in MM:SS format
+	return `${minutes}:${seconds}`;
+}
+
+//count hearts
+function countHearts(hearts){
+	hearts = 5;
+	//down and up cases
+}
+
+//count score
+function updateScore(score){
+	//down and up cases
+}
 
 
 
@@ -771,18 +817,6 @@ function UpdatePosition() {
 	
 }
 
-function countDown(number){
-	let hours=0;
-	let minutes=0;
-	let seconds=0;
-	if(number > 360){
-		hours=int(number/360);
-		number=number-360;
-	}
-	else if(number > 60){
-		
-	}
 
-}
 
 
