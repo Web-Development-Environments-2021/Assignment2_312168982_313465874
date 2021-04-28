@@ -46,6 +46,16 @@ let pacman_y;
 let monsCount = 1;
 let mons;
 
+let monsRedPic = document.createElement("img");
+let monsBluePic = document.createElement("img");
+let monsYellowPic = document.createElement("img");
+let monspinkPic = document.createElement("img");
+
+monsRedPic.src = 'images/game/pacman.png';
+monsBluePic.src = 'images/game/pacman.png';
+monsYellowPic.src = 'images/game/pacman.png';
+monspinkPic.src = 'images/game/pacman.png';
+
 //balls:
 let smallBall = [];
 let smallBallColor;
@@ -55,20 +65,22 @@ let bigBall = [];
 let bigBallColor;
 let ballCount = 50;
 
+//treasure:
 let treasure = new Object();
 treasure.x = 100;
 treasure.y= 100;
 let image_treasure = document.createElement("img");
 image_treasure.src ='images/money.png';
 
-//Advance
+//Advance:
 let medicineCount = 2;
 let medicineIMG = document.createElement("img");
 medicineIMG.src = 'images/medicine.png';
 
+//clock:
 let clockCount = 2;
 let clockIMG = document.createElement("img");
-clockIMG.src='images/clock.jpg';
+clockIMG.src='images/clock.png';
 
 
 // Values of the numbers in the maze:
@@ -77,10 +89,13 @@ clockIMG.src='images/clock.jpg';
 // smallBall = 2
 // medicine = 3
 // clock = 4
-// mons = 5
+// monster[0] = 5
 // pacman = 6
 // mediumBall = 7
 // bigBall = 8
+// monster[1] = 9
+// monster[2] = 10
+// monster[3] = 11
 
 
 
@@ -600,19 +615,19 @@ function setMons(){
 	mons[0].y = 0;
 	board[1][1] = 5;
 	if(monsCount > 1){
-		board[1][15] = 5;
+		board[1][15] = 9;
 		mons[1] = new Object();
 		mons[1].x = 0;
 		mons[1].y = 0;
 	}
 	if(monsCount > 2){
-		board[12][0] = 5;
+		board[12][0] = 10;
 		mons[2] = new Object();
 		mons[2].x = 0;
 		mons[2].y = 0;
 	}
 	if(monsCount > 3){
-		board[12][15] = 0;
+		board[12][15] = 11;
 		mons[3] = new Object();
 		mons[3].x = 0;
 		mons[3].y = 0;
@@ -723,7 +738,22 @@ function Draw() {
 				context.drawImage(clockIMG, (center.x - (canvasWidth/(3*canvasRows))), (center.y - (canvasHeight/(3*canvasColumns))), (2*canvasWidth/(3*canvasRows)), (2*canvasHeight/(3*canvasColumns))); // medicine picture
 			}
 
-			//mons:
+			//mons[0]:
+			else if (board[i][j] == 5) {
+				context.drawImage(monsRedPic, (center.x - (canvasWidth/(4*canvasRows))), (center.y - (canvasHeight/(4*canvasColumns))), (canvasWidth/(2*canvasRows)), (canvasHeight/(2*canvasColumns))); // medicine picture
+			}
+			//mons[1]:
+			else if (board[i][j] == 9) {
+				context.drawImage(monsBluePic, (center.x - (canvasWidth/(4*canvasRows))), (center.y - (canvasHeight/(4*canvasColumns))), (canvasWidth/(2*canvasRows)), (canvasHeight/(2*canvasColumns))); // medicine picture
+			}
+			//mons[2]:
+			else if (board[i][j] == 10) {
+				context.drawImage(monsYellowPic, (center.x - (canvasWidth/(4*canvasRows))), (center.y - (canvasHeight/(4*canvasColumns))), (canvasWidth/(2*canvasRows)), (canvasHeight/(2*canvasColumns))); // medicine picture
+			}
+			//mons[3]:
+			else if (board[i][j] == 11) {
+				context.drawImage(monspinkPic, (center.x - (canvasWidth/(4*canvasRows))), (center.y - (canvasHeight/(4*canvasColumns))), (canvasWidth/(2*canvasRows)), (canvasHeight/(2*canvasColumns))); // medicine picture
+			}
 
 			//Pacman Draw:
 			else if (board[i][j] == 6) {
