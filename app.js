@@ -70,6 +70,8 @@ pacmanData.eyeUpY= 0;
 pacmanData.eyeX = -6;
 pacmanData.eyeY= 0;
 
+pacmanData.movingX = 0;
+pacmanData.movingY = 0;
 
 //Monsters Vars:
 let monsCount = 2;
@@ -701,6 +703,9 @@ function setPacman(){
 function start() {
 	window.clearInterval(interval);
 	window.clearInterval(timeInterval);
+	gamestat = 0;
+	keyPressed = ''
+	keyPressedBool = false;
 	score = 0;
 	time_left = time_elapsed;
 	pac_color = "yellow";
@@ -812,12 +817,12 @@ function Draw() {
 				pacman_x = center.x;
 				pacman_y = center.y;
 				context.beginPath();
-				context.arc(center.x, center.y, 15, (pacmanData.mouthSize + pacmanData.directionSize) * Math.PI/180,(2*Math.PI - ((pacmanData.mouthSize - pacmanData.directionSize) * Math.PI/180))); // half circle
-				context.lineTo(center.x, center.y);
+				context.arc(center.x+ pacmanData.movingX, center.y + pacmanData.movingY, 15, (pacmanData.mouthSize + pacmanData.directionSize) * Math.PI/180,(2*Math.PI - ((pacmanData.mouthSize - pacmanData.directionSize) * Math.PI/180))); // half circle
+				context.lineTo(center.x + pacmanData.movingX , center.y+ pacmanData.movingY);
 				context.fillStyle = pac_color; //color
 				context.fill();
 				context.beginPath();
-				context.arc(center.x + pacmanData.eyeX, center.y - pacmanData.eyeY, 2, 0, 2 * Math.PI); // circle
+				context.arc(center.x + pacmanData.movingX + pacmanData.eyeX, center.y + pacmanData.movingY - pacmanData.eyeY, 2, 0, 2 * Math.PI); // circle
 				context.fillStyle = "black"; //color
 				context.fill();
 			}
@@ -877,15 +882,19 @@ function movePacman(directionPac){
 	moveEyePacman(directionPac);
 	if(directionPac == "right"){
 		pacmanData.directionSize = 0;
+		pacmanData.movingX = pacmanData.movingX+0.5;
 	}
 	else if(directionPac == "down"){
 		pacmanData.directionSize = 90;
+		pacmanData.movingY = pacmanData.movingY+0.5;
 	}
 	else if(directionPac == "left"){
 		pacmanData.directionSize = 180;
+		pacmanData.movingX = pacmanData.movingX-0.5;
 	}
 	else if (directionPac == "up"){
 		pacmanData.directionSize = 270;
+		pacmanData.movingY = pacmanData.movingY-0.5;
 	}
 }
 
@@ -944,6 +953,13 @@ function pacmanMouthChange(){
 	}
 }
 
+function endgameExitGame(){
+	window.clearInterval(interval);
+	window.clearInterval(interval);
+	window.clearInterval(timeInterval);
+	alert("Game Finished");
+	showScreen('gameSetting');
+}
 
 function GetKeyPressed() {
 	document.getElementById('keyUpGameTable').innerHTML = (keyPressedBool);
@@ -959,6 +975,10 @@ function GetKeyPressed() {
 	if (keyPressed == keyUp && keyPressedBool == true) {
 		return "up";
 	}
+	if (keyPressed == 'Escape' && keyPressedBool == true) {
+		gamestat = 4;
+		return pacmanData.direction;
+	}
 }
 
 
@@ -973,6 +993,9 @@ function UpdatePosition() {
 
 	if(gamestat == 3){
 		endgameWon();
+	}
+	if(gamestat == 4){
+		endgameExitGame();
 	}
 	let x = GetKeyPressed();
 	pacmanMouthChange();
