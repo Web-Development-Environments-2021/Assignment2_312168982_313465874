@@ -32,9 +32,9 @@ let time_elapsed = 0;
 let time_left = 0;
 let interval;
 let timeInterval;
-let gameMusic = new Audio('Popcorn Original Song.wav');
-let winMusic = new Audio('winner');
-let LoseMusic = new Audio('Wrong Buzzer Sound Effect');
+let gameMusic = new Audio('sound/Popcorn Original Song.wav');
+let winMusic = new Audio('sound/winner');
+let LoseMusic = new Audio('sound/Wrong Buzzer Sound Effect');
 
 //board:
 let canvasWidth = 901;
@@ -550,6 +550,13 @@ function generateRandomSetting(){
 }
 
 
+function countDown(time_elapsed){
+	const minutes = Math.floor(time / 60);
+	if (seconds < 10) {
+		seconds = `0${seconds}`;
+	}
+	return `${minutes}:${seconds}`;
+}
 
 // Generate new Game:
 
@@ -702,12 +709,203 @@ function setPacman(){
 	board[cell[0]][cell[1]] = 6;
 }
 
-function getCell(pixX,pixY){
-	let x = x / (canvasWidth/canvasRows) + (canvasWidth/(2*canvasRows));
-	center.y = y / (canvasHeight/canvasColumns) + (canvasHeight/(2*canvasColumns));
 
-	return [x,y];
+function findCreature(creatureNum){
+	for (let i=0; i<board.length;i++){
+		for(let j=0;j<board[0].length;j++){
+			if(board[i][j] == creatureNum){
+				return [i,j];
+			}
+		}
+	}
+	return null;
+}
 
+function movePacmanCell(){
+	let pacmanPos = findCreature(6);
+	// document.getElementById('keyUpGameTable').innerHTML = x + " , " + y;
+	let x = pacmanPos[0];
+	let y = pacmanPos[1];
+	if(pacmanData.direction == 'right'){
+		if(x!= board.length-1 ){
+			if(board[x+1][y] != 1){
+				board[x][y] = 0
+				
+				//fruit
+				if(board[x+1][y]==2){
+					score+=5;
+					ballCount--;
+				}
+				if(board[x+1][y]==7){
+					score+=15;
+					ballCount--;
+				}
+				if(board[x+1][y]==8){
+					score+=25;
+					ballCount--;
+				}
+
+				//special
+				if(board[x+1][y]==3){
+					lives+=1;
+					ballCount--;
+				}
+				if(board[x+1][y]==4){
+					time_left+=10
+				}
+
+				//Mons
+				if(board[x+1][y]==5){
+					lives-=1;
+				}
+				if(board[x+1][y]==9){
+					lives-=1;
+				}
+				if(board[x+1][y]==10){
+					lives-=1;
+				}
+				if(board[x+1][y]==11){
+					lives-=1;
+				}
+				board[x+1][y] = 6
+				x=x+1;
+			}
+		}
+		
+	}
+	if(pacmanData.direction == 'left'){
+		if(x != 0){
+			if(board[x-1][y] != 1){
+				board[x][y] = 0
+				
+				//fruit
+				if(board[x-1][y]==2){
+					score+=5;
+				}
+				if(board[x-1][y]==7){
+					score+=15;
+				}
+				if(board[x-1][y]==8){
+					score+=25;
+				}
+
+				//special
+				if(board[x-1][y]==3){
+					lives+=1;
+				}
+				if(board[x-1][y]==4){
+					time_left+=10
+				}
+
+				//Mons
+				if(board[x-1][y]==5){
+					lives-=1;
+				}
+				if(board[x-1][y]==9){
+					lives-=1;
+				}
+				if(board[x-1][y]==10){
+					lives-=1;
+				}
+				if(board[x-1][y]==11){
+					lives-=1;
+				}
+				board[x-1][y] = 6
+				x=x-1;
+			}
+		}
+		
+	}
+	if(pacmanData.direction == 'down'){
+		if(y != board[0].length){
+			if(board[x][y+1] != 1){
+				board[x][y+1] = 0
+				
+				//fruit
+				if(board[x][y+1]==2){
+					score+=5;
+				}
+				if(board[x][y+1]==7){
+					score+=15;
+				}
+				if(board[x][y+1]==8){
+					score+=25;
+				}
+
+				//special
+				if(board[x][y+1]==3){
+					lives+=1;
+				}
+				if(board[x][y+1]==4){
+					time_left+=10
+				}
+
+				//Mons
+				if(board[x][y+1]==5){
+					lives-=1;
+				}
+				if(board[x][y+1]==9){
+					lives-=1;
+				}
+				if(board[x][y+1]==10){
+					lives-=1;
+				}
+				if(board[x][y+1]==11){
+					lives-=1;
+				}
+				board[x][y+1] = 6
+				y=y+1;
+			}
+		}
+		
+	}
+	if(pacmanData.direction == 'down'){
+		if(y != 0){
+			if(board[x][y-1] != 1){
+				board[x][y-1] = 0
+				
+				//fruit
+				if(board[x][y-1]==2){
+					score+=5;
+				}
+				if(board[x][y-1]==7){
+					score+=15;
+				}
+				if(board[x][y-1]==8){
+					score+=25;
+				}
+
+				//special
+				if(board[x][y-1]==3){
+					lives+=1;
+				}
+				if(board[x][y-1]==4){
+					time_left+=10
+				}
+
+				//Mons
+				if(board[x][y-1]==5){
+					lives-=1;
+				}
+				if(board[x][y-1]==9){
+					lives-=1;
+				}
+				if(board[x][y-1]==10){
+					lives-=1;
+				}
+				if(board[x][y-1]==11){
+					lives-=1;
+				}
+				board[x][y-1] = 6
+				y=y-1;
+			}
+		}
+		
+	}
+	pacman_x = x * (canvasWidth/canvasRows) + (canvasWidth/(2*canvasRows));
+	pacman_y = y * (canvasHeight/canvasColumns) + (canvasHeight/(2*canvasColumns));
+	pacmanData.movingX = 0;
+	pacmanData.movingY = 0;
 }
 
 
@@ -719,6 +917,13 @@ function start() {
 	keyPressedBool = false;
 	score = 0;
 	time_left = time_elapsed;
+	
+	document.getElementById("livesCount").innerHTML = lives;
+	// document.getElementById("timer").innerHTML = countDown(time_elapsed);
+	document.getElementById("timer").innerHTML = time_left;
+	document.getElementById("score").innerHTML = score;
+
+	
 	pac_color = "yellow";
 	shape.direction = "rght";
 	start_time = new Date();
@@ -751,7 +956,7 @@ function start() {
 		false
 	);
 	interval = setInterval(UpdatePosition, 10);
-	// timeInterval = setInterval(function () { time_left-- }, 1000);
+	timeInterval = setInterval(function () { time_left-=1 }, 1000);
 }
 
 function Draw() {
@@ -889,23 +1094,29 @@ function moveEyePacman(directionPac){
 }
 
 function movePacman(directionPac){
-	pacmanData.direction = directionPac;
-	moveEyePacman(directionPac);
-	if(directionPac == "right"){
-		pacmanData.directionSize = 0;
-		pacmanData.movingX = pacmanData.movingX+0.8;
+	document.getElementById('keyUpGameTable').innerHTML = pacmanData.movingX + " , " + pacmanData.movingY;
+	if(Math.abs(pacmanData.movingX) >= 53 || Math.abs(pacmanData.movingY) >= 30 ){
+		movePacmanCell();
 	}
-	else if(directionPac == "down"){
-		pacmanData.directionSize = 90;
-		pacmanData.movingY = pacmanData.movingY+0.8;
-	}
-	else if(directionPac == "left"){
-		pacmanData.directionSize = 180;
-		pacmanData.movingX = pacmanData.movingX-0.8;
-	}
-	else if (directionPac == "up"){
-		pacmanData.directionSize = 270;
-		pacmanData.movingY = pacmanData.movingY-0.8;
+	else{
+		pacmanData.direction = directionPac;
+		moveEyePacman(directionPac);
+		if(directionPac == "right"){
+			pacmanData.directionSize = 0;
+			pacmanData.movingX = pacmanData.movingX+0.8;
+		}
+		else if(directionPac == "down"){
+			pacmanData.directionSize = 90;
+			pacmanData.movingY = pacmanData.movingY+0.8;
+		}
+		else if(directionPac == "left"){
+			pacmanData.directionSize = 180;
+			pacmanData.movingX = pacmanData.movingX-0.8;
+		}
+		else if (directionPac == "up"){
+			pacmanData.directionSize = 270;
+			pacmanData.movingY = pacmanData.movingY-0.8;
+		}
 	}
 }
 
