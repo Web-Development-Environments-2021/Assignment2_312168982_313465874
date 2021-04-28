@@ -51,10 +51,10 @@ let monsBluePic = document.createElement("img");
 let monsYellowPic = document.createElement("img");
 let monspinkPic = document.createElement("img");
 
-monsRedPic.src = 'images/game/pacman.png';
-monsBluePic.src = 'images/game/pacman.png';
-monsYellowPic.src = 'images/game/pacman.png';
-monspinkPic.src = 'images/game/pacman.png';
+monsRedPic.src = 'images/game/redMon.png';
+monsBluePic.src = 'images/game/blueMon.png';
+monsYellowPic.src = 'images/game/yellowMon.png';
+monspinkPic.src = 'images/game/pinkMon.png';
 
 //balls:
 let smallBall = [];
@@ -740,7 +740,7 @@ function Draw() {
 
 			//mons[0]:
 			else if (board[i][j] == 5) {
-				context.drawImage(monsRedPic, (center.x - (canvasWidth/(4*canvasRows))), (center.y - (canvasHeight/(4*canvasColumns))), (canvasWidth/(2*canvasRows)), (canvasHeight/(2*canvasColumns))); // medicine picture
+				context.drawImage(monsRedPic, (center.x - (canvasWidth/(canvasRows))), (center.y - (canvasHeight/(canvasColumns))), (canvasWidth/(2*canvasRows)), (canvasHeight/(2*canvasColumns))); // medicine picture
 			}
 			//mons[1]:
 			else if (board[i][j] == 9) {
