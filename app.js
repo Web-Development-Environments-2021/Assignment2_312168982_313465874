@@ -551,7 +551,7 @@ function generateRandomSetting(){
 
 
 function countDown(time_elapsed){
-	const minutes = Math.floor(time / 60);
+	minutes = Math.floor(time / 60);
 	if (seconds < 10) {
 		seconds = `0${seconds}`;
 	}
@@ -729,7 +729,7 @@ function movePacmanCell(){
 	if(pacmanData.direction == 'right'){
 		if(x!= board.length-1 ){
 			if(board[x+1][y] != 1){
-				board[x][y] = 0
+				board[x][y] = 0;
 				
 				//fruit
 				if(board[x+1][y]==2){
@@ -751,7 +751,7 @@ function movePacmanCell(){
 					ballCount--;
 				}
 				if(board[x+1][y]==4){
-					time_left+=10
+					time_left+=10;
 				}
 
 				//Mons
@@ -767,7 +767,7 @@ function movePacmanCell(){
 				if(board[x+1][y]==11){
 					lives-=1;
 				}
-				board[x+1][y] = 6
+				board[x+1][y] = 6;
 				x=x+1;
 			}
 		}
@@ -776,7 +776,7 @@ function movePacmanCell(){
 	if(pacmanData.direction == 'left'){
 		if(x != 0){
 			if(board[x-1][y] != 1){
-				board[x][y] = 0
+				board[x][y] = 0;
 				
 				//fruit
 				if(board[x-1][y]==2){
@@ -794,7 +794,7 @@ function movePacmanCell(){
 					lives+=1;
 				}
 				if(board[x-1][y]==4){
-					time_left+=10
+					time_left+=10;
 				}
 
 				//Mons
@@ -810,7 +810,7 @@ function movePacmanCell(){
 				if(board[x-1][y]==11){
 					lives-=1;
 				}
-				board[x-1][y] = 6
+				board[x-1][y] = 6;
 				x=x-1;
 			}
 		}
@@ -819,7 +819,7 @@ function movePacmanCell(){
 	if(pacmanData.direction == 'down'){
 		if(y != board[0].length){
 			if(board[x][y+1] != 1){
-				board[x][y+1] = 0
+				board[x][y] = 0;
 				
 				//fruit
 				if(board[x][y+1]==2){
@@ -837,7 +837,7 @@ function movePacmanCell(){
 					lives+=1;
 				}
 				if(board[x][y+1]==4){
-					time_left+=10
+					time_left+=10;
 				}
 
 				//Mons
@@ -853,16 +853,16 @@ function movePacmanCell(){
 				if(board[x][y+1]==11){
 					lives-=1;
 				}
-				board[x][y+1] = 6
+				board[x][y+1] = 6;
 				y=y+1;
 			}
 		}
 		
 	}
-	if(pacmanData.direction == 'down'){
+	if(pacmanData.direction == 'up'){
 		if(y != 0){
 			if(board[x][y-1] != 1){
-				board[x][y-1] = 0
+				board[x][y] = 0;
 				
 				//fruit
 				if(board[x][y-1]==2){
@@ -880,7 +880,7 @@ function movePacmanCell(){
 					lives+=1;
 				}
 				if(board[x][y-1]==4){
-					time_left+=10
+					time_left+=10;
 				}
 
 				//Mons
@@ -896,7 +896,7 @@ function movePacmanCell(){
 				if(board[x][y-1]==11){
 					lives-=1;
 				}
-				board[x][y-1] = 6
+				board[x][y-1] = 6;
 				y=y-1;
 			}
 		}
@@ -956,7 +956,7 @@ function start() {
 		false
 	);
 	interval = setInterval(UpdatePosition, 10);
-	timeInterval = setInterval(function () { time_left-=1 }, 1000);
+	timeInterval = setInterval(function () { time_left=time_left-1 }, 1000);
 }
 
 function Draw() {
@@ -1104,18 +1104,22 @@ function movePacman(directionPac){
 		if(directionPac == "right"){
 			pacmanData.directionSize = 0;
 			pacmanData.movingX = pacmanData.movingX+0.8;
+			pacmanData.movingY = 0;
 		}
 		else if(directionPac == "down"){
 			pacmanData.directionSize = 90;
 			pacmanData.movingY = pacmanData.movingY+0.8;
+			pacmanData.movingX = 0;
 		}
 		else if(directionPac == "left"){
 			pacmanData.directionSize = 180;
 			pacmanData.movingX = pacmanData.movingX-0.8;
+			pacmanData.movingY = 0;
 		}
 		else if (directionPac == "up"){
 			pacmanData.directionSize = 270;
 			pacmanData.movingY = pacmanData.movingY-0.8;
+			pacmanData.movingX = 0;
 		}
 	}
 }
