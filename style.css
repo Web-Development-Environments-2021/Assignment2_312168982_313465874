@@ -62,17 +62,16 @@ body{
     height: 462px;
     padding-left: 300px;
     padding-top: 20px;
-
     font-size: 30px;
     color: rgb(29, 66, 170);
     font-family:'Courier New', Courier, monospace; 
 }
-#RegisterPageDiv span{
+/* #RegisterPageDiv span{
     font-size: 30px;
     color: rgb(29, 66, 170);
     font-family:'Courier New', Courier, monospace; 
     font-weight: bold;
-}
+} */
 
 #RegisterPageDiv input{
     width: 200px;
@@ -94,9 +93,10 @@ body{
     display: inline-block;
     font-size: 40px;
     border-radius: 15px;
-    padding: 20px 70px;
+    padding: 10px 30px;
     margin: 4px 2px;
 }
+
 #regButton:hover{
     background-color: rgb(29, 66, 170);
     border-style:solid;
@@ -248,7 +248,7 @@ body{
     margin: 4px 2px;
     padding: 10px;
 }
-#settingRandom:hover{
+#setting:hover{
     background-color: rgb(243, 228, 16);
     border-style:solid;
     border-color: white;
@@ -321,6 +321,17 @@ canvas{
     text-align: center;
     width:50px;
     height:30px;
+}
+
+#RegisterPageDiv span{
+    color: red;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+#loginPageDiv span{
+    color: red;
+    font-size: 20px;
 }
 
 .settingsColor{    

@@ -447,7 +447,6 @@ function checkValidSettingForm(){
 	let keyRightT = document.forms["settingForm"]["keyRight"].value;
 	let ballCountT = document.forms["settingForm"]["NumeberBalls"].value;
 	let smallBallColorT = document.forms["settingForm"]["smallBallColor"].value;
-	// smallBallColorT.style.backgroundColor
 	let mediumBallColorT = document.forms["settingForm"]["mediumBallColor"].value;
 	let bigBallColorT = document.forms["settingForm"]["bigBallColor"].value;
 	let time_elapsedT = document.forms["settingForm"]["timeElapse"].value;
@@ -512,8 +511,11 @@ function checkValidSettingForm(){
 		document.getElementById('keyRightGameTable').innerHTML = keyRight;
 		document.getElementById('noBallsGameTable').innerHTML = ballCount;
 		document.getElementById('smallBallsGameTable').innerHTML = smallBallColor;
+		document.getElementById('smallBallsGameTable').style = "background-color:"+document.getElementById('smallBallsGameTable').innerHTML;
 		document.getElementById('mediunBallsGameTable').innerHTML = mediumBallColor;
+		document.getElementById('mediunBallsGameTable').style = "background-color:"+document.getElementById('mediunBallsGameTable').innerHTML;
 		document.getElementById('largeBallsGameTable').innerHTML = bigBallColor;
+		document.getElementById('largeBallsGameTable').style = "background-color:"+document.getElementById('largeBallsGameTable').innerHTML;
 		document.getElementById('timeGameTable').innerHTML = time_elapsed;
 		document.getElementById('noMonstersGameTable').innerHTML = monsCount;
 		showScreen('GamePageDiv');
@@ -527,12 +529,18 @@ function generateRandomSetting(){
 	$("#keyleft").val("ArrowLeft");
 	$("#keyright").val("ArrowRight");
 	$("#NumeberBallsID").val(Math.floor(Math.random() * 40) + 50);
-	let randon1 = Math.floor(Math.random()*16777215).toString(16);
-	$("#smallBallColor").val(Math.floor(Math.random()*16777215));
-	$("#mediumBallColor").val(Math.floor(Math.random()*16777215));
-	$("#bigBallColor").val(Math.floor(Math.random()*16777215));
- 	$("#timeGame").val(Math.floor(Math.random() * 120) + 60);
-	$("#noMonsters").val(Math.floor(Math.random() * 3) + 1);
+
+	// document.getElementById('smallBallsGameTable').innerHTML=Math.floor(Math.random()*16777215);
+	// $("#smallBallColor").innerHTML = "#"+Math.floor(Math.random()*16777215);
+	// document.getElementById('smallBallColor').style = "background-color:"+document.getElementById('smallBallColor').innerHTML;
+	// document.getElementById('smallBallColor').style = "background-color:"+"#"+Math.floor(Math.random()*16777215).toString(16);
+	
+	$("#smallBallColor").val("#"+Math.floor(Math.random()*16777215));
+	$("#mediumBallColor").val("#"+Math.floor(Math.random()*16777215));
+	$("#bigBallColor").val("#"+Math.floor(Math.random()*16777215));
+ 	
+	$("#timeGame").val(Math.floor(Math.random() * 120) + 60);
+	$("#noMonsters").val(Math.floor(Math.random() * 4) + 1);
 	return false;
 }
 
