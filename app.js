@@ -102,6 +102,9 @@ treasure.x = 100;
 treasure.y= 100;
 let image_treasure = document.createElement("img");
 image_treasure.src ='images/money.png';
+treasure.xMove = 0.8;
+treasure.yMove = 0.8;
+
 
 //Advance:
 let medicineCount = 2;
@@ -699,6 +702,14 @@ function setPacman(){
 	board[cell[0]][cell[1]] = 6;
 }
 
+function getCell(pixX,pixY){
+	let x = x / (canvasWidth/canvasRows) + (canvasWidth/(2*canvasRows));
+	center.y = y / (canvasHeight/canvasColumns) + (canvasHeight/(2*canvasColumns));
+
+	return [x,y];
+
+}
+
 
 function start() {
 	window.clearInterval(interval);
@@ -882,19 +893,19 @@ function movePacman(directionPac){
 	moveEyePacman(directionPac);
 	if(directionPac == "right"){
 		pacmanData.directionSize = 0;
-		pacmanData.movingX = pacmanData.movingX+0.5;
+		pacmanData.movingX = pacmanData.movingX+0.8;
 	}
 	else if(directionPac == "down"){
 		pacmanData.directionSize = 90;
-		pacmanData.movingY = pacmanData.movingY+0.5;
+		pacmanData.movingY = pacmanData.movingY+0.8;
 	}
 	else if(directionPac == "left"){
 		pacmanData.directionSize = 180;
-		pacmanData.movingX = pacmanData.movingX-0.5;
+		pacmanData.movingX = pacmanData.movingX-0.8;
 	}
 	else if (directionPac == "up"){
 		pacmanData.directionSize = 270;
-		pacmanData.movingY = pacmanData.movingY-0.5;
+		pacmanData.movingY = pacmanData.movingY-0.8;
 	}
 }
 
@@ -961,8 +972,18 @@ function endgameExitGame(){
 	showScreen('gameSetting');
 }
 
-function GetKeyPressed() {
-	document.getElementById('keyUpGameTable').innerHTML = (keyPressedBool);
+function moveTreasure(){
+	if((treasure.x + treasure.xMove) > canvasWidth-106 || (treasure.x + treasure.xMove) < 53){
+		treasure.xMove = -treasure.xMove;
+	}
+	if((treasure.y + treasure.yMove) > canvasHeight - 60 || (treasure.y + treasure.yMove) < 30){
+		treasure.yMove = -treasure.yMove;
+	}
+	treasure.x = treasure.x + treasure.xMove;
+	treasure.y = treasure.y + treasure.yMove;
+}
+
+function GetKeyPressed() {;
 	if (keyPressed == keyRight && keyPressedBool == true) {
 		return "right";
 	}
@@ -1000,6 +1021,7 @@ function UpdatePosition() {
 	let x = GetKeyPressed();
 	pacmanMouthChange();
 	movePacman(x);
+	moveTreasure();
 	Draw();
 	// if (x == 1) {
 	// 	if (shape.j > 0 && board[shape.i][shape.j - 1] != 4) {
