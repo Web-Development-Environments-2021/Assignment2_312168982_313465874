@@ -34,8 +34,8 @@ let interval;
 let timeInterval;
 let gameMusic = new Audio('sound/Popcorn Original Song.wav');
 let gameMusicStop = false;
-let winMusic = new Audio('sound/winner');
-let LoseMusic = new Audio('sound/Wrong Buzzer Sound Effect');
+let winMusic = new Audio('sound/winner.wav');
+let looseMusic = new Audio('sound/Wrong Buzzer Sound Effect.wav');
 
 //board:
 let canvasWidth = 901;
@@ -99,11 +99,12 @@ let mediumBallColor;
 let bigBall = [];
 let bigBallColor;
 let ballCount = 50;
+let ballLeft;
 
 //treasure:
 let treasure = new Object();
-treasure.x = 100;
-treasure.y= 100;
+treasure.x = canvasWidth/2;
+treasure.y= canvasHeight/2;
 let image_treasure = document.createElement("img");
 image_treasure.src ='images/money.png';
 treasure.xMove = 1;
@@ -137,6 +138,18 @@ clockIMG.src='images/clock.png';
 // monster[1] = 9
 // monster[2] = 10
 // monster[3] = 11
+// monster[0]s = 12
+// monster[1]s = 13
+// monster[2]s = 14
+// monster[3]s = 15
+// monster[0]m = 16
+// monster[1]m = 17
+// monster[2]m = 18
+// monster[3]m = 19
+// monster[0]l = 20
+// monster[1]l = 21
+// monster[2]l = 22
+// monster[3]l = 23
 
 
 
@@ -662,8 +675,8 @@ function randomFreeCell(){
 }
 
 function setBalls(){
-	let smallBallCount = ballCount * 0.6;
-	let mediumBallCount = ballCount * 0.3;
+	let smallBallCount = Math.floor(ballCount * 0.6);
+	let mediumBallCount = Math.floor(ballCount * 0.3);
 	let bigBallCount = ballCount - smallBallCount - mediumBallCount;
 	for (let i = 0; i< smallBallCount; i++){
 		let cell = randomFreeCell();
@@ -695,27 +708,31 @@ function setClock(){
 
 function setMons(){
 	mons = new Array(monsCount);
-	mons[0] = new Object();
-	mons[0].x = 0;
-	mons[0].y = 0;
-	board[1][1] = 5;
-	if(monsCount > 1){
-		board[1][15] = 9;
-		mons[1] = new Object();
-		mons[1].x = 0;
-		mons[1].y = 0;
-	}
-	if(monsCount > 2){
-		board[12][1] = 10;
-		mons[2] = new Object();
-		mons[2].x = 0;
-		mons[2].y = 0;
-	}
-	if(monsCount > 3){
-		board[12][15] = 11;
-		mons[3] = new Object();
-		mons[3].x = 0;
-		mons[3].y = 0;
+	for(let i=0;i<monsCount;i++){
+		mons[i] = new Object();
+		mons[i].x = 0;
+		mons[i].y = 0;
+		mons[i].direction='right';
+		mons[i].movingX=0;
+		mons[i].movingY=0;
+		mons[i].onMove = false;
+		mons[i].dirMove = 'right';
+		if(i==0){
+			board[1][1] = 5;
+			mons[i].num = 5;
+		}
+		if(i==1){
+			board[12][1] = 9;
+			mons[i].num = 9;
+		}
+		if(i==2){
+			board[1][15] = 10;
+			mons[i].num = 10;
+		}
+		if(i==3){
+			board[12][15] = 11;
+			mons[i].num = 11;
+		}
 	}
 }
 
@@ -748,6 +765,7 @@ function start() {
 	lives=5;
 	score = 0;
 	time_left = time_elapsed;
+	ballLeft = ballCount;
 	
 	document.getElementById("livesCount").innerHTML = lives;
 	// document.getElementById("timer").innerHTML = countDown(time_elapsed);
@@ -808,7 +826,7 @@ function Draw() {
 			}
  
 			// //smallBall
-			else if (board[i][j] == 2) {
+			else if (board[i][j] == 2 || (board[i][j] >= 12 && board[i][j] <= 15)) {
 				context.beginPath();
 				context.arc(center.x, center.y, 4, 0, 2 * Math.PI); // circle
 				context.fillStyle = smallBallColor; //color
@@ -816,7 +834,7 @@ function Draw() {
 			}
 
 			// //mediumBall
-			else if (board[i][j] == 7) {
+			else if (board[i][j] == 7 || (board[i][j] >= 16 && board[i][j] <= 19)) {
 				context.beginPath();
 				context.arc(center.x, center.y, 6, 0, 2 * Math.PI); // circle
 				context.fillStyle = mediumBallColor; //color
@@ -824,7 +842,7 @@ function Draw() {
 			}
 			
 			// //bigBall
-			else if (board[i][j] == 8) {
+			else if (board[i][j] == 8 || (board[i][j] >= 20 && board[i][j] <= 23)) {
 				context.beginPath();
 				context.arc(center.x, center.y, 8, 0, 2 * Math.PI); // circle
 				context.fillStyle = bigBallColor; //color
@@ -843,24 +861,38 @@ function Draw() {
 			}
 
 			//mons[0]:
-			else if (board[i][j] == 5) {
-				context.drawImage(monsRedPic, (center.x - (canvasWidth/(4*canvasRows))), (center.y - (canvasHeight/(4*canvasColumns))), (canvasWidth/(2*canvasRows)), (3*canvasHeight/(4*canvasColumns)));
+			else if (board[i][j] == 5 || board[i][j] == 12 || board[i][j] == 16 || board[i][j] == 20) {
+				mons[0].x = center.x;
+				mons[0].y = center.y;
+				context.drawImage(monsRedPic, (center.x - (canvasWidth/(4*canvasRows)) + mons[0].movingX), (center.y - (canvasHeight/(4*canvasColumns))+ mons[0].movingY), cellSizeX/2, cellSizeY/2);
 			}
 			//mons[1]:
-			else if (board[i][j] == 9) {
-				context.drawImage(monsBluePic, (center.x - (canvasWidth/(4*canvasRows))), (center.y - (canvasHeight/(4*canvasColumns))), (canvasWidth/(2*canvasRows)), (3*canvasHeight/(4*canvasColumns)));
+			if(monsCount>1){
+				if (board[i][j] == 9 || board[i][j] == 13 || board[i][j] == 17 || board[i][j] == 21) {
+					mons[1].x = center.x;
+					mons[1].y = center.y;
+					context.drawImage(monsBluePic, (center.x - (canvasWidth/(4*canvasRows)) + mons[1].movingX), (center.y - (canvasHeight/(4*canvasColumns))+ mons[1].movingY), cellSizeX/2, cellSizeY/2);
+				}
 			}
 			//mons[2]:
-			else if (board[i][j] == 10) {
-				context.drawImage(monsYellowPic, (center.x - (canvasWidth/(4*canvasRows))), (center.y - (canvasHeight/(4*canvasColumns))), (canvasWidth/(2*canvasRows)), (3*canvasHeight/(4*canvasColumns)));
+			if(monsCount>2){
+					if(board[i][j] == 10 || board[i][j] == 14 || board[i][j] == 18 || board[i][j] == 22) {
+					mons[2].x = center.x;
+					mons[2].y = center.y;
+					context.drawImage(monsYellowPic, (center.x - (canvasWidth/(4*canvasRows)) + mons[2].movingX), (center.y - (canvasHeight/(4*canvasColumns))+ mons[2].movingY), cellSizeX/2, cellSizeY/2);
+					}
 			}
 			//mons[3]:
-			else if (board[i][j] == 11) {
-				context.drawImage(monspinkPic, (center.x - (canvasWidth/(4*canvasRows))), (center.y - (canvasHeight/(4*canvasColumns))), (canvasWidth/(2*canvasRows)), (3*canvasHeight/(4*canvasColumns)));
+			if(monsCount>3){ 
+				if (board[i][j] == 11 || board[i][j] == 15 || board[i][j] == 19 || board[i][j] == 23) {
+					mons[3].x = center.x;
+					mons[3].y = center.y;
+					context.drawImage(monspinkPic, (center.x - (canvasWidth/(4*canvasRows)) + mons[3].movingX), (center.y- (canvasHeight/(4*canvasColumns))+ mons[3].movingY), cellSizeX/2, cellSizeY/2);
+					}
 			}
 
 			//Pacman Draw:
-			else if (board[i][j] == 6) {
+			if (board[i][j] == 6) {
 				pacman_x = center.x;
 				pacman_y = center.y;
 				context.beginPath();
@@ -884,6 +916,9 @@ function endgameNoHearts(){
 	window.clearInterval(interval);
 	window.clearInterval(interval);
 	window.clearInterval(timeInterval);
+	gameMusic.pause();
+	gameMusic.currentTime = 0;
+	looseMusic.play();
 	alert("Looser!");
 	showScreen('gameSetting');
 }
@@ -893,9 +928,15 @@ function endgameNoTimeLeft(){
 	window.clearInterval(interval);
 	window.clearInterval(timeInterval);
 	if(score<100){
+		gameMusic.pause();
+		gameMusic.currentTime = 0;
+		looseMusic.play();
 		alert("You are better than " + score + " points!");
 	}
 	else{
+		gameMusic.pause();
+		gameMusic.currentTime = 0;
+		winMusic.play();
 		alert("Winner!");
 	}
 	showScreen('gameSetting');
@@ -905,8 +946,10 @@ function endgameWon(){
 	window.clearInterval(interval);
 	window.clearInterval(interval);
 	window.clearInterval(timeInterval);
+	gameMusic.pause();
+	gameMusic.currentTime = 0;
+	winMusic.play();
 	alert("Winner! Your score is: " + score);
-	context.drawImage('images/winner.png',100,100);
 	showScreen('gameSetting');
 }
 
@@ -968,43 +1011,344 @@ function movePacman(directionPac){
 }
 
 function calculateDirectionMonster(monster){
-	if(pacman_x > monster.x){
-		if(pacman_y>monster.y){
-			return "up-right";
-		}
-		else if(pacman_y == monster.y){
-			return "right";
+	if(Math.abs(pacman_x- monster.x)>Math.abs(pacman_y- monster.y)){
+		if((pacman_x- monster.x)>0){
+			monster.direction = 'right';
 		}
 		else{
-			return "down-right";
-		}
-	}
-	if(pacman_x == monster.x){
-		if(pacman_y>monster.y){
-			return "up";
-		}
-		else if(pacman_y < monster.y){
-			return "down";
+			monster.direction = 'left';
 		}
 	}
 	else{
-		if(pacman_y>monster.y){
-			return "up-left";
-		}
-		else if(pacman_y == monster.y){
-			return "left";
+		if((pacman_y- monster.y)>0){
+			monster.direction = 'down';
 		}
 		else{
-			return "down-left";
+			monster.direction = 'up';
 		}
 	}
 }
 
-function moveMonsters(monster){
-	mons[0].direction = calculateDirectionMonster(mons[0]);
+
+
+function moveMonsters(){
+	for(let i=0;i<monsCount;i++){
+		calculateDirectionMonster(mons[i]);
+		if(Math.abs(mons[i].movingX) == 0 && Math.abs(mons[i].movingY) == 0){
+			mons[i].onMove = false;
+		}
+		else{
+			mons[i].onMove = true;
+		}
+		if(!mons[i].onMove){
+			moveMonsterCell(mons[i]);
+		}
+		else{
+			if(mons[i].dirMove == "right"){
+				mons[i].movingX = mons[i].movingX+1;
+				mons[i].movingY = 0;
+			}
+			else if(mons[i].dirMove == "down"){
+				mons[i].movingY = mons[i].movingY+1;
+				mons[i].movingX = 0;
+			}
+			else if(mons[i].dirMove == "left"){
+				mons[i].movingX = mons[i].movingX-1;
+				mons[i].movingY = 0;
+			}
+			else if (mons[i].dirMove == "up"){
+				mons[i].movingY = mons[i].movingY-1;
+				mons[i].movingX = 0;
+			}
+		}
+	}
+	
 	
 }
+function moveMonsterCell(monster){
+	let monsterPos = findCreature(monster.num);
+	//If the monster on a ball
+	let x = monsterPos[0];
+	let y = monsterPos[1];
+	monster.dirMove = monster.direction;
+	if(monster.direction == 'right'){
+		if(x!= board.length-1 ){
+			if(board[x+1][y] != 1 && board[x+1][y] != 5 && board[x+1][y] < 9){
+				if(monster.num > 11 && monster.num<16){
+					board[x][y] = 2;
+				}
+				if(monster.num > 15 && monster.num<20){
+					board[x][y] = 7;
+				}
+				if(monster.num > 19){
+					board[x][y] = 8;
+				}
+				else{
+					board[x][y] = 0;
+				}
+				
+				monster.movingX = -cellSizeX+1;
+				monster.movingY = 0;
+				//fruit
+				if(board[x+1][y]==2){
+					if(monster.num == 5 || monster.num == 12 || monster.num == 16 || monster.num == 20){
+						monster.num = 12;
+					}
+					if((monster.num == 9 || monster.num == 13 || monster.num == 17 || monster.num == 21)){
+						monster.num = 13;
+					}
+					if(monster.num == 10 || monster.num == 114 || monster.num == 18 || monster.num == 22){
+						monster.num = 14;
+					}
+					if(monster.num == 11 || monster.num == 15 || monster.num == 19 || monster.num == 23){
+						monster.num = 15;
+					}
+					board[x+1][y] = monster.num;
+				}
+				if(board[x+1][y]==7){
+					if(monster.num == 5 || monster.num == 12 || monster.num == 16 || monster.num == 20){
+						monster.num = 16;
+					}
+					if((monster.num == 9 || monster.num == 13 || monster.num == 17 || monster.num == 21)){
+						monster.num = 17;
+					}
+					if(monster.num == 10 || monster.num == 114 || monster.num == 18 || monster.num == 22){
+						monster.num = 18;
+					}
+					if(monster.num == 11 || monster.num == 15 || monster.num == 19 || monster.num == 23){
+						monster.num = 19;
+					}
+					board[x+1][y] = monster.num;
+				}
+				if(board[x+1][y]==8){
+					if(monster.num == 5 || monster.num == 12 || monster.num == 16 || monster.num == 20){
+						monster.num = 20;
+					}
+					if((monster.num == 9 || monster.num == 13 || monster.num == 17 || monster.num == 21)){
+						monster.num = 21;
+					}
+					if(monster.num == 10 || monster.num == 114 || monster.num == 18 || monster.num == 22){
+						monster.num = 22;
+					}
+					if(monster.num == 11 || monster.num == 15 || monster.num == 19 || monster.num == 23){
+						monster.num = 23;
+					}
+					board[x+1][y] = monster.num;
+				}
+				x=x+1;
+			}
+		}
+		
+	}
+	if(monster.direction == 'left'){
+		if(x != 0){
+			if(board[x-1][y] != 1 && board[x-1][y] != 5 && board[x-1][y] < 9){
+				if(monster.num > 11 && monster.num<16){
+					board[x][y] = 2;
+				}
+				if(monster.num > 15 && monster.num<20){
+					board[x][y] = 7;
+				}
+				if(monster.num > 19){
+					board[x][y] = 8;
+				}
+				else{
+					board[x][y] = 0;
+				}
+				
+				monster.movingX = cellSizeX-1;
+				monster.movingY = 0;
+				//fruit
+				if(board[x-1][y]==2){
+					if(monster.num == 5 || monster.num == 12 || monster.num == 16 || monster.num == 20){
+						monster.num = 12;
+					}
+					if((monster.num == 9 || monster.num == 13 || monster.num == 17 || monster.num == 21)){
+						monster.num = 13;
+					}
+					if(monster.num == 10 || monster.num == 114 || monster.num == 18 || monster.num == 22){
+						monster.num = 14;
+					}
+					if(monster.num == 11 || monster.num == 15 || monster.num == 19 || monster.num == 23){
+						monster.num = 15;
+					}
+					board[x-1][y] = monster.num;
+				}
+				if(board[x-1][y]==7){
+					if(monster.num == 5 || monster.num == 12 || monster.num == 16 || monster.num == 20){
+						monster.num = 16;
+					}
+					if((monster.num == 9 || monster.num == 13 || monster.num == 17 || monster.num == 21)){
+						monster.num = 17;
+					}
+					if(monster.num == 10 || monster.num == 114 || monster.num == 18 || monster.num == 22){
+						monster.num = 18;
+					}
+					if(monster.num == 11 || monster.num == 15 || monster.num == 19 || monster.num == 23){
+						monster.num = 19;
+					}
+					board[x-1][y] = monster.num;
+				}
+				if(board[x-1][y]==8){
+					if(monster.num == 5 || monster.num == 12 || monster.num == 16 || monster.num == 20){
+						monster.num = 20;
+					}
+					if((monster.num == 9 || monster.num == 13 || monster.num == 17 || monster.num == 21)){
+						monster.num = 21;
+					}
+					if(monster.num == 10 || monster.num == 114 || monster.num == 18 || monster.num == 22){
+						monster.num = 22;
+					}
+					if(monster.num == 11 || monster.num == 15 || monster.num == 19 || monster.num == 23){
+						monster.num = 23;
+					}
+					board[x-1][y] = monster.num;
+				}
+				x=x-1;
+			}
+		}
+		
+	}
+	if(monster.direction == 'down'){
+		if(y != board[0].length){
+			if(board[x][y+1] != 1 && board[x][y+1] != 5 && board[x][y+1] < 9){
+				if(monster.num > 11 && monster.num<16){
+					board[x][y] = 2;
+				}
+				if(monster.num > 15 && monster.num<20){
+					board[x][y] = 7;
+				}
+				if(monster.num > 19){
+					board[x][y] = 8;
+				}
+				else{
+					board[x][y] = 0;
+				}
+				
+				monster.movingX = 0;
+				monster.movingY = -cellSizeX+1;
+				//fruit
+				if(board[x][y+1]==2){
+					if(monster.num == 5 || monster.num == 12 || monster.num == 16 || monster.num == 20){
+						monster.num = 12;
+					}
+					if((monster.num == 9 || monster.num == 13 || monster.num == 17 || monster.num == 21)){
+						monster.num = 13;
+					}
+					if(monster.num == 10 || monster.num == 114 || monster.num == 18 || monster.num == 22){
+						monster.num = 14;
+					}
+					if(monster.num == 11 || monster.num == 15 || monster.num == 19 || monster.num == 23){
+						monster.num = 15;
+					}
+					board[x][y+1] = monster.num;
+				}
+				if(board[x][y+1]==7){
+					if(monster.num == 5 || monster.num == 12 || monster.num == 16 || monster.num == 20){
+						monster.num = 16;
+					}
+					if((monster.num == 9 || monster.num == 13 || monster.num == 17 || monster.num == 21)){
+						monster.num = 17;
+					}
+					if(monster.num == 10 || monster.num == 114 || monster.num == 18 || monster.num == 22){
+						monster.num = 18;
+					}
+					if(monster.num == 11 || monster.num == 15 || monster.num == 19 || monster.num == 23){
+						monster.num = 19;
+					}
+					board[x][y+1] = monster.num;
+				}
+				if(board[x][y+1]==8){
+					if(monster.num == 5 || monster.num == 12 || monster.num == 16 || monster.num == 20){
+						monster.num = 20;
+					}
+					if((monster.num == 9 || monster.num == 13 || monster.num == 17 || monster.num == 21)){
+						monster.num = 21;
+					}
+					if(monster.num == 10 || monster.num == 114 || monster.num == 18 || monster.num == 22){
+						monster.num = 22;
+					}
+					if(monster.num == 11 || monster.num == 15 || monster.num == 19 || monster.num == 23){
+						monster.num = 23;
+					}
+					board[x][y+1] = monster.num;
+				}
+				y=y+1;
+			}
+		}
+		
+	}
+	if(monster.direction == 'up'){
+		if(y != 0){
+			if(board[x][y-1] != 1 && board[x][y-1] != 5 && board[x][y-1] < 9){
+				if(monster.num > 11 && monster.num<16){
+					board[x][y] = 2;
+				}
+				if(monster.num > 15 && monster.num<20){
+					board[x][y] = 7;
+				}
+				if(monster.num > 19){
+					board[x][y] = 8;
+				}
+				else{
+					board[x][y] = 0;
+				}
+				
+				monster.movingX = 0;
+				monster.movingY = -cellSizeX+1;
+				//fruit
+				if(board[x][y-1]==2){
+					if(monster.num == 5 || monster.num == 12 || monster.num == 16 || monster.num == 20){
+						monster.num = 12;
+					}
+					if((monster.num == 9 || monster.num == 13 || monster.num == 17 || monster.num == 21)){
+						monster.num = 13;
+					}
+					if(monster.num == 10 || monster.num == 114 || monster.num == 18 || monster.num == 22){
+						monster.num = 14;
+					}
+					if(monster.num == 11 || monster.num == 15 || monster.num == 19 || monster.num == 23){
+						monster.num = 15;
+					}
+					board[x][y-1] = monster.num;
+				}
+				if(board[x][y-1]==7){
+					if(monster.num == 5 || monster.num == 12 || monster.num == 16 || monster.num == 20){
+						monster.num = 16;
+					}
+					if((monster.num == 9 || monster.num == 13 || monster.num == 17 || monster.num == 21)){
+						monster.num = 17;
+					}
+					if(monster.num == 10 || monster.num == 114 || monster.num == 18 || monster.num == 22){
+						monster.num = 18;
+					}
+					if(monster.num == 11 || monster.num == 15 || monster.num == 19 || monster.num == 23){
+						monster.num = 19;
+					}
+					board[x][y-1] = monster.num;
+				}
+				if(board[x][y-1]==8){
+					if(monster.num == 5 || monster.num == 12 || monster.num == 16 || monster.num == 20){
+						monster.num = 20;
+					}
+					if((monster.num == 9 || monster.num == 13 || monster.num == 17 || monster.num == 21)){
+						monster.num = 21;
+					}
+					if(monster.num == 10 || monster.num == 114 || monster.num == 18 || monster.num == 22){
+						monster.num = 22;
+					}
+					if(monster.num == 11 || monster.num == 15 || monster.num == 19 || monster.num == 23){
+						monster.num = 23;
+					}
+					board[x][y-1] = monster.num;
+				}
+				y=y-1;
+			}
+		}
+		
+	}
 
+}
 
 function pacmanMouthChange(){
 	if (pacmanData.mouthSize == 0){
@@ -1026,6 +1370,8 @@ function endgameExitGame(){
 	window.clearInterval(interval);
 	window.clearInterval(interval);
 	window.clearInterval(timeInterval);
+	gameMusic.pause();
+	gameMusic.currentTime = 0;
 	alert("Game Finished");
 	showScreen('gameSetting');
 }
@@ -1049,47 +1395,36 @@ function movePacmanCell(){
 		if(x!= board.length-1 ){
 			if(board[x+1][y] != 1){
 				board[x][y] = 0;
-				pacmanData.movingX = -cellSizeX;
+				pacmanData.movingX = -cellSizeX+1;
 				pacmanData.movingY = 0;
 				//fruit
 				if(board[x+1][y]==2){
 					score= score + 5;
-					ballCount--;
+					ballLeft--;
 				}
 				if(board[x+1][y]==7){
 					score+=15;
-					ballCount--;
+					ballLeft--;
 				}
 				if(board[x+1][y]==8){
 					score+=25;
-					ballCount--;
+					ballLeft--;
 				}
 
 				//special
 				if(board[x+1][y]==3){
 					lives+=1;
-					ballCount--;
 				}
 				if(board[x+1][y]==4){
 					time_left+=10;
 				}
 
 				//Mons
-				if(board[x+1][y]==5){
+				if(board[x+1][y]==5 || board[x+1][y]>8){
 					lives-=1;
 					score -= 10;
-				}
-				if(board[x+1][y]==9){
-					lives-=1;
-					score -= 10;
-				}
-				if(board[x+1][y]==10){
-					lives-=1;
-					score -= 10;
-				}
-				if(board[x+1][y]==11){
-					lives-=1;
-					score -= 10;
+					setPacman();
+					return false;
 				}
 				board[x+1][y] = 6;
 				x=x+1;
@@ -1101,18 +1436,21 @@ function movePacmanCell(){
 		if(x != 0){
 			if(board[x-1][y] != 1){
 				board[x][y] = 0;
-				pacmanData.movingX = cellSizeX;
+				pacmanData.movingX = cellSizeX-1;
 				pacmanData.movingY = 0;
 				
 				//fruit
 				if(board[x-1][y]==2){
 					score+=5;
+					ballLeft--;
 				}
 				if(board[x-1][y]==7){
 					score+=15;
+					ballLeft--;
 				}
 				if(board[x-1][y]==8){
 					score+=25;
+					ballLeft--;
 				}
 
 				//special
@@ -1124,17 +1462,11 @@ function movePacmanCell(){
 				}
 
 				//Mons
-				if(board[x-1][y]==5){
+				if(board[x-1][y]==5 || board[x-1][y]>8){
 					lives-=1;
-				}
-				if(board[x-1][y]==9){
-					lives-=1;
-				}
-				if(board[x-1][y]==10){
-					lives-=1;
-				}
-				if(board[x-1][y]==11){
-					lives-=1;
+					score -= 10;
+					setPacman();
+					return false;
 				}
 				board[x-1][y] = 6;
 				x=x-1;
@@ -1146,17 +1478,20 @@ function movePacmanCell(){
 		if(y != board[0].length){
 			if(board[x][y+1] != 1){
 				board[x][y] = 0;
-				pacmanData.movingY = -cellSizeY;
+				pacmanData.movingY = -cellSizeY+1;
 				pacmanData.movingX = 0;
 				//fruit
 				if(board[x][y+1]==2){
 					score+=5;
+					ballLeft--;
 				}
 				if(board[x][y+1]==7){
 					score+=15;
+					ballLeft--;
 				}
 				if(board[x][y+1]==8){
 					score+=25;
+					ballLeft--;
 				}
 
 				//special
@@ -1168,17 +1503,11 @@ function movePacmanCell(){
 				}
 
 				//Mons
-				if(board[x][y+1]==5){
+				if(board[x][y+1]==5 || board[x][y+1]>8){
 					lives-=1;
-				}
-				if(board[x][y+1]==9){
-					lives-=1;
-				}
-				if(board[x][y+1]==10){
-					lives-=1;
-				}
-				if(board[x][y+1]==11){
-					lives-=1;
+					score -= 10;
+					setPacman();
+					return false;
 				}
 				board[x][y+1] = 6;
 				y=y+1;
@@ -1190,18 +1519,21 @@ function movePacmanCell(){
 		if(y != 0){
 			if(board[x][y-1] != 1){
 				board[x][y] = 0;
-				pacmanData.movingY = cellSizeY;
+				pacmanData.movingY = cellSizeY-1;
 				pacmanData.movingX = 0;
 				
 				//fruit
 				if(board[x][y-1]==2){
 					score+=5;
+					ballLeft--;
 				}
 				if(board[x][y-1]==7){
 					score+=15;
+					ballLeft--;
 				}
 				if(board[x][y-1]==8){
 					score+=25;
+					ballLeft--;
 				}
 
 				//special
@@ -1213,17 +1545,11 @@ function movePacmanCell(){
 				}
 
 				//Mons
-				if(board[x][y-1]==5){
+				if(board[x][y-1]==5 || board[x][y-1]>8){
 					lives-=1;
-				}
-				if(board[x][y-1]==9){
-					lives-=1;
-				}
-				if(board[x][y-1]==10){
-					lives-=1;
-				}
-				if(board[x][y-1]==11){
-					lives-=1;
+					score -= 10;
+					setPacman();
+					return false;
 				}
 				board[x][y-1] = 6;
 				y=y-1;
@@ -1231,6 +1557,7 @@ function movePacmanCell(){
 		}
 		
 	}
+	return true;
 }
 
 function GetKeyPressed() {;
@@ -1257,7 +1584,7 @@ function UpdatePosition() {
 	document.getElementById("livesCount").innerHTML = lives;
 	// document.getElementById("timer").innerHTML = countDown(time_elapsed);
 	document.getElementById("timer").innerHTML = time_left;
-	document.getElementById("score").innerHTML = score;
+	document.getElementById("score").innerHTML = ballLeft;
 	
 	if(time_left == 0){
 		endgameNoTimeLeft();
@@ -1267,13 +1594,13 @@ function UpdatePosition() {
 		endgameNoHearts();
 	}
 
-	if(ballCount == 0){
+	if(ballLeft == 0){
 		endgameWon();
 	}
 	if(gamestat == 4){
 		endgameExitGame();
 	}
-	if(((pacman_x - treasure.x) < cellSizeX) && ((pacman_y - treasure.y) < cellSizeY)){
+	if((Math.abs(pacman_x - treasure.x) < cellSizeX) && (Math.abs(pacman_y - treasure.y) < cellSizeY)){
 		score += 50;
 		treasure.sizePicX = 1;
 		treasure.sizePicY = 1;
@@ -1284,48 +1611,12 @@ function UpdatePosition() {
 	}
 	let x = GetKeyPressed();
 	pacmanMouthChange();
+	moveMonsters();
 	movePacman(x);
 	if(!treasureEaten){
 		moveTreasure();
 	}
 	Draw();
-	// if (x == 1) {
-	// 	if (shape.j > 0 && board[shape.i][shape.j - 1] != 4) {
-	// 		shape.j--;
-	// 	}
-	// }
-	// if (x == 2) {
-	// 	if (shape.j < 9 && board[shape.i][shape.j + 1] != 4) {
-	// 		shape.j++;
-	// 	}
-	// }
-	// if (x == 3) {
-	// 	if (shape.i > 0 && board[shape.i - 1][shape.j] != 4) {
-	// 		shape.i--;
-	// 	}
-	// }
-	// if (x == 4) {
-	// 	if (shape.i < 9 && board[shape.i + 1][shape.j] != 4) {
-	// 		shape.i++;
-	// 	}
-	// }
-	// if (board[shape.i][shape.j] == 1) {
-	// 	score++;
-	// }
-	// board[shape.i][shape.j] = 2;
-	// var currentTime = new Date();
-	// time_elapsed = (currentTime - start_time) / 1000;
-	// if (score >= 20 && time_elapsed <= 10) {
-	// 	pac_color = "green";
-	// }
-	// if (score == 50) {
-	// 	window.clearInterval(interval);
-	// 	window.alert("Game completed");
-	// } else {
-	// 	Draw();
-	// }
-
-	
 }
 
 
