@@ -208,7 +208,7 @@ body{
     background-repeat: no-repeat;
     background-size: 100%;
     background-position: center center;
-    width: 1250px;
+    width: 95.3%;
     height: 600px;
     font-size: 30px;
     padding: 35px;
@@ -282,7 +282,9 @@ canvas{
     
 }
 
-
+.settingButtons{
+    display: inline-block;
+}
 #noMonsters {
     font-size: large;
     text-align: center;

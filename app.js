@@ -19,6 +19,7 @@ let keyLeft;
 let keyRight;
 
 let score=0;
+let lives=5;
 let start_time=0;
 let time_elapsed = 0;
 let interval;
@@ -55,19 +56,19 @@ let bigBallColor;
 let ballCount = 50;
 
 let treasure = new Object();
-// let image_treasure = document.createElement("img");
-// image_treasure.src('/images/money.jfif');
+treasure.x = 100;
+treasure.y= 100;
+let image_treasure = document.createElement("img");
+image_treasure.src ='images/money.png';
 
 //Advance
 let medicineCount = 2;
-// let medicineIMG = document.createElement("img");
-// medicineIMG.src('/images/medicine.png');
+let medicineIMG = document.createElement("img");
+medicineIMG.src = 'images/medicine.png';
 
 let clockCount = 2;
-let clockIMG;
-let hearts = 5;
-let minutes;
-let seconds;
+let clockIMG = document.createElement("img");
+clockIMG.src='images/clock.jpg';
 
 
 // Values of the numbers in the maze:
@@ -451,7 +452,7 @@ function checkValidSettingForm(){
 		bigBallColor = bigBallColorT
 		time_elapsed = time_elapsedT
 		monsCount = monsCountT
-		document.getElementById('keyUpGameTable').innerHTML = keyUp + board[0];
+		document.getElementById('keyUpGameTable').innerHTML = keyUp;
 		document.getElementById('keyDownGameTable').innerHTML = keyDown;
 		document.getElementById('keyLeftGameTable').innerHTML = keyLeft;
 		document.getElementById('keyRightGameTable').innerHTML = keyRight;
@@ -459,58 +460,14 @@ function checkValidSettingForm(){
 		document.getElementById('smallBallsGameTable').innerHTML = smallBallColor;
 		document.getElementById('mediunBallsGameTable').innerHTML = mediumBallColor;
 		document.getElementById('largeBallsGameTable').innerHTML = bigBallColor;
-		document.getElementById('timeGameTable').innerHTML = countDown(time_elapsed);
+		document.getElementById('timeGameTable').innerHTML = time_elapsed;
 		document.getElementById('noMonstersGameTable').innerHTML = monsCount;
-		document.getElementById('heartsCount').innerHTML = countHearts(hearts);
 		showScreen('GamePageDiv');
 		return true;
 	}
 	
 }
 
-function generateRandomSetting(){
-// 	let keyUpT = function uniKeyCode(event=38) {
-// 		let key = event.key;
-// 	  $("#keyup").val(key);
-// 	}
-// 	let keyDownT = function uniKeyCode(event=40) {
-// 		let key = event.key;
-// 	  $("#keyup").val(key);
-// 	}
-// 	let keyLeftT = function uniKeyCode(event=37) {
-// 		let key = event.key;
-// 	  $("#keyup").val(key);
-// 	}
-// 	let keyRightT = function uniKeyCode(event=39) {
-// 		let key = event.key;
-// 	  $("#keyup").val(key);
-// 	}
-}
-
-//timer
-function countDown(number){
-	let minutes=0;
-	let seconds=0;
-	minutes = Math.floor(number/60);
-	seconds = number % 60;
-	// If the value of seconds is less than 10, then display seconds with a leading zero
-	if (seconds < 10) {
-		seconds = `0${seconds}`;
-	}
-	// The output in MM:SS format
-	return `${minutes}:${seconds}`;
-}
-
-//count hearts
-function countHearts(hearts){
-	hearts = 5;
-	//down and up cases
-}
-
-//count score
-function updateScore(score){
-	//down and up cases
-}
 
 
 
@@ -548,26 +505,19 @@ function setWalls(){
 	board[3][8]=1;
 	board[3][11]=1;
 	board[3][13]=1;
-	board[3][15]=1;
 	board[4][7]=1;
 	board[4][8]=1;
 	board[4][9]=1;
 	board[4][11]=1;
-	board[4][15]=1;
 	board[5][7]=1;
 	board[5][8]=1;
 	board[5][9]=1;
 	board[5][11]=1;
 	board[6][3]=1;
-	board[6][4]=1;
-	board[6][5]=1;
-	board[6][6]=1;
 	board[6][11]=1;
 	board[6][14]=1;
 	board[7][3]=1;
-	board[7][6]=1;
 	board[7][14]=1;
-	board[7][15]=1;
 	board[8][1]=1;
 	board[8][2]=1;
 	board[8][3]=1;
@@ -586,14 +536,10 @@ function setWalls(){
 	board[11][3]=1;
 	board[11][8]=1;
 	board[11][11]=1;
+	board[11][12]=1;
 	board[11][13]=1;
-	board[11][15]=1;
 	board[12][3]=1;
 	board[12][4]=1;
-	board[12][10]=1;
-	board[12][11]=1;
-	board[12][12]=1;
-	board[12][13]=1;
 }
 
 function isEmpty(cellRow, cellCol){
@@ -647,15 +593,27 @@ function setClock(){
 
 function setMons(){
 	mons = new Array(monsCount);
-	mons[0] = [1,1];
+	mons[0] = new Object();
+	mons[0].x = 0;
+	mons[0].y = 0;
+	board[1][1] = 5;
 	if(monsCount > 1){
-		mons[0] = [1,15];
+		board[1][15] = 5;
+		mons[1] = new Object();
+		mons[1].x = 0;
+		mons[1].y = 0;
 	}
 	if(monsCount > 2){
-		mons[0] = [12,1];
+		board[12][0] = 5;
+		mons[2] = new Object();
+		mons[2].x = 0;
+		mons[2].y = 0;
 	}
 	if(monsCount > 3){
-		mons[0] = [12,15];
+		board[12][15] = 0;
+		mons[3] = new Object();
+		mons[3].x = 0;
+		mons[3].y = 0;
 	}
 }
 
@@ -674,11 +632,11 @@ function start() {
 	setBalls();
 	setMedicine();
 	setClock();
-	// document.getElementById('keyUpGameTable').innerHTML = board; - checked till here
-	createMons();
 	setMons();
 	setPacman();
-	Draw()
+	Draw();
+	gameMusic.play();
+	gameMusic.loop();
 	// keysDown = {};
 	// addEventListener(
 	// 	"keydown",
@@ -717,60 +675,71 @@ function Draw() {
 	for (let i = 0; i < canvasRows; i++) {
 		for (let j = 0; j < canvasColumns; j++) {
 			let center = new Object();
-			center.x = i * 53 + 27;
-			center.y = j * 30 + 15;
+			center.x = i * (canvasWidth/canvasRows) + (canvasWidth/(2*canvasRows));
+			center.y = j * (canvasHeight/canvasColumns) + (canvasHeight/(2*canvasColumns));
 			
 			
 			//Wall: 
 			if (board[i][j] == 1) {
 				context.beginPath();
-				context.rect(center.x - 27, center.y - 15, 53, 30);
+				context.rect(center.x - (canvasWidth/(2*canvasRows)), center.y - (canvasHeight/(2*canvasColumns)), (canvasWidth/canvasRows), (canvasHeight/canvasColumns));
 				context.fillStyle = "black"; //color
 				context.fill();
 			}
  
 			// //smallBall
-			// else if (board[i][j] == 2) {
-			// 	context.beginPath();
-			// 	context.arc(center.x, center.y, 8, 0, 2 * Math.PI); // circle
-			// 	context.fillStyle = smallBallColor; //color
-			// 	context.fill();
-			// }
+			else if (board[i][j] == 2) {
+				context.beginPath();
+				context.arc(center.x, center.y, 4, 0, 2 * Math.PI); // circle
+				context.fillStyle = smallBallColor; //color
+				context.fill();
+			}
 
 			// //mediumBall
-			// else if (board[i][j] == 7) {
-			// 	context.beginPath();
-			// 	context.arc(center.x, center.y, 12, 0, 2 * Math.PI); // circle
-			// 	context.fillStyle = mediumBallColor; //color
-			// 	context.fill();
-			// }
+			else if (board[i][j] == 7) {
+				context.beginPath();
+				context.arc(center.x, center.y, 6, 0, 2 * Math.PI); // circle
+				context.fillStyle = mediumBallColor; //color
+				context.fill();
+			}
 			
 			// //bigBall
-			// else if (board[i][j] == 8) {
-			// 	context.beginPath();
-			// 	context.arc(center.x, center.y, 15, 0, 2 * Math.PI); // circle
-			// 	context.fillStyle = bigBallColor; //color
-			// 	context.fill();
-			// }
+			else if (board[i][j] == 8) {
+				context.beginPath();
+				context.arc(center.x, center.y, 8, 0, 2 * Math.PI); // circle
+				context.fillStyle = bigBallColor; //color
+				context.fill();
+			}
 
-			// //medicine
-			// else if (board[i][j] == 3) {
-			// 	context.beginPath();
-			// 	context.drawImage(medicineIMG,center.x-27,center.y-15,53,30)// medicine picture
-			// 	context.fill();
-			// }
+			//medicine
+			else if (board[i][j] == 3) {
+				context.drawImage(medicineIMG, (center.x - (canvasWidth/(4*canvasRows))), (center.y - (canvasHeight/(4*canvasColumns))), (canvasWidth/(2*canvasRows)), (canvasHeight/(2*canvasColumns))); // medicine picture
+			}
+
+			//clock
+			else if (board[i][j] == 4) {
+				context.drawImage(clockIMG, (center.x - (canvasWidth/(3*canvasRows))), (center.y - (canvasHeight/(3*canvasColumns))), (2*canvasWidth/(3*canvasRows)), (2*canvasHeight/(3*canvasColumns))); // medicine picture
+			}
+
+			//mons:
+
 			//Pacman Draw:
 			else if (board[i][j] == 6) {
+				pacman_x = center.x;
+				pacman_y = center.y;
 				context.beginPath();
-				context.arc(center.x, center.y, 30, 0.15 * Math.PI, 1.85 * Math.PI); // half circle
+				context.arc(center.x, center.y, 10, 0.15 * Math.PI, 1.85 * Math.PI); // half circle
 				context.lineTo(center.x, center.y);
 				context.fillStyle = pac_color; //color
 				context.fill();
 				context.beginPath();
-				context.arc(center.x + 5, center.y - 15, 5, 0, 2 * Math.PI); // circle
+				context.arc(center.x + 3, center.y - 7, 2, 0, 2 * Math.PI); // circle
 				context.fillStyle = "black"; //color
 				context.fill();
 			}
+
+			//treasure:
+			context.drawImage(image_treasure, treasure.x, treasure.y, (2*canvasWidth/(3*canvasRows)), (2*canvasHeight/(3*canvasColumns))); // treasure picture
 		}
 	}
 }
@@ -817,6 +786,18 @@ function UpdatePosition() {
 	
 }
 
+function countDown(number){
+	let hours=0;
+	let minutes=0;
+	let seconds=0;
+	if(number > 360){
+		hours=int(number/360);
+		number=number-360;
+	}
+	else if(number > 60){
+		
+	}
 
+}
 
 
