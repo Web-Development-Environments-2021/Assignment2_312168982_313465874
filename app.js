@@ -861,13 +861,13 @@ function Draw() {
 			}
 
 			//mons[0]:
-			else if (board[i][j] == 5 || board[i][j] == 12 || board[i][j] == 16 || board[i][j] == 20) {
+			if (board[i][j] == 5 || board[i][j] == 12 || board[i][j] == 16 || board[i][j] == 20) {
 				mons[0].x = center.x;
 				mons[0].y = center.y;
 				context.drawImage(monsRedPic, (center.x - (canvasWidth/(4*canvasRows)) + mons[0].movingX), (center.y - (canvasHeight/(4*canvasColumns))+ mons[0].movingY), cellSizeX/2, cellSizeY/2);
 			}
 			//mons[1]:
-			if(monsCount>1){
+			if(mons.length>1){
 				if (board[i][j] == 9 || board[i][j] == 13 || board[i][j] == 17 || board[i][j] == 21) {
 					mons[1].x = center.x;
 					mons[1].y = center.y;
@@ -875,7 +875,7 @@ function Draw() {
 				}
 			}
 			//mons[2]:
-			if(monsCount>2){
+			if(mons.length>2){
 					if(board[i][j] == 10 || board[i][j] == 14 || board[i][j] == 18 || board[i][j] == 22) {
 					mons[2].x = center.x;
 					mons[2].y = center.y;
@@ -883,7 +883,7 @@ function Draw() {
 					}
 			}
 			//mons[3]:
-			if(monsCount>3){ 
+			if(mons.length>3){ 
 				if (board[i][j] == 11 || board[i][j] == 15 || board[i][j] == 19 || board[i][j] == 23) {
 					mons[3].x = center.x;
 					mons[3].y = center.y;
@@ -1097,7 +1097,7 @@ function moveMonsterCell(monster){
 					if((monster.num == 9 || monster.num == 13 || monster.num == 17 || monster.num == 21)){
 						monster.num = 13;
 					}
-					if(monster.num == 10 || monster.num == 114 || monster.num == 18 || monster.num == 22){
+					if(monster.num == 10 || monster.num == 14 || monster.num == 18 || monster.num == 22){
 						monster.num = 14;
 					}
 					if(monster.num == 11 || monster.num == 15 || monster.num == 19 || monster.num == 23){
@@ -1112,7 +1112,7 @@ function moveMonsterCell(monster){
 					if((monster.num == 9 || monster.num == 13 || monster.num == 17 || monster.num == 21)){
 						monster.num = 17;
 					}
-					if(monster.num == 10 || monster.num == 114 || monster.num == 18 || monster.num == 22){
+					if(monster.num == 10 || monster.num == 14 || monster.num == 18 || monster.num == 22){
 						monster.num = 18;
 					}
 					if(monster.num == 11 || monster.num == 15 || monster.num == 19 || monster.num == 23){
@@ -1127,7 +1127,7 @@ function moveMonsterCell(monster){
 					if((monster.num == 9 || monster.num == 13 || monster.num == 17 || monster.num == 21)){
 						monster.num = 21;
 					}
-					if(monster.num == 10 || monster.num == 114 || monster.num == 18 || monster.num == 22){
+					if(monster.num == 10 || monster.num == 14 || monster.num == 18 || monster.num == 22){
 						monster.num = 22;
 					}
 					if(monster.num == 11 || monster.num == 15 || monster.num == 19 || monster.num == 23){
@@ -1166,7 +1166,7 @@ function moveMonsterCell(monster){
 					if((monster.num == 9 || monster.num == 13 || monster.num == 17 || monster.num == 21)){
 						monster.num = 13;
 					}
-					if(monster.num == 10 || monster.num == 114 || monster.num == 18 || monster.num == 22){
+					if(monster.num == 10 || monster.num == 14 || monster.num == 18 || monster.num == 22){
 						monster.num = 14;
 					}
 					if(monster.num == 11 || monster.num == 15 || monster.num == 19 || monster.num == 23){
@@ -1181,7 +1181,7 @@ function moveMonsterCell(monster){
 					if((monster.num == 9 || monster.num == 13 || monster.num == 17 || monster.num == 21)){
 						monster.num = 17;
 					}
-					if(monster.num == 10 || monster.num == 114 || monster.num == 18 || monster.num == 22){
+					if(monster.num == 10 || monster.num == 14 || monster.num == 18 || monster.num == 22){
 						monster.num = 18;
 					}
 					if(monster.num == 11 || monster.num == 15 || monster.num == 19 || monster.num == 23){
@@ -1196,7 +1196,7 @@ function moveMonsterCell(monster){
 					if((monster.num == 9 || monster.num == 13 || monster.num == 17 || monster.num == 21)){
 						monster.num = 21;
 					}
-					if(monster.num == 10 || monster.num == 114 || monster.num == 18 || monster.num == 22){
+					if(monster.num == 10 || monster.num == 14 || monster.num == 18 || monster.num == 22){
 						monster.num = 22;
 					}
 					if(monster.num == 11 || monster.num == 15 || monster.num == 19 || monster.num == 23){
