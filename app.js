@@ -13,16 +13,25 @@ let usernameNumber = 0;
 
 
 //game data:
-let keyUp;
-let keyDown;
-let keyLeft;
-let keyRight;
+let directionPressed;
+
+
+let keyPressedBool = true;
+let keyPressed = '';
+
+let gamestat = 0;
+//Game stats:
+//0 = live
+//1 = time's up
+//2 = game lost
+//3 = game won
 
 let score=0;
 let lives=5;
-let start_time=0;
 let time_elapsed = 0;
+let time_left = 0;
 let interval;
+let timeInterval;
 let gameMusic = new Audio('Popcorn Original Song.wav');
 let winMusic = new Audio('winner');
 let LoseMusic = new Audio('Wrong Buzzer Sound Effect');
@@ -40,10 +49,30 @@ let colsOfBoard = 12;
 let pac_color = "yellow";
 let pacman_x;
 let pacman_y;
+let pacmanData = new Object();
+pacmanData.mouthStat = "close";
+pacmanData.mouthSize = 35;
+pacmanData.direction = "right";
+pacmanData.directionSize = 90;
+
+pacmanData.eyeRightX = -1;
+pacmanData.eyeRightY= 5;
+
+pacmanData.eyeDownX = 6;
+pacmanData.eyeDownY= 2;
+
+pacmanData.eyeLeftX = -2;
+pacmanData.eyeLeftY= 6;
+
+pacmanData.eyeUpX = 0;
+pacmanData.eyeUpY= 0;
+
+pacmanData.eyeX = -6;
+pacmanData.eyeY= 0;
 
 
 //Monsters Vars:
-let monsCount = 1;
+let monsCount = 2;
 let mons;
 
 let monsRedPic = document.createElement("img");
@@ -384,7 +413,14 @@ function checkValidLogForm(){
 	
 }
 
+
+// --------------------------------------------------------------------------------------------------------
 // Settings Page:
+
+function stopMusic(){
+	gameMusic.pause();
+}
+
 
 function uniKeyCode1(event) {
 	let key = event.key;
@@ -411,6 +447,7 @@ function checkValidSettingForm(){
 	let keyRightT = document.forms["settingForm"]["keyRight"].value;
 	let ballCountT = document.forms["settingForm"]["NumeberBalls"].value;
 	let smallBallColorT = document.forms["settingForm"]["smallBallColor"].value;
+	// smallBallColorT.style.backgroundColor
 	let mediumBallColorT = document.forms["settingForm"]["mediumBallColor"].value;
 	let bigBallColorT = document.forms["settingForm"]["bigBallColor"].value;
 	let time_elapsedT = document.forms["settingForm"]["timeElapse"].value;
@@ -419,28 +456,28 @@ function checkValidSettingForm(){
 	let letter = /[a-z,A-Z]/g;
 	let letterCheckPass = time_elapsedT.match(letter);
 
-	if(keyUpT==''){
+	if(keyUpT=='' || keyUpT==keyLeftT || keyUpT==keyDownT || keyUpT==keyRightT){
 		document.getElementById('keyUpErr').innerHTML="*";
 		validLog = false;
 	}
 	else{
 		document.getElementById('keyUpErr').innerHTML="";
 	}
-	if(keyDownT==''){
+	if(keyDownT=='' || keyDownT==keyLeftT || keyDownT==keyUpT || keyDownT==keyRightT){
 		document.getElementById('keyDownErr').innerHTML="*";
 		validLog = false;
 	}
 	else{
 		document.getElementById('keyDownErr').innerHTML="";
 	}
-	if(keyLeftT==''){
+	if(keyLeftT=='' || keyLeftT==keyDownT || keyLeftT==keyUpT || keyLeftT==keyRightT){
 		document.getElementById('keyLeftErr').innerHTML="*";
 		validLog = false;
 	}
 	else{
 		document.getElementById('keyLeftErr').innerHTML="";
 	}
-	if(keyRightT==''){
+	if(keyRightT=='' || keyRightT==keyDownT || keyRightT==keyUpT || keyRightT==keyLeftT){
 		document.getElementById('keyRightErr').innerHTML="*";
 		validLog = false;
 	}
@@ -482,9 +519,22 @@ function checkValidSettingForm(){
 		showScreen('GamePageDiv');
 		return true;
 	}
-	
 }
 
+function generateRandomSetting(){
+	$("#keyup").val("ArrowUp");
+	$("#keydown").val("ArrowDown");
+	$("#keyleft").val("ArrowLeft");
+	$("#keyright").val("ArrowRight");
+	$("#NumeberBallsID").val(Math.floor(Math.random() * 40) + 50);
+	let randon1 = Math.floor(Math.random()*16777215).toString(16);
+	$("#smallBallColor").val(Math.floor(Math.random()*16777215));
+	$("#mediumBallColor").val(Math.floor(Math.random()*16777215));
+	$("#bigBallColor").val(Math.floor(Math.random()*16777215));
+ 	$("#timeGame").val(Math.floor(Math.random() * 120) + 60);
+	$("#noMonsters").val(Math.floor(Math.random() * 3) + 1);
+	return false;
+}
 
 
 
@@ -621,7 +671,7 @@ function setMons(){
 		mons[1].y = 0;
 	}
 	if(monsCount > 2){
-		board[12][0] = 10;
+		board[12][1] = 10;
 		mons[2] = new Object();
 		mons[2].x = 0;
 		mons[2].y = 0;
@@ -641,50 +691,43 @@ function setPacman(){
 
 
 function start() {
+	window.clearInterval(interval);
+	window.clearInterval(timeInterval);
 	score = 0;
+	time_left = time_elapsed;
 	pac_color = "yellow";
+	shape.direction = "rght";
 	start_time = new Date();
 	genBoard();
 	setWalls();
 	setBalls();
+	
+	// gameMusic.play();
+	// gameMusic.loop();
 	setMedicine();
 	setClock();
 	setMons();
 	setPacman();
 	Draw();
-	gameMusic.play();
-	gameMusic.loop();
-	// keysDown = {};
-	// addEventListener(
-	// 	"keydown",
-	// 	function(e) {
-	// 		keysDown[e.keyCode] = true;
-	// 	},
-	// 	false
-	// );
-	// addEventListener(
-	// 	"keyup",
-	// 	function(e) {
-	// 		keysDown[e.keyCode] = false;
-	// 	},
-	// 	false
-	// );
-	// interval = setInterval(UpdatePosition, 250);
-}
-
-function GetKeyPressed() {
-	if (keysDown[38]) {
-		return 1;
-	}
-	if (keysDown[40]) {
-		return 2;
-	}
-	if (keysDown[37]) {
-		return 3;
-	}
-	if (keysDown[39]) {
-		return 4;
-	}
+	
+	addEventListener(
+		"keydown",
+		function(e) {
+			keyPressed = e.key;
+			keyPressedBool = true;
+		},
+		false
+	);
+	addEventListener(
+		"keyup",
+		function(e) {
+			keyPressed = e.key;
+			keyPressedBool = false;
+		},
+		false
+	);
+	interval = setInterval(UpdatePosition, 10);
+	// timeInterval = setInterval(function () { time_left-- }, 1000);
 }
 
 function Draw() {
@@ -736,23 +779,24 @@ function Draw() {
 			//clock
 			else if (board[i][j] == 4) {
 				context.drawImage(clockIMG, (center.x - (canvasWidth/(3*canvasRows))), (center.y - (canvasHeight/(3*canvasColumns))), (2*canvasWidth/(3*canvasRows)), (2*canvasHeight/(3*canvasColumns))); // medicine picture
+				
 			}
 
 			//mons[0]:
 			else if (board[i][j] == 5) {
-				context.drawImage(monsRedPic, (center.x - (canvasWidth/(canvasRows))), (center.y - (canvasHeight/(canvasColumns))), (canvasWidth/(2*canvasRows)), (canvasHeight/(2*canvasColumns))); // medicine picture
+				context.drawImage(monsRedPic, (center.x - (canvasWidth/(4*canvasRows))), (center.y - (canvasHeight/(4*canvasColumns))), (canvasWidth/(2*canvasRows)), (3*canvasHeight/(4*canvasColumns)));
 			}
 			//mons[1]:
 			else if (board[i][j] == 9) {
-				context.drawImage(monsBluePic, (center.x - (canvasWidth/(4*canvasRows))), (center.y - (canvasHeight/(4*canvasColumns))), (canvasWidth/(2*canvasRows)), (canvasHeight/(2*canvasColumns))); // medicine picture
+				context.drawImage(monsBluePic, (center.x - (canvasWidth/(4*canvasRows))), (center.y - (canvasHeight/(4*canvasColumns))), (canvasWidth/(2*canvasRows)), (3*canvasHeight/(4*canvasColumns)));
 			}
 			//mons[2]:
 			else if (board[i][j] == 10) {
-				context.drawImage(monsYellowPic, (center.x - (canvasWidth/(4*canvasRows))), (center.y - (canvasHeight/(4*canvasColumns))), (canvasWidth/(2*canvasRows)), (canvasHeight/(2*canvasColumns))); // medicine picture
+				context.drawImage(monsYellowPic, (center.x - (canvasWidth/(4*canvasRows))), (center.y - (canvasHeight/(4*canvasColumns))), (canvasWidth/(2*canvasRows)), (3*canvasHeight/(4*canvasColumns)));
 			}
 			//mons[3]:
 			else if (board[i][j] == 11) {
-				context.drawImage(monspinkPic, (center.x - (canvasWidth/(4*canvasRows))), (center.y - (canvasHeight/(4*canvasColumns))), (canvasWidth/(2*canvasRows)), (canvasHeight/(2*canvasColumns))); // medicine picture
+				context.drawImage(monspinkPic, (center.x - (canvasWidth/(4*canvasRows))), (center.y - (canvasHeight/(4*canvasColumns))), (canvasWidth/(2*canvasRows)), (3*canvasHeight/(4*canvasColumns)));
 			}
 
 			//Pacman Draw:
@@ -760,12 +804,12 @@ function Draw() {
 				pacman_x = center.x;
 				pacman_y = center.y;
 				context.beginPath();
-				context.arc(center.x, center.y, 10, 0.15 * Math.PI, 1.85 * Math.PI); // half circle
+				context.arc(center.x, center.y, 15, (pacmanData.mouthSize + pacmanData.directionSize) * Math.PI/180,(2*Math.PI - ((pacmanData.mouthSize - pacmanData.directionSize) * Math.PI/180))); // half circle
 				context.lineTo(center.x, center.y);
 				context.fillStyle = pac_color; //color
 				context.fill();
 				context.beginPath();
-				context.arc(center.x + 3, center.y - 7, 2, 0, 2 * Math.PI); // circle
+				context.arc(center.x + pacmanData.eyeX, center.y - pacmanData.eyeY, 2, 0, 2 * Math.PI); // circle
 				context.fillStyle = "black"; //color
 				context.fill();
 			}
@@ -776,60 +820,193 @@ function Draw() {
 	}
 }
 
-function UpdatePosition() {
-	board[shape.i][shape.j] = 0;
-	var x = GetKeyPressed();
-	if (x == 1) {
-		if (shape.j > 0 && board[shape.i][shape.j - 1] != 4) {
-			shape.j--;
-		}
-	}
-	if (x == 2) {
-		if (shape.j < 9 && board[shape.i][shape.j + 1] != 4) {
-			shape.j++;
-		}
-	}
-	if (x == 3) {
-		if (shape.i > 0 && board[shape.i - 1][shape.j] != 4) {
-			shape.i--;
-		}
-	}
-	if (x == 4) {
-		if (shape.i < 9 && board[shape.i + 1][shape.j] != 4) {
-			shape.i++;
-		}
-	}
-	if (board[shape.i][shape.j] == 1) {
-		score++;
-	}
-	board[shape.i][shape.j] = 2;
-	var currentTime = new Date();
-	time_elapsed = (currentTime - start_time) / 1000;
-	if (score >= 20 && time_elapsed <= 10) {
-		pac_color = "green";
-	}
-	if (score == 50) {
-		window.clearInterval(interval);
-		window.alert("Game completed");
-	} else {
-		Draw();
-	}
+function endgameNoHearts(){
+	window.clearInterval(interval);
+	window.clearInterval(interval);
+	window.clearInterval(timeInterval);
+	alert("You Lost!");
+	showScreen('gameSetting');
+}
 
+function endgameNoTimeLeft(){
+	window.clearInterval(interval);
+	window.clearInterval(interval);
+	window.clearInterval(timeInterval);
+	alert("You Lost!");
+	showScreen('gameSetting');
+}
+
+function endgameWon(){
+	window.clearInterval(interval);
+	window.clearInterval(interval);
+	window.clearInterval(timeInterval);
+	alert("You Won!");
+	showScreen('gameSetting');
+}
+
+
+function moveEyePacman(directionPac){
+	if(directionPac == "right"){
+		pacmanData.eyeX = pacmanData.eyeRightX;
+		pacmanData.eyeY = pacmanData.eyeRightY;
+	}
+	else if(directionPac == "down"){
+		pacmanData.eyeX = pacmanData.eyeDownX;
+		pacmanData.eyeY = pacmanData.eyeDownY;
+	}
+	else if(directionPac == "left"){
+		pacmanData.eyeX =pacmanData.eyeLeftX;
+		pacmanData.eyeY = pacmanData.eyeY;
+	}
+	else if (directionPac == "up"){
+		pacmanData.eyeX = pacmanData.eyeUpX;
+		pacmanData.eyeY = pacmanData.eyeUpY;
+	}
+}
+
+function movePacman(directionPac){
+	pacmanData.direction = directionPac;
+	moveEyePacman(directionPac);
+	if(directionPac == "right"){
+		pacmanData.directionSize = 0;
+	}
+	else if(directionPac == "down"){
+		pacmanData.directionSize = 90;
+	}
+	else if(directionPac == "left"){
+		pacmanData.directionSize = 180;
+	}
+	else if (directionPac == "up"){
+		pacmanData.directionSize = 270;
+	}
+}
+
+function calculateDirectionMonster(monster){
+	if(pacman_x > monster.x){
+		if(pacman_y>monster.y){
+			return "up-right";
+		}
+		else if(pacman_y == monster.y){
+			return "right";
+		}
+		else{
+			return "down-right";
+		}
+	}
+	if(pacman_x == monster.x){
+		if(pacman_y>monster.y){
+			return "up";
+		}
+		else if(pacman_y < monster.y){
+			return "down";
+		}
+	}
+	else{
+		if(pacman_y>monster.y){
+			return "up-left";
+		}
+		else if(pacman_y == monster.y){
+			return "left";
+		}
+		else{
+			return "down-left";
+		}
+	}
+}
+
+function moveMonsters(monster){
+	mons[0].direction = calculateDirectionMonster(mons[0]);
 	
 }
 
-function countDown(number){
-	let hours=0;
-	let minutes=0;
-	let seconds=0;
-	if(number > 360){
-		hours=int(number/360);
-		number=number-360;
+
+function pacmanMouthChange(){
+	if (pacmanData.mouthSize == 0){
+		pacmanData.mouthStat = "open";
 	}
-	else if(number > 60){
-		
+	if (pacmanData.mouthSize == 35){
+		pacmanData.mouthStat = "close";
+	}
+	
+	if (pacmanData.mouthStat == "open"){
+		pacmanData.mouthStat++;
+	}
+	else{
+		pacmanData.mouthStat++;
+	}
+}
+
+
+function GetKeyPressed() {
+	document.getElementById('keyUpGameTable').innerHTML = (keyPressedBool);
+	if (keyPressed == keyRight && keyPressedBool == true) {
+		return "right";
+	}
+	if (keyPressed == keyDown && keyPressedBool == true) {
+		return "down";
+	}
+	if (keyPressed == keyLeft && keyPressedBool == true) {
+		return "left";
+	}
+	if (keyPressed == keyUp && keyPressedBool == true) {
+		return "up";
+	}
+}
+
+
+function UpdatePosition() {
+	if(gamestat == 1){
+		endgameNoHearts();
 	}
 
+	if(gamestat == 2){
+		endgameNoHearts();
+	}
+
+	if(gamestat == 3){
+		endgameWon();
+	}
+	let x = GetKeyPressed();
+	pacmanMouthChange();
+	movePacman(x);
+	Draw();
+	// if (x == 1) {
+	// 	if (shape.j > 0 && board[shape.i][shape.j - 1] != 4) {
+	// 		shape.j--;
+	// 	}
+	// }
+	// if (x == 2) {
+	// 	if (shape.j < 9 && board[shape.i][shape.j + 1] != 4) {
+	// 		shape.j++;
+	// 	}
+	// }
+	// if (x == 3) {
+	// 	if (shape.i > 0 && board[shape.i - 1][shape.j] != 4) {
+	// 		shape.i--;
+	// 	}
+	// }
+	// if (x == 4) {
+	// 	if (shape.i < 9 && board[shape.i + 1][shape.j] != 4) {
+	// 		shape.i++;
+	// 	}
+	// }
+	// if (board[shape.i][shape.j] == 1) {
+	// 	score++;
+	// }
+	// board[shape.i][shape.j] = 2;
+	// var currentTime = new Date();
+	// time_elapsed = (currentTime - start_time) / 1000;
+	// if (score >= 20 && time_elapsed <= 10) {
+	// 	pac_color = "green";
+	// }
+	// if (score == 50) {
+	// 	window.clearInterval(interval);
+	// 	window.alert("Game completed");
+	// } else {
+	// 	Draw();
+	// }
+
+	
 }
 
 
