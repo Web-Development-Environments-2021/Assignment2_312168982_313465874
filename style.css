@@ -289,11 +289,11 @@ canvas{
 #textHead{
     text-align:right;
     color: white;
-    font-size: 25px; 
+    font-size: 20px; 
     font-family: Verdana;
     margin-right: 5px;
     float: right;
-    padding-top: 20px;
+    padding-top: 10px;
 }
 
 #welcomeBack{

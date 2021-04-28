@@ -33,6 +33,7 @@ let time_left = 0;
 let interval;
 let timeInterval;
 let gameMusic = new Audio('sound/Popcorn Original Song.wav');
+let gameMusicStop = false;
 let winMusic = new Audio('sound/winner');
 let LoseMusic = new Audio('sound/Wrong Buzzer Sound Effect');
 
@@ -186,9 +187,9 @@ $(document).ready(function() {
 	// context.fillStyle = "rgb(0, 0, 0)";
 	// context.fill();
 	
-	let grd = context.createRadialGradient(75, 50, 5, 90, 60, 100);
-	grd.addColorStop(0, "yellow");
-	grd.addColorStop(1, "white");
+	// let grd = context.createRadialGradient(75, 50, 5, 90, 60, 100);
+	// grd.addColorStop(0, "yellow");
+	// grd.addColorStop(1, "white");
 
 	// context.fillText("Menu Setting", canvas.width/4, canvas.height); 
 
@@ -427,8 +428,17 @@ function checkValidLogForm(){
 // --------------------------------------------------------------------------------------------------------
 // Settings Page:
 
-function stopMusic(){
-	gameMusic.pause();
+function pauseOrPlayMusic(){
+	if(!gameMusicStop){
+		gameMusic.pause();
+		gameMusicStop = true;
+		// document.getElementById("pauseMusicButton").innerHTML.value="play music";
+	}
+	else{
+		gameMusic.play();
+		gameMusicStop = false;
+		// document.getElementById("pauseMusicButton").innerHTML.value="pause music";
+	}
 }
 
 
