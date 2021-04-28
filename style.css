@@ -6,11 +6,11 @@ body{
 .menu 
 {
     top: 40px;
-    font-size: 30px; 
+    font-size: 20px; 
     font-family: Arial, Helvetica, sans-serif; 
     background-color: rgb(101, 208, 216); 
     color: white; 
-    padding: 10px; 
+    padding: 5px; 
     border-color: rgb(101, 208, 216);
     cursor: pointer;
 }
@@ -23,10 +23,10 @@ body{
     font-size: 130px;
     font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif ;
     background-image: url('./images/gif.gif');
-    height: 462px;
+    height: 450px;
     background-repeat: no-repeat;
     background-size: cover;
-    padding: 10px;
+    /* padding: 10px; */
     text-shadow: 5px 5px #FF0000;
     color: white;
 }
@@ -37,7 +37,7 @@ body{
     border-color: #ff0505;
     border-width: 5px;
     color: #ff0505;
-    padding: 15px 32px;
+    padding: 10px 32px;
     text-align: center;
     display: inline-block;
     font-size: 30px;
@@ -66,12 +66,6 @@ body{
     color: rgb(29, 66, 170);
     font-family:'Courier New', Courier, monospace; 
 }
-/* #RegisterPageDiv span{
-    font-size: 30px;
-    color: rgb(29, 66, 170);
-    font-family:'Courier New', Courier, monospace; 
-    font-weight: bold;
-} */
 
 #RegisterPageDiv input{
     width: 200px;
@@ -299,7 +293,7 @@ canvas{
     font-family: Verdana;
     margin-right: 5px;
     float: right;
-    padding-top: 35px;
+    padding-top: 20px;
 }
 
 #welcomeBack{
@@ -314,6 +308,7 @@ canvas{
     font-size: 20px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin-top: 10px;
+    padding-top: 20px;
 }
 
 #noMonsters {
@@ -355,7 +350,8 @@ canvas{
 }
 
 #GamePageDiv{
-    font-size: 30px;
+    font-size: 20px;
+    font-family:cursive;
     background-color: rgb(238, 167, 167);
 }
 
@@ -364,10 +360,10 @@ canvas{
     border-style:solid;
     border-color: rgb(243, 50, 16);
     border-radius: 15px;
-    border-width: 4px;
+    border-width: 3px;
     color: rgb(243, 50, 16);
     text-align: center;
-    font-size: 40px;
+    font-size: 15px;
     margin: 4px 2px;
     padding: 2px 4px;
 }
@@ -376,32 +372,32 @@ canvas{
     background-color: rgb(243, 50, 16);
     border-style:solid;
     border-color: white;
-    border-width: 4px;
+    border-width: 3px;
     border-radius: 15px;
     color: white;
     text-align: center;
-    font-size: 40px;
+    font-size: 15px;
     margin: 4px 2px;
     padding: 2px 4px;
 }
 
-.animation{
+/* .animation{
     width: 500;
     height: 450;
     margin: 50px auto;
     animation: slide 5s infinite;
-}
+} */
 
-@keyframes slide{
+/* @keyframes slide{
     100%{
         background-image: url(images/winner.png) ;
     }
-}
+} */
 
 footer{
     background-color: rgb(150, 110, 130);
     color: black;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 20px;
-    padding: 7px;
+    font-size: 14px;
+    padding: 5px;
 }

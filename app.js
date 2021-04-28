@@ -38,7 +38,7 @@ let LoseMusic = new Audio('sound/Wrong Buzzer Sound Effect');
 
 //board:
 let canvasWidth = 901;
-let canvasHeight = 520;
+let canvasHeight = 420;
 let canvasRows = 14;
 let canvasColumns = 17;
 let board = new Array (14);
@@ -157,7 +157,6 @@ $(document).ready(function() {
 	context = canvas.getContext("2d");
 	canvas.width = canvasWidth;
 	canvas.height = canvasHeight;
-	context.fillStyle = "red";
 	context.rect(0, 0, canvas.width, canvas.height);
 
 	// context.font = "bold 60px Verdana";
