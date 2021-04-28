@@ -279,7 +279,6 @@ canvas{
     font-size: 20px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin-top: 10px;
-    
 }
 
 .settingButtons{
@@ -299,6 +298,9 @@ canvas{
 
 #canvasDiv{
     display: inline-block;
+    background-image: url(images/canvas-background.jpg);
+    background-repeat: no-repeat;
+    background-size: 100% ;
 }
 
 #settingInGame{
@@ -311,7 +313,11 @@ canvas{
 
 #GamePageDiv{
     font-size: 30px;
-    background-color: rgb(156, 232, 235);
+    background-color: rgb(238, 167, 167);
+}
+
+#stopMusicButton{
+    
 }
 
 footer{
