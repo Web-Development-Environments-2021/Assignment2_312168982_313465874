@@ -26,8 +26,8 @@ let gamestat = 0;
 //2 = game lost
 //3 = game won
 
-let score=0;
-let lives=5;
+let score;
+let lives;
 let time_elapsed = 0;
 let time_left = 0;
 let interval;
@@ -42,9 +42,8 @@ let canvasHeight = 420;
 let canvasRows = 14;
 let canvasColumns = 17;
 let board = new Array (14);
-let rowsOfBoard = 15;
-let colsOfBoard = 12;
-
+let cellSizeX = canvasWidth/17;
+let cellSizeY = canvasHeight/14;
 //pacman vars:
 let pac_color = "yellow";
 let pacman_x;
@@ -61,17 +60,21 @@ pacmanData.eyeRightY= 5;
 pacmanData.eyeDownX = 6;
 pacmanData.eyeDownY= 2;
 
-pacmanData.eyeLeftX = -2;
-pacmanData.eyeLeftY= 6;
+pacmanData.eyeLeftX = 2;
+pacmanData.eyeLeftY= 8;
 
-pacmanData.eyeUpX = 0;
-pacmanData.eyeUpY= 0;
+pacmanData.eyeUpX = -4;
+pacmanData.eyeUpY= 1;
 
 pacmanData.eyeX = -6;
 pacmanData.eyeY= 0;
 
 pacmanData.movingX = 0;
 pacmanData.movingY = 0;
+
+pacmanData.onMove = false;
+pacmanData.dirMove = 'right';
+pacmanData.allowMove = true;
 
 //Monsters Vars:
 let monsCount = 2;
@@ -102,8 +105,11 @@ treasure.x = 100;
 treasure.y= 100;
 let image_treasure = document.createElement("img");
 image_treasure.src ='images/money.png';
-treasure.xMove = 0.8;
-treasure.yMove = 0.8;
+treasure.xMove = 1;
+treasure.yMove = 1;
+treasure.sizePicX = (2*canvasWidth/(3*canvasRows));
+treasure.sizePicY = (2*canvasHeight/(3*canvasColumns));
+let treasureEaten = false;
 
 
 //Advance:
@@ -720,192 +726,7 @@ function findCreature(creatureNum){
 	return null;
 }
 
-function movePacmanCell(){
-	let pacmanPos = findCreature(6);
-	// document.getElementById('keyUpGameTable').innerHTML = x + " , " + y;
-	let x = pacmanPos[0];
-	let y = pacmanPos[1];
-	if(pacmanData.direction == 'right'){
-		if(x!= board.length-1 ){
-			if(board[x+1][y] != 1){
-				board[x][y] = 0;
-				
-				//fruit
-				if(board[x+1][y]==2){
-					score+=5;
-					ballCount--;
-				}
-				if(board[x+1][y]==7){
-					score+=15;
-					ballCount--;
-				}
-				if(board[x+1][y]==8){
-					score+=25;
-					ballCount--;
-				}
 
-				//special
-				if(board[x+1][y]==3){
-					lives+=1;
-					ballCount--;
-				}
-				if(board[x+1][y]==4){
-					time_left+=10;
-				}
-
-				//Mons
-				if(board[x+1][y]==5){
-					lives-=1;
-				}
-				if(board[x+1][y]==9){
-					lives-=1;
-				}
-				if(board[x+1][y]==10){
-					lives-=1;
-				}
-				if(board[x+1][y]==11){
-					lives-=1;
-				}
-				board[x+1][y] = 6;
-				x=x+1;
-			}
-		}
-		
-	}
-	if(pacmanData.direction == 'left'){
-		if(x != 0){
-			if(board[x-1][y] != 1){
-				board[x][y] = 0;
-				
-				//fruit
-				if(board[x-1][y]==2){
-					score+=5;
-				}
-				if(board[x-1][y]==7){
-					score+=15;
-				}
-				if(board[x-1][y]==8){
-					score+=25;
-				}
-
-				//special
-				if(board[x-1][y]==3){
-					lives+=1;
-				}
-				if(board[x-1][y]==4){
-					time_left+=10;
-				}
-
-				//Mons
-				if(board[x-1][y]==5){
-					lives-=1;
-				}
-				if(board[x-1][y]==9){
-					lives-=1;
-				}
-				if(board[x-1][y]==10){
-					lives-=1;
-				}
-				if(board[x-1][y]==11){
-					lives-=1;
-				}
-				board[x-1][y] = 6;
-				x=x-1;
-			}
-		}
-		
-	}
-	if(pacmanData.direction == 'down'){
-		if(y != board[0].length){
-			if(board[x][y+1] != 1){
-				board[x][y] = 0;
-				
-				//fruit
-				if(board[x][y+1]==2){
-					score+=5;
-				}
-				if(board[x][y+1]==7){
-					score+=15;
-				}
-				if(board[x][y+1]==8){
-					score+=25;
-				}
-
-				//special
-				if(board[x][y+1]==3){
-					lives+=1;
-				}
-				if(board[x][y+1]==4){
-					time_left+=10;
-				}
-
-				//Mons
-				if(board[x][y+1]==5){
-					lives-=1;
-				}
-				if(board[x][y+1]==9){
-					lives-=1;
-				}
-				if(board[x][y+1]==10){
-					lives-=1;
-				}
-				if(board[x][y+1]==11){
-					lives-=1;
-				}
-				board[x][y+1] = 6;
-				y=y+1;
-			}
-		}
-		
-	}
-	if(pacmanData.direction == 'up'){
-		if(y != 0){
-			if(board[x][y-1] != 1){
-				board[x][y] = 0;
-				
-				//fruit
-				if(board[x][y-1]==2){
-					score+=5;
-				}
-				if(board[x][y-1]==7){
-					score+=15;
-				}
-				if(board[x][y-1]==8){
-					score+=25;
-				}
-
-				//special
-				if(board[x][y-1]==3){
-					lives+=1;
-				}
-				if(board[x][y-1]==4){
-					time_left+=10;
-				}
-
-				//Mons
-				if(board[x][y-1]==5){
-					lives-=1;
-				}
-				if(board[x][y-1]==9){
-					lives-=1;
-				}
-				if(board[x][y-1]==10){
-					lives-=1;
-				}
-				if(board[x][y-1]==11){
-					lives-=1;
-				}
-				board[x][y-1] = 6;
-				y=y-1;
-			}
-		}
-		
-	}
-	pacman_x = x * (canvasWidth/canvasRows) + (canvasWidth/(2*canvasRows));
-	pacman_y = y * (canvasHeight/canvasColumns) + (canvasHeight/(2*canvasColumns));
-	pacmanData.movingX = 0;
-	pacmanData.movingY = 0;
-}
 
 
 function start() {
@@ -914,6 +735,7 @@ function start() {
 	gamestat = 0;
 	keyPressed = ''
 	keyPressedBool = false;
+	lives=5;
 	score = 0;
 	time_left = time_elapsed;
 	
@@ -922,9 +744,9 @@ function start() {
 	document.getElementById("timer").innerHTML = time_left;
 	document.getElementById("score").innerHTML = score;
 
-	
+	gameMusic.play();
 	pac_color = "yellow";
-	shape.direction = "rght";
+	shape.direction = "right";
 	start_time = new Date();
 	genBoard();
 	setWalls();
@@ -1032,7 +854,7 @@ function Draw() {
 				pacman_x = center.x;
 				pacman_y = center.y;
 				context.beginPath();
-				context.arc(center.x+ pacmanData.movingX, center.y + pacmanData.movingY, 15, (pacmanData.mouthSize + pacmanData.directionSize) * Math.PI/180,(2*Math.PI - ((pacmanData.mouthSize - pacmanData.directionSize) * Math.PI/180))); // half circle
+				context.arc(center.x+ pacmanData.movingX, center.y + pacmanData.movingY, 12, (pacmanData.mouthSize + pacmanData.directionSize) * Math.PI/180,(2*Math.PI - ((pacmanData.mouthSize - pacmanData.directionSize) * Math.PI/180))); // half circle
 				context.lineTo(center.x + pacmanData.movingX , center.y+ pacmanData.movingY);
 				context.fillStyle = pac_color; //color
 				context.fill();
@@ -1043,7 +865,7 @@ function Draw() {
 			}
 
 			//treasure:
-			context.drawImage(image_treasure, treasure.x, treasure.y, (2*canvasWidth/(3*canvasRows)), (2*canvasHeight/(3*canvasColumns))); // treasure picture
+			context.drawImage(image_treasure, treasure.x, treasure.y, treasure.sizePicX, treasure.sizePicY); // treasure picture
 		}
 	}
 }
@@ -1052,7 +874,7 @@ function endgameNoHearts(){
 	window.clearInterval(interval);
 	window.clearInterval(interval);
 	window.clearInterval(timeInterval);
-	alert("You Lost!");
+	alert("Looser!");
 	showScreen('gameSetting');
 }
 
@@ -1060,7 +882,12 @@ function endgameNoTimeLeft(){
 	window.clearInterval(interval);
 	window.clearInterval(interval);
 	window.clearInterval(timeInterval);
-	alert("You Lost!");
+	if(score<100){
+		alert("You are better than " + score + " points!");
+	}
+	else{
+		alert("Winner!");
+	}
 	showScreen('gameSetting');
 }
 
@@ -1068,7 +895,8 @@ function endgameWon(){
 	window.clearInterval(interval);
 	window.clearInterval(interval);
 	window.clearInterval(timeInterval);
-	alert("You Won!");
+	alert("Winner! Your score is: " + score);
+	context.drawImage('images/winner.png',100,100);
 	showScreen('gameSetting');
 }
 
@@ -1084,7 +912,7 @@ function moveEyePacman(directionPac){
 	}
 	else if(directionPac == "left"){
 		pacmanData.eyeX =pacmanData.eyeLeftX;
-		pacmanData.eyeY = pacmanData.eyeY;
+		pacmanData.eyeY = pacmanData.eyeLeftY;
 	}
 	else if (directionPac == "up"){
 		pacmanData.eyeX = pacmanData.eyeUpX;
@@ -1093,31 +921,37 @@ function moveEyePacman(directionPac){
 }
 
 function movePacman(directionPac){
-	document.getElementById('keyUpGameTable').innerHTML = pacmanData.movingX + " , " + pacmanData.movingY;
-	if(Math.abs(pacmanData.movingX) >= 53 || Math.abs(pacmanData.movingY) >= 30 ){
+	pacmanData.direction = directionPac;
+	if(Math.abs(pacmanData.movingX) == 0 && Math.abs(pacmanData.movingY) == 0){
+		pacmanData.onMove = false;
+	}
+	else{
+		pacmanData.onMove = true;
+	}
+	if(!pacmanData.onMove){
 		movePacmanCell();
 	}
 	else{
-		pacmanData.direction = directionPac;
-		moveEyePacman(directionPac);
-		if(directionPac == "right"){
+		
+		moveEyePacman(pacmanData.dirMove);
+		if(pacmanData.dirMove == "right"){
 			pacmanData.directionSize = 0;
-			pacmanData.movingX = pacmanData.movingX+0.8;
+			pacmanData.movingX = pacmanData.movingX+1;
 			pacmanData.movingY = 0;
 		}
-		else if(directionPac == "down"){
+		else if(pacmanData.dirMove == "down"){
 			pacmanData.directionSize = 90;
-			pacmanData.movingY = pacmanData.movingY+0.8;
+			pacmanData.movingY = pacmanData.movingY+1;
 			pacmanData.movingX = 0;
 		}
-		else if(directionPac == "left"){
+		else if(pacmanData.dirMove == "left"){
 			pacmanData.directionSize = 180;
-			pacmanData.movingX = pacmanData.movingX-0.8;
+			pacmanData.movingX = pacmanData.movingX-1;
 			pacmanData.movingY = 0;
 		}
-		else if (directionPac == "up"){
+		else if (pacmanData.dirMove == "up"){
 			pacmanData.directionSize = 270;
-			pacmanData.movingY = pacmanData.movingY-0.8;
+			pacmanData.movingY = pacmanData.movingY-1;
 			pacmanData.movingX = 0;
 		}
 	}
@@ -1171,10 +1005,10 @@ function pacmanMouthChange(){
 	}
 	
 	if (pacmanData.mouthStat == "open"){
-		pacmanData.mouthStat++;
+		pacmanData.mouthSize++;
 	}
-	else{
-		pacmanData.mouthStat++;
+	if(pacmanData.mouthStat == "close"){
+		pacmanData.mouthSize--;
 	}
 }
 
@@ -1195,6 +1029,198 @@ function moveTreasure(){
 	}
 	treasure.x = treasure.x + treasure.xMove;
 	treasure.y = treasure.y + treasure.yMove;
+}
+function movePacmanCell(){
+	let pacmanPos = findCreature(6);
+	let x = pacmanPos[0];
+	let y = pacmanPos[1];
+	pacmanData.dirMove = pacmanData.direction;
+	if(pacmanData.direction == 'right'){
+		if(x!= board.length-1 ){
+			if(board[x+1][y] != 1){
+				board[x][y] = 0;
+				pacmanData.movingX = -cellSizeX;
+				pacmanData.movingY = 0;
+				//fruit
+				if(board[x+1][y]==2){
+					score= score + 5;
+					ballCount--;
+				}
+				if(board[x+1][y]==7){
+					score+=15;
+					ballCount--;
+				}
+				if(board[x+1][y]==8){
+					score+=25;
+					ballCount--;
+				}
+
+				//special
+				if(board[x+1][y]==3){
+					lives+=1;
+					ballCount--;
+				}
+				if(board[x+1][y]==4){
+					time_left+=10;
+				}
+
+				//Mons
+				if(board[x+1][y]==5){
+					lives-=1;
+					score -= 10;
+				}
+				if(board[x+1][y]==9){
+					lives-=1;
+					score -= 10;
+				}
+				if(board[x+1][y]==10){
+					lives-=1;
+					score -= 10;
+				}
+				if(board[x+1][y]==11){
+					lives-=1;
+					score -= 10;
+				}
+				board[x+1][y] = 6;
+				x=x+1;
+			}
+		}
+		
+	}
+	if(pacmanData.direction == 'left'){
+		if(x != 0){
+			if(board[x-1][y] != 1){
+				board[x][y] = 0;
+				pacmanData.movingX = cellSizeX;
+				pacmanData.movingY = 0;
+				
+				//fruit
+				if(board[x-1][y]==2){
+					score+=5;
+				}
+				if(board[x-1][y]==7){
+					score+=15;
+				}
+				if(board[x-1][y]==8){
+					score+=25;
+				}
+
+				//special
+				if(board[x-1][y]==3){
+					lives+=1;
+				}
+				if(board[x-1][y]==4){
+					time_left+=10;
+				}
+
+				//Mons
+				if(board[x-1][y]==5){
+					lives-=1;
+				}
+				if(board[x-1][y]==9){
+					lives-=1;
+				}
+				if(board[x-1][y]==10){
+					lives-=1;
+				}
+				if(board[x-1][y]==11){
+					lives-=1;
+				}
+				board[x-1][y] = 6;
+				x=x-1;
+			}
+		}
+		
+	}
+	if(pacmanData.direction == 'down'){
+		if(y != board[0].length){
+			if(board[x][y+1] != 1){
+				board[x][y] = 0;
+				pacmanData.movingY = -cellSizeY;
+				pacmanData.movingX = 0;
+				//fruit
+				if(board[x][y+1]==2){
+					score+=5;
+				}
+				if(board[x][y+1]==7){
+					score+=15;
+				}
+				if(board[x][y+1]==8){
+					score+=25;
+				}
+
+				//special
+				if(board[x][y+1]==3){
+					lives+=1;
+				}
+				if(board[x][y+1]==4){
+					time_left+=10;
+				}
+
+				//Mons
+				if(board[x][y+1]==5){
+					lives-=1;
+				}
+				if(board[x][y+1]==9){
+					lives-=1;
+				}
+				if(board[x][y+1]==10){
+					lives-=1;
+				}
+				if(board[x][y+1]==11){
+					lives-=1;
+				}
+				board[x][y+1] = 6;
+				y=y+1;
+			}
+		}
+		
+	}
+	if(pacmanData.direction == 'up'){
+		if(y != 0){
+			if(board[x][y-1] != 1){
+				board[x][y] = 0;
+				pacmanData.movingY = cellSizeY;
+				pacmanData.movingX = 0;
+				
+				//fruit
+				if(board[x][y-1]==2){
+					score+=5;
+				}
+				if(board[x][y-1]==7){
+					score+=15;
+				}
+				if(board[x][y-1]==8){
+					score+=25;
+				}
+
+				//special
+				if(board[x][y-1]==3){
+					lives+=1;
+				}
+				if(board[x][y-1]==4){
+					time_left+=10;
+				}
+
+				//Mons
+				if(board[x][y-1]==5){
+					lives-=1;
+				}
+				if(board[x][y-1]==9){
+					lives-=1;
+				}
+				if(board[x][y-1]==10){
+					lives-=1;
+				}
+				if(board[x][y-1]==11){
+					lives-=1;
+				}
+				board[x][y-1] = 6;
+				y=y-1;
+			}
+		}
+		
+	}
 }
 
 function GetKeyPressed() {;
@@ -1218,24 +1244,40 @@ function GetKeyPressed() {;
 
 
 function UpdatePosition() {
-	if(gamestat == 1){
+	document.getElementById("livesCount").innerHTML = lives;
+	// document.getElementById("timer").innerHTML = countDown(time_elapsed);
+	document.getElementById("timer").innerHTML = time_left;
+	document.getElementById("score").innerHTML = score;
+	
+	if(time_left == 0){
+		endgameNoTimeLeft();
+	}
+
+	if(lives == 0){
 		endgameNoHearts();
 	}
 
-	if(gamestat == 2){
-		endgameNoHearts();
-	}
-
-	if(gamestat == 3){
+	if(ballCount == 0){
 		endgameWon();
 	}
 	if(gamestat == 4){
 		endgameExitGame();
 	}
+	if(((pacman_x - treasure.x) < cellSizeX) && ((pacman_y - treasure.y) < cellSizeY)){
+		score += 50;
+		treasure.sizePicX = 1;
+		treasure.sizePicY = 1;
+		treasure.x = 1;
+		treasure.y = 1;
+		treasureEaten = true;
+
+	}
 	let x = GetKeyPressed();
 	pacmanMouthChange();
 	movePacman(x);
-	moveTreasure();
+	if(!treasureEaten){
+		moveTreasure();
+	}
 	Draw();
 	// if (x == 1) {
 	// 	if (shape.j > 0 && board[shape.i][shape.j - 1] != 4) {
