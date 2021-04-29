@@ -27,7 +27,7 @@ let interval; // interval game
 let timeInterval; // countdown clock
 
 // Music:
-let gameMusic = new Audio('sound/Popcorn Original Song.wav');
+let gameMusic = new Audio('sound/Popcorn_Original_Song[Y2MP3.Net].wav');
 let gameMusicStop = false; //to play and pause the music in the game
 
 // Win:
