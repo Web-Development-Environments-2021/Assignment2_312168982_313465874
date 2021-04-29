@@ -16,5 +16,7 @@
 
  Escape key: escaping the game in the middle of the game. 
 
-Pacman mouth and eyes move by direction.
+ Play/Pause music button.
+ 
+ Pacman mouth and eyes move by direction.
 
