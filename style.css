@@ -26,7 +26,6 @@ body{
     height: 450px;
     background-repeat: no-repeat;
     background-size: cover;
-    /* padding: 10px; */
     text-shadow: 5px 5px #FF0000;
     color: white;
 }
@@ -380,19 +379,6 @@ canvas{
     margin: 4px 2px;
     padding: 2px 4px;
 }
-
-/* .animation{
-    width: 500;
-    height: 450;
-    margin: 50px auto;
-    animation: slide 5s infinite;
-} */
-
-/* @keyframes slide{
-    100%{
-        background-image: url(images/winner.png) ;
-    }
-} */
 
 footer{
     background-color: rgb(150, 110, 130);

@@ -1,39 +1,36 @@
+// canvas:
 let context;
-let shape = new Object();
 
-//site data
-let connected = true;
-let currentUser = 'k';
+//site data:
+let connected = false;
+let currentUser = '';
 let currentScreen = 'gamePageD';
 
 //Users Data:
 let usernamesID = ['k'];
 let usernamesPass = ['k'];
-let usernameNumber = 0;
 
-
-//game data:
-let directionPressed;
-
-
+// Key Pressing:
 let keyPressedBool = true;
 let keyPressed = '';
 
-let gamestat = 0;
 //Game stats:
+let gamestat = 0;
 //0 = live
-//1 = time's up
-//2 = game lost
-//3 = game won
+//4 = escape
 
 let score;
 let lives;
-let time_elapsed = 0;
+let time_elapsed = 0; // Time chosen by the player
 let time_left = 0;
-let interval;
-let timeInterval;
+let interval; // interval game
+let timeInterval; // countdown clock
+
+// Music:
 let gameMusic = new Audio('sound/Popcorn Original Song.wav');
-let gameMusicStop = false;
+let gameMusicStop = false; //to play and pause the music in the game
+
+// Win:
 let winMusic = new Audio('sound/winner.wav');
 let looseMusic = new Audio('sound/Wrong Buzzer Sound Effect.wav');
 
@@ -45,6 +42,8 @@ let canvasColumns = 17;
 let board = new Array (14);
 let cellSizeX = canvasWidth/17;
 let cellSizeY = canvasHeight/14;
+
+
 //pacman vars:
 let pac_color = "yellow";
 let pacman_x;
@@ -98,8 +97,8 @@ let mediumBall = [];
 let mediumBallColor;
 let bigBall = [];
 let bigBallColor;
-let ballCount = 50;
-let ballLeft;
+let ballCount = 50; // number of balls chosen by the player
+let ballLeft; // ball left in the game
 
 //treasure:
 let treasure = new Object();
@@ -107,8 +106,8 @@ treasure.x = canvasWidth/2;
 treasure.y= canvasHeight/2;
 let image_treasure = document.createElement("img");
 image_treasure.src ='images/money.png';
-treasure.xMove = 1;
-treasure.yMove = 1;
+treasure.xMove = 1; //speed toward x
+treasure.yMove = 1; //speed toward y
 treasure.sizePicX = (2*canvasWidth/(3*canvasRows));
 treasure.sizePicY = (2*canvasHeight/(3*canvasColumns));
 let treasureEaten = false;
@@ -161,13 +160,15 @@ clockIMG.src='images/clock.png';
 
 
 
-// When the site open:
 $(document).ready(function() {
 
 
-	// showing:
+	// showing pages:
 	hideAll();
 	showScreenMenu();
+
+	// prevent from the site to reload by himself
+
 	$("#RegisterPageDiv").submit(function(e) {
 		e.preventDefault();
 	});
@@ -185,45 +186,15 @@ $(document).ready(function() {
 	context = canvas.getContext("2d");
 	canvas.width = canvasWidth;
 	canvas.height = canvasHeight;
-	context.rect(0, 0, canvas.width, canvas.height);
-
-	// context.font = "bold 60px Verdana";
-	// context.fillStyle="rgb(221, 221, 42)";
-
-	
-	// context.beginPath();
-	// context.arc(100, 100, 50, 0, 2 * Math.PI, false);
-	// context.fillStyle = "rgb(0, 0, 255)";
-	// context.fill();
-
-	// context.beginPath();
-	// context.arc(100, 100, 50, 0.25 * Math.PI, 1.25 * Math.PI, false);
-	// context.fillStyle = "rgb(255, 255, 0)";
-	// context.fill();
-	// context.beginPath();
-	// context.arc(100, 100, 50, 0.75 * Math.PI, 1.75 * Math.PI, false);
-	// context.fill();
-	// context.beginPath();
-	// context.arc(100, 75, 10, 0, 2 * Math.PI, false);
-	// context.fillStyle = "rgb(0, 0, 0)";
-	// context.fill();
-	
-	// let grd = context.createRadialGradient(75, 50, 5, 90, 60, 100);
-	// grd.addColorStop(0, "yellow");
-	// grd.addColorStop(1, "white");
-
-	// context.fillText("Menu Setting", canvas.width/4, canvas.height); 
-
-	// gameMusic.play();
-	// gameMusic.loop();
- 
-	
+	context.rect(0, 0, canvas.width, canvas.height);	
 
 });
 
 
 //change screens:
 
+
+/* hide all the screens before starting site*/
 function hideAll(){
 	$('#welcomePage').css('display','none');
 	$('#RegisterPageDiv').css('display','none');
@@ -234,6 +205,11 @@ function hideAll(){
 	$('#welcomePageForConnected').css('display','none');
 }
 
+/* 
+*Hide the previous screen and shows the new one
+*page = name of the new div
+*currentScreen = name of the current screen presented
+*/
 function showScreen(page){
 	$('#' + currentScreen).css('display','none');
 	$('#' + page).css('display','block');
@@ -243,6 +219,11 @@ function showScreen(page){
 	}
 }
 
+/* 
+*Hide the previous screen and shows the welcome screen
+*there are 2 welcome divs: one for the guesses and one for the connected
+*currentScreen = name of the current screen presented
+*/
 function showScreenMenu(){
 	$('#' + currentScreen).css('display','none');
 	if(connected){
@@ -262,6 +243,10 @@ function showScreenMenu(){
 
 // validation for register:
 
+
+/* 
+*checks if the user is free
+*/
 function checkUserNameExist(username){
 	for(let i=0;i<usernamesID.length;i++){
 		if(usernamesID[i] == username){
@@ -271,6 +256,10 @@ function checkUserNameExist(username){
 	return false;
 }
 
+
+/* 
+*checks if the password is correct
+*/
 function checkPassword(username,password){
 	for(let i=0;i<usernamesID.length;i++){
 		if(usernamesID[i] == username){
@@ -286,7 +275,14 @@ function checkPassword(username,password){
 	return false;
 }
 
+//validation formats:
+
+/* 
+*checks the format of register page
+*/
 function checkValidRegForm(){
+
+	//From the visitor:
 	let validReg = true;
 	let usernameVar = document.forms["regForm"]["username"].value;
 	let passwordUser = document.forms["regForm"]["password"].value;
@@ -295,6 +291,7 @@ function checkValidRegForm(){
 	let emailUser = document.forms["regForm"]["mail"].value;
 	let birthDateUser = document.forms["regForm"]["birthDate"].value;
 
+	//Checks:
 	let letter = /[a-z,A-Z]/g;
   	let num = /[0-9]/g;
 	let letterCheckPass = passwordUser.match(letter);
@@ -383,10 +380,11 @@ function checkValidRegForm(){
 		document.getElementById('errBirthDate').innerHTML="";
 	}
 
-
 	if(validReg == false){
 		return false;
 	}
+
+	//The data is correct:
 	else{
 		usernamesID.push(usernameVar);
 		usernamesPass.push(passwordUser)
@@ -399,14 +397,9 @@ function checkValidRegForm(){
 }
 
 
-
-function logButtonClick(){
-	let x = checkValidLogForm();
-	if(x){
-		showScreenMenu();
-	}
-}
-
+/* 
+*checks the format of register page
+*/
 function checkValidLogForm(){
 	let validLog = true;
 	let usernameLogin = document.forms["logForm"]["usernameLog"].value;
@@ -445,41 +438,10 @@ function checkValidLogForm(){
 	
 }
 
-
-// --------------------------------------------------------------------------------------------------------
 // Settings Page:
-
-function pauseOrPlayMusic(){
-	if(!gameMusicStop){
-		gameMusic.pause();
-		gameMusicStop = true;
-		// document.getElementById("pauseMusicButton").innerHTML.value="play music";
-	}
-	else{
-		gameMusic.play();
-		gameMusicStop = false;
-		// document.getElementById("pauseMusicButton").innerHTML.value="pause music";
-	}
-}
-
-
-function uniKeyCode1(event) {
-	let key = event.key;
-  $("#keyup").val(key);
-}
-function uniKeyCode2(event) {
-	let key = event.key;
-  $("#keydown").val(key);
-}
-function uniKeyCode3(event) {
-	let key = event.key;
-  $("#keyLeft").val(key);
-}
-function uniKeyCode4(event) {
-	let key = event.key;
-  $("#keyRight").val(key);
-}
-
+/* 
+*checks the format of setting page
+*/
 function checkValidSettingForm(){
 	let validLog = true;
 	let keyUpT = document.forms["settingForm"]["keyUp"].value;
@@ -564,6 +526,9 @@ function checkValidSettingForm(){
 	}
 }
 
+/* 
+*Choose random data to the register page
+*/
 function generateRandomSetting(){
 	$("#keyup").val("ArrowUp");
 	$("#keydown").val("ArrowDown");
@@ -580,15 +545,51 @@ function generateRandomSetting(){
 }
 
 
-function countDown(time_elapsed){
-	minutes = Math.floor(time / 60);
-	if (seconds < 10) {
-		seconds = `0${seconds}`;
+// ---------------------------------------------------------------------------------------------------------
+// Buttons:
+// ---------------------------------------------------------------------------------------------------------
+
+/* 
+* play/pause the game music
+*/
+function pauseOrPlayMusic(){
+	if(!gameMusicStop){
+		gameMusic.pause();
+		gameMusicStop = true;
+		// document.getElementById("pauseMusicButton").innerHTML.value="play music";
 	}
-	return `${minutes}:${seconds}`;
+	else{
+		gameMusic.play();
+		gameMusicStop = false;
+		// document.getElementById("pauseMusicButton").innerHTML.value="pause music";
+	}
 }
 
-// Generate new Game:
+// Get the key which the player press to choose:
+function uniKeyCode1(event) {
+	let key = event.key;
+  $("#keyup").val(key);
+}
+function uniKeyCode2(event) {
+	let key = event.key;
+  $("#keydown").val(key);
+}
+function uniKeyCode3(event) {
+	let key = event.key;
+  $("#keyLeft").val(key);
+}
+function uniKeyCode4(event) {
+	let key = event.key;
+  $("#keyRight").val(key);
+}
+
+
+// ---------------------------------------------------------------------------------------------------------
+// GAME JS:
+// ---------------------------------------------------------------------------------------------------------
+
+
+//  --------------------------Generate new Game--------------------------
 
 function genBoard(){
 	for(let i=0;i<14;i++){
@@ -659,22 +660,7 @@ function setWalls(){
 	board[12][4]=1;
 }
 
-function isEmpty(cellRow, cellCol){
-	if(board[cellRow][cellCol] == 0){
-		return true;
-	}
-	return false;
-}
 
-function randomFreeCell(){
-	let cellRow = Math.floor(Math.random()*12+1);
-	let cellCol = Math.floor(Math.random()*15+1);
-	while(!isEmpty(cellRow,cellCol)){
-	cellRow = Math.floor(Math.random()*12+1);
-	cellCol = Math.floor(Math.random()*15+1);
-	}
-	return [cellRow,cellCol];
-}
 
 function setBalls(){
 	let smallBallCount = Math.floor(ballCount * 0.6);
@@ -744,6 +730,29 @@ function setPacman(){
 }
 
 
+//  --------------------------multiple use function--------------------------
+
+function isEmpty(cellRow, cellCol){
+	if(board[cellRow][cellCol] == 0){
+		return true;
+	}
+	return false;
+}
+
+function randomFreeCell(){
+	let cellRow = Math.floor(Math.random()*12+1);
+	let cellCol = Math.floor(Math.random()*15+1);
+	while(!isEmpty(cellRow,cellCol)){
+	cellRow = Math.floor(Math.random()*12+1);
+	cellCol = Math.floor(Math.random()*15+1);
+	}
+	return [cellRow,cellCol];
+}
+
+/*
+*looking for the cell which the creature stay in
+*creatureNum = the number that describes the creature on the board
+*/
 function findCreature(creatureNum){
 	for (let i=0; i<board.length;i++){
 		for(let j=0;j<board[0].length;j++){
@@ -755,12 +764,51 @@ function findCreature(creatureNum){
 	return null;
 }
 
+/*
+*return the direction pressed by the player:
+*/
+function GetKeyPressed() {;
+	if (keyPressed == keyRight && keyPressedBool == true) {
+		return "right";
+	}
+	if (keyPressed == keyDown && keyPressedBool == true) {
+		return "down";
+	}
+	if (keyPressed == keyLeft && keyPressedBool == true) {
+		return "left";
+	}
+	if (keyPressed == keyUp && keyPressedBool == true) {
+		return "up";
+	}
+	if (keyPressed == 'Escape' && keyPressedBool == true) {
+		gamestat = 4;
+		return pacmanData.direction;
+	}
+}
 
+/*
+*move the treasure on the board:
+*/
 
+function moveTreasure(){
+	if((treasure.x + treasure.xMove) > canvasWidth-106 || (treasure.x + treasure.xMove) < 53){
+		treasure.xMove = -treasure.xMove;
+	}
+	if((treasure.y + treasure.yMove) > canvasHeight - 60 || (treasure.y + treasure.yMove) < 30){
+		treasure.yMove = -treasure.yMove;
+	}
+	treasure.x = treasure.x + treasure.xMove;
+	treasure.y = treasure.y + treasure.yMove;
+}
+
+//  --------------------------The Game--------------------------
 
 function start() {
+	// clear board:
 	window.clearInterval(interval);
 	window.clearInterval(timeInterval);
+
+	// set data:
 	gamestat = 0;
 	keyPressed = ''
 	keyPressedBool = false;
@@ -768,27 +816,25 @@ function start() {
 	score = 0;
 	time_left = time_elapsed;
 	ballLeft = ballCount;
+	gameMusic.play();
+	pac_color = "yellow";
 	
+	// Set top div:
 	document.getElementById("livesCount").innerHTML = lives;
 	document.getElementById("timer").innerHTML = time_left;
 	document.getElementById("score").innerHTML = score;
 
-	gameMusic.play();
-	pac_color = "yellow";
-	shape.direction = "right";
-	start_time = new Date();
+	// generate game:
 	genBoard();
 	setWalls();
 	setBalls();
-	
-	// gameMusic.play();
-	// gameMusic.loop();
 	setMedicine();
 	setClock();
 	setMons();
 	setPacman();
 	Draw();
 	
+	// Key Listener:
 	addEventListener(
 		"keydown",
 		function(e) {
@@ -805,6 +851,8 @@ function start() {
 		},
 		false
 	);
+	
+	//intervals: 
 	interval = setInterval(UpdatePosition, 10);
 	timeInterval = setInterval(function () { time_left=time_left-1 }, 1000);
 }
@@ -826,7 +874,7 @@ function Draw() {
 				context.fill();
 			}
  
-			// //smallBall
+			//smallBall
 			else if (board[i][j] == 2 || (board[i][j] >= 12 && board[i][j] <= 15)) {
 				context.beginPath();
 				context.arc(center.x, center.y, 4, 0, 2 * Math.PI); // circle
@@ -834,7 +882,7 @@ function Draw() {
 				context.fill();
 			}
 
-			// //mediumBall
+			//mediumBall
 			else if (board[i][j] == 7 || (board[i][j] >= 16 && board[i][j] <= 19)) {
 				context.beginPath();
 				context.arc(center.x, center.y, 6, 0, 2 * Math.PI); // circle
@@ -913,8 +961,60 @@ function Draw() {
 	}
 }
 
+// Update the canvas:
+
+function UpdatePosition() {
+	document.getElementById("livesCount").innerHTML = lives;
+	document.getElementById("timer").innerHTML = time_left;
+	document.getElementById("score").innerHTML = score;
+	
+	if(time_left == 0){
+		endgameNoTimeLeft();
+	}
+
+	if(lives == 0){
+		endgameNoHearts();
+	}
+
+	if(ballLeft == 0){
+		endgameWon();
+	}
+	if(gamestat == 4){
+		endgameExitGame();
+	}
+
+	//The player eats the treasure:
+	if((Math.abs(pacman_x - treasure.x) < cellSizeX) && (Math.abs(pacman_y - treasure.y) < cellSizeY)){
+		score += 50;
+		treasure.sizePicX = 1;
+		treasure.sizePicY = 1;
+		treasure.x = 1;
+		treasure.y = 1;
+		treasureEaten = true;
+
+	}
+
+	let x = GetKeyPressed();
+
+	moveMonsters();
+	
+	pacmanMouthChange();
+	movePacman(x);
+	
+	if(!treasureEaten){
+		moveTreasure();
+	}
+	
+	Draw();
+}
+
+
+//  --------------------------End Game Function--------------------------
+
+/*
+*Died because of 0 hearts
+*/
 function endgameNoHearts(){
-	window.clearInterval(interval);
 	window.clearInterval(interval);
 	window.clearInterval(timeInterval);
 	gameMusic.pause();
@@ -924,6 +1024,9 @@ function endgameNoHearts(){
 	showScreen('gameSetting');
 }
 
+/*
+*Died because of no time
+*/
 function endgameNoTimeLeft(){
 	window.clearInterval(interval);
 	window.clearInterval(interval);
@@ -943,6 +1046,9 @@ function endgameNoTimeLeft(){
 	showScreen('gameSetting');
 }
 
+/*
+*Died because of 0 balls left
+*/
 function endgameWon(){
 	window.clearInterval(interval);
 	window.clearInterval(interval);
@@ -954,26 +1060,27 @@ function endgameWon(){
 	showScreen('gameSetting');
 }
 
-
-function moveEyePacman(directionPac){
-	if(directionPac == "right"){
-		pacmanData.eyeX = pacmanData.eyeRightX;
-		pacmanData.eyeY = pacmanData.eyeRightY;
-	}
-	else if(directionPac == "down"){
-		pacmanData.eyeX = pacmanData.eyeDownX;
-		pacmanData.eyeY = pacmanData.eyeDownY;
-	}
-	else if(directionPac == "left"){
-		pacmanData.eyeX =pacmanData.eyeLeftX;
-		pacmanData.eyeY = pacmanData.eyeLeftY;
-	}
-	else if (directionPac == "up"){
-		pacmanData.eyeX = pacmanData.eyeUpX;
-		pacmanData.eyeY = pacmanData.eyeUpY;
-	}
+/*
+*The player leaves the game
+*/
+function endgameExitGame(){
+	window.clearInterval(interval);
+	window.clearInterval(interval);
+	window.clearInterval(timeInterval);
+	gameMusic.pause();
+	gameMusic.currentTime = 0;
+	alert("Game Finished");
+	showScreen('gameSetting');
 }
 
+
+//  --------------------------Pacman Movements Functions--------------------------
+
+/*
+*Moves the pacman: if it is in the middle of animation moving to the next cell - onMove = true.
+*else = calls the function to move cell
+*directionPac = the direction pressed by the player
+*/
 function movePacman(directionPac){
 	pacmanData.direction = directionPac;
 	if(Math.abs(pacmanData.movingX) == 0 && Math.abs(pacmanData.movingY) == 0){
@@ -1011,12 +1118,248 @@ function movePacman(directionPac){
 	}
 }
 
+
+/*
+*Moves the pacman cell if he can
+*/
+
+function movePacmanCell(){
+	let pacmanPos = findCreature(6);
+	let x = pacmanPos[0];
+	let y = pacmanPos[1];
+	pacmanData.dirMove = pacmanData.direction;
+
+	if(pacmanData.direction == 'right'){
+		if(x!= board.length-1 ){
+			if(board[x+1][y] != 1){
+				board[x][y] = 0;
+				pacmanData.movingX = -cellSizeX+1;
+				pacmanData.movingY = 0;
+				
+				//balls:
+				if(board[x+1][y]==2){
+					score= score + 5;
+					ballLeft--;
+				}
+				if(board[x+1][y]==7){
+					score+=15;
+					ballLeft--;
+				}
+				if(board[x+1][y]==8){
+					score+=25;
+					ballLeft--;
+				}
+
+				//medicine:
+				if(board[x+1][y]==3){
+					lives+=1;
+				}
+
+				//clock:
+				if(board[x+1][y]==4){
+					time_left+=10;
+				}
+
+				//Mons:
+				if(board[x+1][y]==5 || board[x+1][y]>8){
+					lives-=1;
+					score -= 10;
+					setPacman();
+					return false;
+				}
+				board[x+1][y] = 6;
+				x=x+1;
+			}
+		}
+		
+	}
+	if(pacmanData.direction == 'left'){
+		if(x != 0){
+			if(board[x-1][y] != 1){
+				board[x][y] = 0;
+				pacmanData.movingX = cellSizeX-1;
+				pacmanData.movingY = 0;
+				
+				//balls:
+				if(board[x-1][y]==2){
+					score+=5;
+					ballLeft--;
+				}
+				if(board[x-1][y]==7){
+					score+=15;
+					ballLeft--;
+				}
+				if(board[x-1][y]==8){
+					score+=25;
+					ballLeft--;
+				}
+
+				//medicine:
+				if(board[x-1][y]==3){
+					lives+=1;
+				}
+				// clock:
+				if(board[x-1][y]==4){
+					time_left+=10;
+				}
+
+				//Mons:
+				if(board[x-1][y]==5 || board[x-1][y]>8){
+					lives-=1;
+					score -= 10;
+					setPacman();
+					return false;
+				}
+				board[x-1][y] = 6;
+				x=x-1;
+			}
+		}
+		
+	}
+	if(pacmanData.direction == 'down'){
+		if(y != board[0].length){
+			if(board[x][y+1] != 1){
+				board[x][y] = 0;
+				pacmanData.movingY = -cellSizeY+1;
+				pacmanData.movingX = 0;
+				
+				//balls
+				if(board[x][y+1]==2){
+					score+=5;
+					ballLeft--;
+				}
+				if(board[x][y+1]==7){
+					score+=15;
+					ballLeft--;
+				}
+				if(board[x][y+1]==8){
+					score+=25;
+					ballLeft--;
+				}
+
+				//medicine:
+				if(board[x][y+1]==3){
+					lives+=1;
+				}
+
+				// clock:
+				if(board[x][y+1]==4){
+					time_left+=10;
+				}
+
+				//Mons:
+				if(board[x][y+1]==5 || board[x][y+1]>8){
+					lives-=1;
+					score -= 10;
+					setPacman();
+					return false;
+				}
+				board[x][y+1] = 6;
+				y=y+1;
+			}
+		}
+		
+	}
+	if(pacmanData.direction == 'up'){
+		if(y != 0){
+			if(board[x][y-1] != 1){
+				board[x][y] = 0;
+				pacmanData.movingY = cellSizeY-1;
+				pacmanData.movingX = 0;
+				
+				//balls:
+				if(board[x][y-1]==2){
+					score+=5;
+					ballLeft--;
+				}
+				if(board[x][y-1]==7){
+					score+=15;
+					ballLeft--;
+				}
+				if(board[x][y-1]==8){
+					score+=25;
+					ballLeft--;
+				}
+
+				//medicine:
+				if(board[x][y-1]==3){
+					lives+=1;
+				}
+				// clock:
+				if(board[x][y-1]==4){
+					time_left+=10;
+				}
+
+				//Mons:
+				if(board[x][y-1]==5 || board[x][y-1]>8){
+					lives-=1;
+					score -= 10;
+					setPacman();
+					return false;
+				}
+				board[x][y-1] = 6;
+				y=y-1;
+			}
+		}
+		
+	}
+	return true;
+}
+
+/*
+*Moves the eye of the pacman by direction
+*directionPac = direction
+*/
+function moveEyePacman(directionPac){
+	if(directionPac == "right"){
+		pacmanData.eyeX = pacmanData.eyeRightX;
+		pacmanData.eyeY = pacmanData.eyeRightY;
+	}
+	else if(directionPac == "down"){
+		pacmanData.eyeX = pacmanData.eyeDownX;
+		pacmanData.eyeY = pacmanData.eyeDownY;
+	}
+	else if(directionPac == "left"){
+		pacmanData.eyeX =pacmanData.eyeLeftX;
+		pacmanData.eyeY = pacmanData.eyeLeftY;
+	}
+	else if (directionPac == "up"){
+		pacmanData.eyeX = pacmanData.eyeUpX;
+		pacmanData.eyeY = pacmanData.eyeUpY;
+	}
+}
+
+// open and close mouth
+function pacmanMouthChange(){
+	if (pacmanData.mouthSize == 0){
+		pacmanData.mouthStat = "open";
+	}
+	if (pacmanData.mouthSize == 35){
+		pacmanData.mouthStat = "close";
+	}
+	
+	if (pacmanData.mouthStat == "open"){
+		pacmanData.mouthSize++;
+	}
+	if(pacmanData.mouthStat == "close"){
+		pacmanData.mouthSize--;
+	}
+}
+
+
+//  --------------------------Monsters Movements Functions--------------------------
+
+/*
+* Calculate which path the monster need to go:
+*/
 function calculateDirectionMonster(monster){
 	let creatureCord = findCreature(monster.num);
 	let cordX = creatureCord[0];
 	let cordY = creatureCord[1];
 	
-	let stops = [1,5,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];;
+	//Monster can't go into cells which contains these creatures:
+	let stops = [1,5,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];
+
 	if(Math.abs(pacman_x - monster.x)>Math.abs(pacman_y- monster.y)){
 		if((pacman_x- monster.x)>0 && !stops.includes(board[cordX+1][cordY])){
 			monster.direction = 'right';
@@ -1050,19 +1393,28 @@ function calculateDirectionMonster(monster){
 }
 
 
-
+/*
+* Move the monsters: if it in the middle of animation moving to the next cell: onMove = true
+* else: calling the function to move the monster cell
+*/
 function moveMonsters(){
 	for(let i=0;i<monsCount;i++){
+
+		// find direction:
 		calculateDirectionMonster(mons[i]);
+
 		if(Math.abs(mons[i].movingX) == 0 && Math.abs(mons[i].movingY) == 0){
 			mons[i].onMove = false;
 		}
+
 		else{
 			mons[i].onMove = true;
 		}
+
 		if(!mons[i].onMove){
 			moveMonsterCell(mons[i]);
 		}
+		// animation:
 		else{
 			if(mons[i].dirMove == "right"){
 				mons[i].movingX = mons[i].movingX+1;
@@ -1082,12 +1434,13 @@ function moveMonsters(){
 			}
 		}
 	}
-	
-	
 }
+
+/*
+*Moves the monster cell:
+*/
 function moveMonsterCell(monster){
 	let monsterPos = findCreature(monster.num);
-	//If the monster on a ball
 	let x = monsterPos[0];
 	let y = monsterPos[1];
 	monster.dirMove = monster.direction;
@@ -1097,19 +1450,28 @@ function moveMonsterCell(monster){
 
 				monster.movingX = -cellSizeX+1;
 				monster.movingY = 0;
-
+				
+				//if it were on smallBall 
 				if(monster.num > 11 && monster.num< 16){
 					board[x][y] = 2;
 				}
+
+				//if it were on mediumBall
 				else if(monster.num > 15 && monster.num < 20){
 					board[x][y] = 7;
 				}
+
+				//if it were on bigBall
 				else if(monster.num > 19 && monster.num < 24){
 					board[x][y] = 8;
 				}
+
+				//if it were on medicine
 				else if(monster.num > 23 && monster.num < 28){
 					board[x][y] = 3;
 				}
+
+				//if it were on clock
 				else if(monster.num > 27 && monster.num < 32){
 					board[x][y] = 4;
 				}
@@ -1631,273 +1993,5 @@ function moveMonsterCell(monster){
 
 }
 
-function pacmanMouthChange(){
-	if (pacmanData.mouthSize == 0){
-		pacmanData.mouthStat = "open";
-	}
-	if (pacmanData.mouthSize == 35){
-		pacmanData.mouthStat = "close";
-	}
-	
-	if (pacmanData.mouthStat == "open"){
-		pacmanData.mouthSize++;
-	}
-	if(pacmanData.mouthStat == "close"){
-		pacmanData.mouthSize--;
-	}
-}
-
-function endgameExitGame(){
-	window.clearInterval(interval);
-	window.clearInterval(interval);
-	window.clearInterval(timeInterval);
-	gameMusic.pause();
-	gameMusic.currentTime = 0;
-	alert("Game Finished");
-	showScreen('gameSetting');
-}
-
-function moveTreasure(){
-	if((treasure.x + treasure.xMove) > canvasWidth-106 || (treasure.x + treasure.xMove) < 53){
-		treasure.xMove = -treasure.xMove;
-	}
-	if((treasure.y + treasure.yMove) > canvasHeight - 60 || (treasure.y + treasure.yMove) < 30){
-		treasure.yMove = -treasure.yMove;
-	}
-	treasure.x = treasure.x + treasure.xMove;
-	treasure.y = treasure.y + treasure.yMove;
-}
-function movePacmanCell(){
-	let pacmanPos = findCreature(6);
-	let x = pacmanPos[0];
-	let y = pacmanPos[1];
-	pacmanData.dirMove = pacmanData.direction;
-	if(pacmanData.direction == 'right'){
-		if(x!= board.length-1 ){
-			if(board[x+1][y] != 1){
-				board[x][y] = 0;
-				pacmanData.movingX = -cellSizeX+1;
-				pacmanData.movingY = 0;
-				//fruit
-				if(board[x+1][y]==2){
-					score= score + 5;
-					ballLeft--;
-				}
-				if(board[x+1][y]==7){
-					score+=15;
-					ballLeft--;
-				}
-				if(board[x+1][y]==8){
-					score+=25;
-					ballLeft--;
-				}
-
-				//special
-				if(board[x+1][y]==3){
-					lives+=1;
-				}
-				if(board[x+1][y]==4){
-					time_left+=10;
-				}
-
-				//Mons
-				if(board[x+1][y]==5 || board[x+1][y]>8){
-					lives-=1;
-					score -= 10;
-					setPacman();
-					return false;
-				}
-				board[x+1][y] = 6;
-				x=x+1;
-			}
-		}
-		
-	}
-	if(pacmanData.direction == 'left'){
-		if(x != 0){
-			if(board[x-1][y] != 1){
-				board[x][y] = 0;
-				pacmanData.movingX = cellSizeX-1;
-				pacmanData.movingY = 0;
-				
-				//fruit
-				if(board[x-1][y]==2){
-					score+=5;
-					ballLeft--;
-				}
-				if(board[x-1][y]==7){
-					score+=15;
-					ballLeft--;
-				}
-				if(board[x-1][y]==8){
-					score+=25;
-					ballLeft--;
-				}
-
-				//special
-				if(board[x-1][y]==3){
-					lives+=1;
-				}
-				if(board[x-1][y]==4){
-					time_left+=10;
-				}
-
-				//Mons
-				if(board[x-1][y]==5 || board[x-1][y]>8){
-					lives-=1;
-					score -= 10;
-					setPacman();
-					return false;
-				}
-				board[x-1][y] = 6;
-				x=x-1;
-			}
-		}
-		
-	}
-	if(pacmanData.direction == 'down'){
-		if(y != board[0].length){
-			if(board[x][y+1] != 1){
-				board[x][y] = 0;
-				pacmanData.movingY = -cellSizeY+1;
-				pacmanData.movingX = 0;
-				//fruit
-				if(board[x][y+1]==2){
-					score+=5;
-					ballLeft--;
-				}
-				if(board[x][y+1]==7){
-					score+=15;
-					ballLeft--;
-				}
-				if(board[x][y+1]==8){
-					score+=25;
-					ballLeft--;
-				}
-
-				//special
-				if(board[x][y+1]==3){
-					lives+=1;
-				}
-				if(board[x][y+1]==4){
-					time_left+=10;
-				}
-
-				//Mons
-				if(board[x][y+1]==5 || board[x][y+1]>8){
-					lives-=1;
-					score -= 10;
-					setPacman();
-					return false;
-				}
-				board[x][y+1] = 6;
-				y=y+1;
-			}
-		}
-		
-	}
-	if(pacmanData.direction == 'up'){
-		if(y != 0){
-			if(board[x][y-1] != 1){
-				board[x][y] = 0;
-				pacmanData.movingY = cellSizeY-1;
-				pacmanData.movingX = 0;
-				
-				//fruit
-				if(board[x][y-1]==2){
-					score+=5;
-					ballLeft--;
-				}
-				if(board[x][y-1]==7){
-					score+=15;
-					ballLeft--;
-				}
-				if(board[x][y-1]==8){
-					score+=25;
-					ballLeft--;
-				}
-
-				//special
-				if(board[x][y-1]==3){
-					lives+=1;
-				}
-				if(board[x][y-1]==4){
-					time_left+=10;
-				}
-
-				//Mons
-				if(board[x][y-1]==5 || board[x][y-1]>8){
-					lives-=1;
-					score -= 10;
-					setPacman();
-					return false;
-				}
-				board[x][y-1] = 6;
-				y=y-1;
-			}
-		}
-		
-	}
-	return true;
-}
-
-function GetKeyPressed() {;
-	if (keyPressed == keyRight && keyPressedBool == true) {
-		return "right";
-	}
-	if (keyPressed == keyDown && keyPressedBool == true) {
-		return "down";
-	}
-	if (keyPressed == keyLeft && keyPressedBool == true) {
-		return "left";
-	}
-	if (keyPressed == keyUp && keyPressedBool == true) {
-		return "up";
-	}
-	if (keyPressed == 'Escape' && keyPressedBool == true) {
-		gamestat = 4;
-		return pacmanData.direction;
-	}
-}
-
-
-function UpdatePosition() {
-	document.getElementById("livesCount").innerHTML = lives;
-	// document.getElementById("timer").innerHTML = countDown(time_elapsed);
-	document.getElementById("timer").innerHTML = time_left;
-	document.getElementById("score").innerHTML = score;
-	
-	if(time_left == 0){
-		endgameNoTimeLeft();
-	}
-
-	if(lives == 0){
-		endgameNoHearts();
-	}
-
-	if(ballLeft == 0){
-		endgameWon();
-	}
-	if(gamestat == 4){
-		endgameExitGame();
-	}
-	if((Math.abs(pacman_x - treasure.x) < cellSizeX) && (Math.abs(pacman_y - treasure.y) < cellSizeY)){
-		score += 50;
-		treasure.sizePicX = 1;
-		treasure.sizePicY = 1;
-		treasure.x = 1;
-		treasure.y = 1;
-		treasureEaten = true;
-
-	}
-	let x = GetKeyPressed();
-	pacmanMouthChange();
-	moveMonsters();
-	movePacman(x);
-	if(!treasureEaten){
-		moveTreasure();
-	}
-	Draw();
-}
 
 
