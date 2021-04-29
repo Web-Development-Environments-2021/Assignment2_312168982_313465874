@@ -389,7 +389,6 @@ function checkValidRegForm(){
 		usernamesID.push(usernameVar);
 		usernamesPass.push(passwordUser)
 		currentUser = usernameVar;
-		connected = true;
 		alert("Welcome for the first time, "  + currentUser + "!");
 		showScreenMenu();
 		return true;
