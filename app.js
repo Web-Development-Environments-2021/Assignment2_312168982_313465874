@@ -562,12 +562,6 @@ function generateRandomSetting(){
 	$("#keyleft").val("ArrowLeft");
 	$("#keyright").val("ArrowRight");
 	$("#NumeberBallsID").val(Math.floor(Math.random() * 40) + 50);
-
-	// document.getElementById('smallBallsGameTable').innerHTML=Math.floor(Math.random()*16777215);
-	// $("#smallBallColor").innerHTML = "#"+Math.floor(Math.random()*16777215);
-	// document.getElementById('smallBallColor').style = "background-color:"+document.getElementById('smallBallColor').innerHTML;
-	// document.getElementById('smallBallColor').style = "background-color:"+"#"+Math.floor(Math.random()*16777215).toString(16);
-	
 	$("#smallBallColor").val("#"+Math.floor(Math.random()*16777215));
 	$("#mediumBallColor").val("#"+Math.floor(Math.random()*16777215));
 	$("#bigBallColor").val("#"+Math.floor(Math.random()*16777215));
@@ -1011,20 +1005,39 @@ function movePacman(directionPac){
 }
 
 function calculateDirectionMonster(monster){
-	if(Math.abs(pacman_x- monster.x)>Math.abs(pacman_y- monster.y)){
-		if((pacman_x- monster.x)>0){
+	let creatureCord = findCreature(monster.num);
+	let cordX = creatureCord[0];
+	let cordY = creatureCord[1];
+	
+	let stops = [1,3,4,5,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
+	if(Math.abs(pacman_x - monster.x)>Math.abs(pacman_y- monster.y)){
+		if((pacman_x- monster.x)>0 && !stops.includes(board[cordX+1][cordY])){
 			monster.direction = 'right';
 		}
-		else{
+		else if ((pacman_y- monster.y)>0 && !stops.includes(board[cordX][cordY+1])){
+			monster.direction = 'down';
+		}
+		
+		else if (!stops.includes(board[cordX-1][cordY])){
 			monster.direction = 'left';
+		}
+		
+		else{
+			monster.direction = 'up';
 		}
 	}
 	else{
-		if((pacman_y- monster.y)>0){
+		if((pacman_y- monster.y)>0 && !stops.includes(board[cordX][cordY+1])){
 			monster.direction = 'down';
 		}
-		else{
+		else if ((pacman_x- monster.x)<0 && !stops.includes(board[cordX-1][cordY])){
+			monster.direction = 'left';
+		}
+		else if (!stops.includes(board[cordX][cordY-1])){
 			monster.direction = 'up';
+		}
+		else{
+			monster.direction = 'right';
 		}
 	}
 }
@@ -1073,22 +1086,47 @@ function moveMonsterCell(monster){
 	monster.dirMove = monster.direction;
 	if(monster.direction == 'right'){
 		if(x!= board.length-1 ){
-			if(board[x+1][y] != 1 && board[x+1][y] != 5 && board[x+1][y] < 9){
-				if(monster.num > 11 && monster.num<16){
+			if(board[x+1][y] != 1 && board[x+1][y] != 3 && board[x+1][y] != 4 && board[x+1][y] != 5 && board[x+1][y] < 9){
+
+				if(monster.num > 11 && monster.num< 16){
 					board[x][y] = 2;
 				}
-				if(monster.num > 15 && monster.num<20){
+				else if(monster.num > 15 && monster.num < 20){
 					board[x][y] = 7;
 				}
-				if(monster.num > 19){
+				else if(monster.num > 19){
 					board[x][y] = 8;
 				}
 				else{
 					board[x][y] = 0;
 				}
+
+				if( board[x+1][y] == 6){
+					board[x+1][y] = 0;
+					score -= 10;
+					lives -= 1;
+					setPacman();
+				}
 				
 				monster.movingX = -cellSizeX+1;
 				monster.movingY = 0;
+				
+				if(board[x+1][y]==0){
+					if(monster.num == 5 || monster.num == 12 || monster.num == 16 || monster.num == 20){
+						monster.num = 5;
+					}
+					if((monster.num == 9 || monster.num == 13 || monster.num == 17 || monster.num == 21)){
+						monster.num = 9;
+					}
+					if(monster.num == 10 || monster.num == 14 || monster.num == 18 || monster.num == 22){
+						monster.num = 10;
+					}
+					if(monster.num == 11 || monster.num == 15 || monster.num == 19 || monster.num == 23){
+						monster.num = 11;
+					}
+					board[x+1][y] = monster.num;
+				}
+				
 				//fruit
 				if(board[x+1][y]==2){
 					if(monster.num == 5 || monster.num == 12 || monster.num == 16 || monster.num == 20){
@@ -1135,29 +1173,55 @@ function moveMonsterCell(monster){
 					}
 					board[x+1][y] = monster.num;
 				}
-				x=x+1;
+				
 			}
 		}
 		
 	}
 	if(monster.direction == 'left'){
 		if(x != 0){
-			if(board[x-1][y] != 1 && board[x-1][y] != 5 && board[x-1][y] < 9){
-				if(monster.num > 11 && monster.num<16){
+			if(board[x-1][y] != 1 && board[x-1][y] != 3 && board[x-1][y] != 4 && board[x-1][y] != 5 && board[x-1][y] < 9){
+
+
+				if(monster.num > 11 && monster.num< 16){
 					board[x][y] = 2;
 				}
-				if(monster.num > 15 && monster.num<20){
+				else if(monster.num > 15 && monster.num < 20){
 					board[x][y] = 7;
 				}
-				if(monster.num > 19){
+				else if(monster.num > 19){
 					board[x][y] = 8;
 				}
 				else{
 					board[x][y] = 0;
 				}
 				
+				if( board[x-1][y] == 6){
+					board[x-1][y] = 0;
+					score -= 10;
+					lives -= 1;
+					setPacman();
+				}
+				
 				monster.movingX = cellSizeX-1;
 				monster.movingY = 0;
+				
+				if(board[x-1][y]==0){
+					if(monster.num == 5 || monster.num == 12 || monster.num == 16 || monster.num == 20){
+						monster.num = 5;
+					}
+					if((monster.num == 9 || monster.num == 13 || monster.num == 17 || monster.num == 21)){
+						monster.num = 9;
+					}
+					if(monster.num == 10 || monster.num == 14 || monster.num == 18 || monster.num == 22){
+						monster.num = 10;
+					}
+					if(monster.num == 11 || monster.num == 15 || monster.num == 19 || monster.num == 23){
+						monster.num = 11;
+					}
+					board[x-1][y] = monster.num;
+				}
+				
 				//fruit
 				if(board[x-1][y]==2){
 					if(monster.num == 5 || monster.num == 12 || monster.num == 16 || monster.num == 20){
@@ -1204,29 +1268,55 @@ function moveMonsterCell(monster){
 					}
 					board[x-1][y] = monster.num;
 				}
-				x=x-1;
+				
 			}
 		}
 		
 	}
 	if(monster.direction == 'down'){
 		if(y != board[0].length){
-			if(board[x][y+1] != 1 && board[x][y+1] != 5 && board[x][y+1] < 9){
-				if(monster.num > 11 && monster.num<16){
+			if(board[x][y+1] != 1 && board[x][y+1] != 3 && board[x][y+1] != 4 && board[x][y+1] != 5 && board[x][y+1] < 9){
+
+
+				if(monster.num > 11 && monster.num< 16){
 					board[x][y] = 2;
 				}
-				if(monster.num > 15 && monster.num<20){
+				else if(monster.num > 15 && monster.num < 20){
 					board[x][y] = 7;
 				}
-				if(monster.num > 19){
+				else if(monster.num > 19){
 					board[x][y] = 8;
 				}
 				else{
 					board[x][y] = 0;
 				}
 				
+				if( board[x][y+1] == 6){
+					board[x][y+1] = 0;
+					score -= 10;
+					lives -= 1;
+					setPacman();
+				}
+				
+				monster.movingY = -cellSizeY+1;
 				monster.movingX = 0;
-				monster.movingY = -cellSizeX+1;
+				
+				if(board[x][y+1]==0){
+					if(monster.num == 5 || monster.num == 12 || monster.num == 16 || monster.num == 20){
+						monster.num = 5;
+					}
+					if((monster.num == 9 || monster.num == 13 || monster.num == 17 || monster.num == 21)){
+						monster.num = 9;
+					}
+					if(monster.num == 10 || monster.num == 14 || monster.num == 18 || monster.num == 22){
+						monster.num = 10;
+					}
+					if(monster.num == 11 || monster.num == 15 || monster.num == 19 || monster.num == 23){
+						monster.num = 11;
+					}
+					board[x][y+1] = monster.num;
+				}
+				
 				//fruit
 				if(board[x][y+1]==2){
 					if(monster.num == 5 || monster.num == 12 || monster.num == 16 || monster.num == 20){
@@ -1235,7 +1325,7 @@ function moveMonsterCell(monster){
 					if((monster.num == 9 || monster.num == 13 || monster.num == 17 || monster.num == 21)){
 						monster.num = 13;
 					}
-					if(monster.num == 10 || monster.num == 114 || monster.num == 18 || monster.num == 22){
+					if(monster.num == 10 || monster.num == 14 || monster.num == 18 || monster.num == 22){
 						monster.num = 14;
 					}
 					if(monster.num == 11 || monster.num == 15 || monster.num == 19 || monster.num == 23){
@@ -1250,7 +1340,7 @@ function moveMonsterCell(monster){
 					if((monster.num == 9 || monster.num == 13 || monster.num == 17 || monster.num == 21)){
 						monster.num = 17;
 					}
-					if(monster.num == 10 || monster.num == 114 || monster.num == 18 || monster.num == 22){
+					if(monster.num == 10 || monster.num == 14 || monster.num == 18 || monster.num == 22){
 						monster.num = 18;
 					}
 					if(monster.num == 11 || monster.num == 15 || monster.num == 19 || monster.num == 23){
@@ -1265,7 +1355,7 @@ function moveMonsterCell(monster){
 					if((monster.num == 9 || monster.num == 13 || monster.num == 17 || monster.num == 21)){
 						monster.num = 21;
 					}
-					if(monster.num == 10 || monster.num == 114 || monster.num == 18 || monster.num == 22){
+					if(monster.num == 10 || monster.num == 14 || monster.num == 18 || monster.num == 22){
 						monster.num = 22;
 					}
 					if(monster.num == 11 || monster.num == 15 || monster.num == 19 || monster.num == 23){
@@ -1273,29 +1363,55 @@ function moveMonsterCell(monster){
 					}
 					board[x][y+1] = monster.num;
 				}
-				y=y+1;
+				
 			}
 		}
 		
 	}
 	if(monster.direction == 'up'){
 		if(y != 0){
-			if(board[x][y-1] != 1 && board[x][y-1] != 5 && board[x][y-1] < 9){
-				if(monster.num > 11 && monster.num<16){
+			if(board[x][y-1] != 1 && board[x][y-1] != 3 && board[x][y-1] != 4 && board[x][y-1] != 5 && board[x][y-1] < 9){
+
+
+				if(monster.num > 11 && monster.num< 16){
 					board[x][y] = 2;
 				}
-				if(monster.num > 15 && monster.num<20){
+				else if(monster.num > 15 && monster.num < 20){
 					board[x][y] = 7;
 				}
-				if(monster.num > 19){
+				else if(monster.num > 19){
 					board[x][y] = 8;
 				}
 				else{
 					board[x][y] = 0;
 				}
 				
+				if( board[x][y-1] == 6){
+					board[x][y-1] = 0;
+					score -= 10;
+					lives -= 1;
+					setPacman();
+				}
+
+				monster.movingY = cellSizeY-1;
 				monster.movingX = 0;
-				monster.movingY = -cellSizeX+1;
+				
+				if(board[x][y-1]==0){
+					if(monster.num == 5 || monster.num == 12 || monster.num == 16 || monster.num == 20){
+						monster.num = 5;
+					}
+					if((monster.num == 9 || monster.num == 13 || monster.num == 17 || monster.num == 21)){
+						monster.num = 9;
+					}
+					if(monster.num == 10 || monster.num == 14 || monster.num == 18 || monster.num == 22){
+						monster.num = 10;
+					}
+					if(monster.num == 11 || monster.num == 15 || monster.num == 19 || monster.num == 23){
+						monster.num = 11;
+					}
+					board[x][y-1] = monster.num;
+				}
+				
 				//fruit
 				if(board[x][y-1]==2){
 					if(monster.num == 5 || monster.num == 12 || monster.num == 16 || monster.num == 20){
@@ -1304,7 +1420,7 @@ function moveMonsterCell(monster){
 					if((monster.num == 9 || monster.num == 13 || monster.num == 17 || monster.num == 21)){
 						monster.num = 13;
 					}
-					if(monster.num == 10 || monster.num == 114 || monster.num == 18 || monster.num == 22){
+					if(monster.num == 10 || monster.num == 14 || monster.num == 18 || monster.num == 22){
 						monster.num = 14;
 					}
 					if(monster.num == 11 || monster.num == 15 || monster.num == 19 || monster.num == 23){
@@ -1319,7 +1435,7 @@ function moveMonsterCell(monster){
 					if((monster.num == 9 || monster.num == 13 || monster.num == 17 || monster.num == 21)){
 						monster.num = 17;
 					}
-					if(monster.num == 10 || monster.num == 114 || monster.num == 18 || monster.num == 22){
+					if(monster.num == 10 || monster.num == 14 || monster.num == 18 || monster.num == 22){
 						monster.num = 18;
 					}
 					if(monster.num == 11 || monster.num == 15 || monster.num == 19 || monster.num == 23){
@@ -1334,7 +1450,7 @@ function moveMonsterCell(monster){
 					if((monster.num == 9 || monster.num == 13 || monster.num == 17 || monster.num == 21)){
 						monster.num = 21;
 					}
-					if(monster.num == 10 || monster.num == 114 || monster.num == 18 || monster.num == 22){
+					if(monster.num == 10 || monster.num == 14 || monster.num == 18 || monster.num == 22){
 						monster.num = 22;
 					}
 					if(monster.num == 11 || monster.num == 15 || monster.num == 19 || monster.num == 23){
@@ -1342,7 +1458,7 @@ function moveMonsterCell(monster){
 					}
 					board[x][y-1] = monster.num;
 				}
-				y=y-1;
+				
 			}
 		}
 		
@@ -1584,7 +1700,7 @@ function UpdatePosition() {
 	document.getElementById("livesCount").innerHTML = lives;
 	// document.getElementById("timer").innerHTML = countDown(time_elapsed);
 	document.getElementById("timer").innerHTML = time_left;
-	document.getElementById("score").innerHTML = ballLeft;
+	document.getElementById("score").innerHTML = score;
 	
 	if(time_left == 0){
 		endgameNoTimeLeft();
