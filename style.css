@@ -342,10 +342,15 @@ canvas{
 
 #settingInGame{
     display: inline-block;
+    font-size: 20px;
     /* align-items: right; */
-    margin-top: 10px;
-    margin-right: 10px;
-    padding: 10px
+    margin-top: 0px;
+    margin-right: 0px;
+    padding: 0px
+}
+
+tr.space>td{
+    padding-bottom: 10px;
 }
 
 #GamePageDiv{

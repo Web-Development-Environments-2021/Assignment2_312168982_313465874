@@ -1018,8 +1018,8 @@ function endgameNoHearts(){
 	window.clearInterval(interval);
 	window.clearInterval(timeInterval);
 	gameMusic.pause();
-	gameMusic.currentTime = 0;
 	looseMusic.play();
+	gameMusic.currentTime = 0;
 	alert("Looser!");
 	showScreen('gameSetting');
 }
@@ -1033,14 +1033,14 @@ function endgameNoTimeLeft(){
 	window.clearInterval(timeInterval);
 	if(score<100){
 		gameMusic.pause();
-		gameMusic.currentTime = 0;
 		looseMusic.play();
+		gameMusic.currentTime = 0;
 		alert("You are better than " + score + " points!");
 	}
 	else{
 		gameMusic.pause();
-		gameMusic.currentTime = 0;
 		winMusic.play();
+		gameMusic.currentTime = 0;
 		alert("Winner!");
 	}
 	showScreen('gameSetting');
@@ -1054,8 +1054,8 @@ function endgameWon(){
 	window.clearInterval(interval);
 	window.clearInterval(timeInterval);
 	gameMusic.pause();
-	gameMusic.currentTime = 0;
 	winMusic.play();
+	gameMusic.currentTime = 0;
 	alert("Winner! Your score is: " + score);
 	showScreen('gameSetting');
 }
